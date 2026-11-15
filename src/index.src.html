@@ -1322,7 +1322,7 @@
         }
         else if (S.phase === 'challenge'){
           h = '<div class="result-box"><h2 class="phase-title">'+S.challenge.name+'</h2><p>Thanh chịu ảnh hưởng: <strong>'+RESNAME[S.challenge.resource]+'</strong>.</p><p>'+(S.prepared?'Con đã chọn đúng thẻ chuẩn bị. Giỏi lắm, thiệt hại giảm đi một nửa!':'Con chưa chọn thẻ chuẩn bị. Lần sau mình sẽ sẵn sàng hơn!')+'</p><p>Thiệt hại: <strong>−'+S.challengeDamage+' '+RESNAME[S.challenge.resource]+'</strong>.</p></div>'
-            + '<div class="badge-new" role="img" aria-label="Kết quả '+S.challengeStars+' sao"><strong>Kết quả: +'+S.challengeStars+' sao '+ '★'.repeat(S.challengeStars)+'</strong><p>'+(S.challengeStarReason==='safe'?'Đã chuẩn bị và mọi thanh còn ít nhất 30.':S.challengeStarReason==='prepared'?'Đã chuẩn bị đúng thẻ.':'Đã vượt thử thách.')+'</p></div>'
+            + '<div class="badge-new" role="img" aria-label="Kết quả '+S.challengeStars+' sao"><strong>Kết quả: +'+S.challengeStars+' sao '+ '★'.repeat(S.challengeStars)+'</strong><p>'+(S.challengeStarReason==='safe'?'Đã chuẩn bị và mọi thanh còn ít nhất '+CONFIG.stars.safeLine+'.':S.challengeStarReason==='prepared'?'Đã chuẩn bị đúng thẻ.':'Đã vượt thử thách.')+'</p></div>'
             + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="challenge-ok">Tiếp tục</button></div>';
         }
         else if (S.phase === 'cycleEnd'){
