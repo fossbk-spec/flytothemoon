@@ -22,7 +22,7 @@ Build a Junior Astronaut Mission Trainer** (Hà Nội, 14–15/11/2026).
    hành đoàn).
 3. **Ứng phó sự kiện bất ngờ**: bão Mặt Trời, thiên thạch nhỏ, mất điện đêm...
 4. **Giữ 4 thanh tài nguyên trên 0.** Cổ điển kết thúc sau 5 ngày với 1–3 sao và các điều con học được về vũ trụ.
-5. **Trong Thử thách**, mỗi chu kỳ có 5 ngày; ngày 5 có thử thách báo trước để con chọn thẻ chuẩn bị. Qua mỗi chu kỳ, chọn một phần thưởng rồi chơi tiếp. Kỷ lục số chu kỳ hoàn thành được lưu trên máy này và có thể xóa ở màn hình kết thúc.
+5. **Trong Thử thách**, mỗi chu kỳ có 5 ngày; ngày 5 có thử thách báo trước để con chọn thẻ chuẩn bị. Qua mỗi chu kỳ, chọn một phần thưởng rồi chơi tiếp. Vượt thử thách được 1 sao, chuẩn bị đúng được 2 sao, và giữ cả 4 thanh từ 30 sau thiệt hại được 3 sao. Bộ sưu tập có 12 huy hiệu gắn với các mốc chơi và điều con học được; sao tích lũy, huy hiệu và kỷ lục lưu trên máy này, có thể xóa trong Bộ sưu tập.
 
 Khung **“Dữ liệu NASA hôm nay”** trong game cho biết % nắng, nhiệt độ bề mặt
 và ngày Mặt Trăng tương ứng của từng ngày chơi; Năng lượng cuối ngày được
