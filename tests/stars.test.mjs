@@ -13,7 +13,7 @@ test('challenge scores cover all levels and loss',()=>{
     assert.deepEqual(Engine.challengeScore(s),{stars:want,reason});
   }
   const s=fresh(); Engine.step(s,'start'); s.phase='cardResult'; s.day=5; s.prepared=true;
-  keys.forEach(k=>s.res[k]=50); Engine.step(s,'after-card');
+  keys.forEach(k=>s.res[k]=70); Engine.step(s,'after-card');
   assert.equal(s.challengeStars,3); assert.equal(s.stars,3);
   assert.equal(s.starLog.length,1); assert.equal(s.challengeHistory.length,1);
   const lost=fresh(); Engine.step(lost,'start'); lost.phase='cardResult'; lost.day=5;
