@@ -301,6 +301,14 @@
       .event-opt[aria-pressed="true"]{ border-color:var(--sun); box-shadow:0 0 0 3px var(--sun-soft); }
       .small-action{ min-height:48px; border:2px solid var(--stage-muted); background:transparent; color:var(--stage-ink); border-radius:12px; padding:8px 14px; font-weight:700; }
       .record-note{ color:var(--stage-muted); margin-top:10px; }
+      .badge-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-top:16px; }
+      .badge-tile{ border:2px solid var(--line); border-radius:16px; padding:14px; background:var(--panel-2); }
+      .badge-tile h3{ margin:0 0 6px; }
+      .badge-tile p{ margin-top:6px; }
+      .badge-new{ margin-top:14px; padding:12px; border:2px solid var(--sun); border-radius:14px; }
+      .badge-new p{ margin-top:5px; }
+      .collection-btn{ min-height:48px; margin-top:12px; }
+      .storage-note{ margin-top:10px; color:var(--muted); }
       body.modal-open{ overflow:hidden; }
 
       /* ---------- Mission guide & NASA data sections ---------- */
@@ -410,6 +418,8 @@
                 </div>
               </div>
               <div class="head-actions">
+                <strong id="starCount" aria-live="polite"></strong>
+                <span id="storageNoteGame" class="storage-note" hidden>Chưa lưu được trên máy này</span>
                 <button type="button" class="guide-btn" data-open-guide aria-haspopup="dialog" aria-label="Mở hướng dẫn cách chơi và thực hiện nhiệm vụ">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.3a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.2-2.7 3.7"/><circle cx="12.2" cy="16.8" r=".4" fill="currentColor"/></svg>
                   Hướng dẫn
@@ -677,6 +687,14 @@
         </div>
       </div>
     </div>
+    <div class="modal-backdrop" id="collectionModal" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="collectionTitle">
+        <div class="modal-head"><h2 id="collectionTitle">Bộ sưu tập</h2><button type="button" class="modal-close" data-close-collection aria-label="Đóng bộ sưu tập">×</button></div>
+        <p id="collectionSummary"></p><div class="badge-grid" id="badgeGrid"></div>
+        <div class="modal-actions"><button type="button" class="btn btn-ghost" id="deleteData">Xóa dữ liệu của tôi</button></div>
+        <p class="storage-note" id="storageNote" hidden>Chưa lưu được trên máy này</p>
+      </div>
+    </div>
     <script>
     (function(){
       "use strict";
@@ -727,7 +745,7 @@
       };
 
       /* ENGINE:BEGIN */
-      var CONFIG = {g:0.18, sysYield:[5,8,10], startChallenge:70, startClassic:70, pBase:10, pStep:3, pCap:25};
+      var CONFIG = {g:0.18, sysYield:[5,8,10], startChallenge:70, startClassic:70, pBase:10, pStep:3, pCap:25, stars:{base:1, prepared:2, safe:3, safeLine:50, bufferLine:30}};
       var CARDS = [
         {id:'trong-rau', icon:'sprout', tint:'good', title:'Trồng rau trong nhà kính',
          desc:'Rau lớn lên thành thức ăn cho cả đội. Nhưng cây cần nước và đèn sưởi để sống.',
@@ -899,6 +917,20 @@
         {id:'ong', name:'Hỏng đường ống', resource:'water', card:'bom-nuoc'},
         {id:'thien-thach', name:'Mưa thiên thạch', resource:'air', card:'sua-ro-ri'}
       ];
+      var BADGES = [
+        {id:'first-flight',name:'Chuyến bay đầu tiên',how:'Hoàn thành 1 chu kỳ.',learn:'Phi hành gia luôn tập luyện nhiều trước một chuyến bay thật.'},
+        {id:'planner',name:'Người chuẩn bị',how:'Đạt ít nhất 2 sao trong một thử thách.',learn:'Trước mỗi nhiệm vụ, các nhà khoa học lập kế hoạch cho cả những điều có thể xảy ra.'},
+        {id:'thorough',name:'Chuẩn bị chu đáo',how:'Đạt 3 sao ở 3 thử thách.',learn:'Trạm vũ trụ luôn giữ thêm dự trữ để ứng phó khi có bất ngờ.'},
+        {id:'storm-shield',name:'Khiên che bão',how:'Vượt bão Mặt Trời khi đã chuẩn bị.',learn:'Bão Mặt Trời gửi bức xạ rất mạnh; phi hành gia cần nơi trú ẩn có tường thật dày.'},
+        {id:'keep-water',name:'Giữ nước',how:'Vượt hỏng đường ống khi đã chuẩn bị.',learn:'Trên Trạm Vũ trụ Quốc tế, hơn 90% lượng nước được lọc và dùng lại nhiều lần.'},
+        {id:'airtight',name:'Kín như bưng',how:'Vượt mưa thiên thạch khi đã chuẩn bị.',learn:'Mặt Trăng không có khí quyển che chắn, nên đá và bụi vũ trụ rơi thẳng xuống bề mặt.'},
+        {id:'long-night',name:'Đêm dài không sợ',how:'Hoàn thành chu kỳ khi luật Đêm dài đang bật.',learn:'Một đêm trên Mặt Trăng dài bằng khoảng 14 ngày ở Trái Đất.'},
+        {id:'self-sufficient',name:'Trạm tự túc',how:'Nâng cả 4 hệ thống lên cấp 2.',learn:'Mang nước từ Trái Đất lên rất tốn kém, nên trạm phải tái chế tối đa.'},
+        {id:'chief-engineer',name:'Kỹ sư trưởng',how:'Nâng một hệ thống lên cấp 3.',learn:'Phi hành gia thường xuyên bảo dưỡng và nâng cấp thiết bị trên trạm.'},
+        {id:'safe-buffer',name:'Đệm an toàn',how:'Kết thúc 3 chu kỳ liên tiếp với mọi thanh từ 30.',learn:'Phi hành gia luôn giữ dự trữ nhiều hơn mức cần dùng.'},
+        {id:'survivor',name:'Người sống sót',how:'Hoàn thành 5 chu kỳ trong một ván.',learn:'Phi hành gia trên Trạm Vũ trụ Quốc tế thường ở lại khoảng 6 tháng mỗi lần.'},
+        {id:'young-scientist',name:'Nhà khoa học nhí',how:'Gặp 15 thẻ và sự kiện khác nhau.',learn:'Mỗi thẻ và sự kiện trong game đều có một dữ kiện về không gian thật.'}
+      ].map(function(b){ b.status='draft'; return b; });
       var seed = null;
       function rand(){
         if (seed === null) return Math.random();
@@ -927,6 +959,31 @@
         if (k){ S.loseRes=k; S.loseWhere=where; S.phase='lose'; S.over=true; }
         return !!k;
       }
+      function challengeScore(S){
+        if (S.over || KEYS.some(function(k){ return S.res[k]<=0; })) return {stars:0,reason:null};
+        if (!S.prepared) return {stars:CONFIG.stars.base,reason:'pass'};
+        if (KEYS.every(function(k){ return S.res[k]>=CONFIG.stars.safeLine; })) return {stars:CONFIG.stars.safe,reason:'safe'};
+        return {stars:CONFIG.stars.prepared,reason:'prepared'};
+      }
+      function badgesEarned(S, profile){
+        profile=profile||{};
+        var history=S.challengeHistory||[], seen=new Set([].concat(profile.seenIds||[],S.seenIds||[]));
+        var conditions={
+          'first-flight':S.cyclesDone>=1,
+          planner:history.some(function(h){return h.stars>=2;}),
+          thorough:(profile.perfectChallenges||0)+history.filter(function(h){return h.stars===3;}).length>=3,
+          'storm-shield':history.some(function(h){return h.id==='bao'&&h.prepared&&h.stars>0;}),
+          'keep-water':history.some(function(h){return h.id==='ong'&&h.prepared&&h.stars>0;}),
+          airtight:history.some(function(h){return h.id==='thien-thach'&&h.prepared&&h.stars>0;}),
+          'long-night':S.cyclesDone>=2 && (S.activeRules||[]).indexOf('long-night')>=0,
+          'self-sufficient':KEYS.every(function(k){return S.systems[k]>=2;}),
+          'chief-engineer':KEYS.some(function(k){return S.systems[k]>=3;}),
+          'safe-buffer':S.safeCycleStreak>=3,
+          survivor:S.cyclesDone>=5,
+          'young-scientist':seen.size>=15
+        };
+        return BADGES.filter(function(b){return conditions[b.id] && !(profile.badges||{})[b.id];}).map(function(b){return b.id;});
+      }
       function chooseChallenge(previous){
         var list = CHALLENGES.filter(function(c){ return c.id !== previous; });
         return list[Math.floor(rand()*list.length)];
@@ -943,6 +1000,7 @@
           }
         }
         S.hand=shuffle(hand); S.selected=-1;
+        S.hand.forEach(function(c){ if (S.seenIds.indexOf(c.id)<0) S.seenIds.push(c.id); });
       }
       function rewards(S){
         var pool=KEYS.filter(function(k){ return S.systems[k]<3; }).map(function(k){ return {id:'up-'+k, resource:k, name:'Nâng hệ thống '+k}; });
@@ -957,7 +1015,8 @@
           systems:{air:1,water:1,food:1,energy:1}, challenge:null, previousChallenge:null, prepared:false,
           rewards:[], rewardPicked:null, shield:false, usedEvents:[], facts:[], hand:[], selected:-1,
           lastCard:null,lastApplied:null,lastEvent:null,lastEventMsg:'',lastEventApplied:null,lastCons:null,lastNasa:null,
-          challengeDamage:0,loseRes:null,loseWhere:''};
+          challengeDamage:0,challengeStars:0,challengeStarReason:null,stars:0,starLog:[],safeCycleStreak:0,
+          seenIds:[],activeRules:[],challengeHistory:[],newBadges:[],cycleStars:0,loseRes:null,loseWhere:''};
       }
       function endDay(S){
         var delta={}, lunar=LUNAR[S.day-1];
@@ -972,7 +1031,7 @@
         if (loseCheck(S,'cuối ngày')) return;
         if (S.day===5){
           if (S.mode==='classic'){ S.phase='win'; S.over=true; }
-          else { S.cyclesDone++; S.rewards=rewards(S); S.rewardPicked=null; S.phase='cycleEnd'; }
+           else { S.cyclesDone++; S.safeCycleStreak=KEYS.every(function(k){return S.res[k]>=CONFIG.stars.bufferLine;}) ? S.safeCycleStreak+1 : 0; S.cycleStars=S.challengeStars; S.rewards=rewards(S); S.rewardPicked=null; S.phase='cycleEnd'; }
         } else S.phase='dayEnd';
       }
       function afterCard(S){
@@ -981,17 +1040,28 @@
           S.challengeDamage=S.prepared ? Math.floor(p*0.5+0.5) : p;
           var fx={}; fx[S.challenge.resource]=-S.challengeDamage;
           S.challengeApplied=applyDelta(S,fx);
-          if (!loseCheck(S,'thử thách')) S.phase='challenge';
+           if (loseCheck(S,'thử thách')){
+             S.challengeStars=0; S.challengeStarReason=null;
+             S.starLog.push({cycle:S.cycle,id:S.challenge.id,stars:0,reason:null});
+           } else {
+             var score=challengeScore(S);
+             S.challengeStars=score.stars; S.challengeStarReason=score.reason; S.stars+=score.stars;
+             S.starLog.push({cycle:S.cycle,id:S.challenge.id,prepared:S.prepared,stars:score.stars,reason:score.reason,minAfter:Math.min.apply(null,KEYS.map(function(k){return S.res[k];}))});
+             S.challengeHistory.push({id:S.challenge.id,prepared:S.prepared,stars:score.stars});
+             S.phase='challenge';
+           }
           return;
         }
         var avail=EVENTS.filter(function(e){ return S.usedEvents.indexOf(e.id)<0; });
         if (avail.length && rand()<EVENT_CHANCE[S.day]){
-          S.lastEvent=avail[Math.floor(rand()*avail.length)];
+           S.lastEvent=avail[Math.floor(rand()*avail.length)];
+           if (S.seenIds.indexOf(S.lastEvent.id)<0) S.seenIds.push(S.lastEvent.id);
           S.usedEvents.push(S.lastEvent.id); S.phase='event';
         } else endDay(S);
       }
       var Engine = {
-        CONFIG:CONFIG, CARDS:CARDS, EVENTS:EVENTS, LUNAR:LUNAR, CONS:CONS, CHALLENGES:CHALLENGES,
+         CONFIG:CONFIG, CARDS:CARDS, EVENTS:EVENTS, LUNAR:LUNAR, CONS:CONS, CHALLENGES:CHALLENGES, BADGES:BADGES,
+         challengeScore:challengeScore,badgesEarned:badgesEarned,
         setSeed:function(n){ seed=(Number(n)>>>0); },
         rand:rand, newState:newState, drawHand:drawHand, applyDelta:applyDelta,
         step:function(S, action){
@@ -1011,6 +1081,7 @@
               fx={}; KEYS.forEach(function(k){ if (c.fx[k]) fx[k]=c.fx[k]*0.5; });
             }
             S.lastCard=c; S.lastApplied=applyDelta(S,fx);
+             if (S.seenIds.indexOf(c.id)<0) S.seenIds.push(c.id);
             if (c.shield) S.shield=true;
             if (S.mode==='challenge' && S.day>=3 && c.id===S.challenge.card) S.prepared=true;
             if (S.facts.indexOf(c.fact)<0) S.facts.push(c.fact);
@@ -1034,8 +1105,9 @@
             else if (reward.id==='heal'){ var h={}; h[lowest(S)]=20; applyDelta(S,h); }
             else S.systems[reward.resource]++;
           }
-          else if (a.type==='next-cycle' && S.phase==='cycleEnd' && S.rewardPicked){
+           else if (a.type==='next-cycle' && S.phase==='cycleEnd' && S.rewardPicked){
             S.previousChallenge=S.challenge.id; S.cycle++; S.day=1; S.usedEvents=[]; S.prepared=false;
+             S.activeRules=S.cycle>=2?['long-night']:[];
             S.challenge=chooseChallenge(S.previousChallenge); drawHand(S); S.phase='choose';
           }
           return S;
@@ -1044,11 +1116,61 @@
       /* ENGINE:END */
 
       /* ---------- State ---------- */
+      /* PROFILE:BEGIN */
+      function Profile(storage){
+        this.storage=storage; this.available=true;
+        this.data={v:1,starsTotal:0,bestCycles:0,bestStars:0,perfectChallenges:0,badges:{},seenIds:[]};
+        try {
+          var raw=storage.getItem('tmtn.v2.profile');
+          if (raw){
+            var value=null;
+            try { value=JSON.parse(raw); } catch (_) {}
+            if (value && value.v===1 && Number.isFinite(value.starsTotal) && Number.isFinite(value.bestCycles) && Number.isFinite(value.bestStars) && Number.isFinite(value.perfectChallenges) && value.badges && typeof value.badges==='object' && Array.isArray(value.seenIds)){
+              this.data={v:1,starsTotal:Math.max(0,Math.floor(value.starsTotal)),bestCycles:Math.max(0,Math.floor(value.bestCycles)),bestStars:Math.max(0,Math.floor(value.bestStars)),perfectChallenges:Math.max(0,Math.floor(value.perfectChallenges)),badges:value.badges,seenIds:value.seenIds.filter(function(id){return typeof id==='string';}).slice(0,30)};
+            }
+          }
+          var old=Number(storage.getItem('tmtn.v2.best'));
+          if (Number.isFinite(old)) this.data.bestCycles=Math.max(this.data.bestCycles,Math.max(0,Math.floor(old)));
+        } catch (_) { this.available=false; }
+      }
+      Profile.prototype.save=function(){
+        try { this.storage.setItem('tmtn.v2.profile',JSON.stringify(this.data)); this.available=true; }
+        catch (_) { this.available=false; }
+      };
+      Profile.prototype.clear=function(){
+        this.data={v:1,starsTotal:0,bestCycles:0,bestStars:0,perfectChallenges:0,badges:{},seenIds:[]};
+        try { for(var i=this.storage.length-1;i>=0;i--){ var key=this.storage.key(i); if(key && key.indexOf('tmtn.v2.')===0) this.storage.removeItem(key); } this.available=true; }
+        catch (_) { this.available=false; }
+      };
+      /* PROFILE:END */
       var stage = document.getElementById('stage');
       var dayLabel = document.getElementById('dayLabel');
       var dayDots = document.getElementById('dayDots').children;
       var restartBtn = document.getElementById('restartBtn');
       var S = Engine.newState('challenge');
+      var storage;
+      try { storage=localStorage; } catch (_) { storage={getItem:function(){throw Error('storage');},setItem:function(){throw Error('storage');},removeItem:function(){throw Error('storage');},get length(){throw Error('storage');}}; }
+      var profile = new Profile(storage);
+      var runBaseline={perfectChallenges:profile.data.perfectChallenges,seenIds:profile.data.seenIds.slice()};
+      var syncedStars=0, syncedPerfect=0, pendingBadges=[];
+      function badgeMarkup(ids){
+        return ids.map(function(id){ var b=Engine.BADGES.find(function(x){return x.id===id;}); return '<div class="badge-new" aria-label="Huy hiệu '+b.name+'"><strong>🏅 '+b.name+'</strong><p>Điều con học được: '+b.learn+'</p></div>'; }).join('');
+      }
+      function syncProfile(){
+        if (S.mode!=='challenge') return;
+        var earned=Engine.badgesEarned(S,{perfectChallenges:runBaseline.perfectChallenges,seenIds:runBaseline.seenIds,badges:profile.data.badges});
+        pendingBadges=pendingBadges.concat(earned);
+        earned.forEach(function(id){profile.data.badges[id]=true;});
+        var recent=S.starLog.slice(syncedStars);
+        profile.data.starsTotal+=recent.reduce(function(n,x){return n+x.stars;},0);
+        syncedStars=S.starLog.length;
+        var perfect=S.challengeHistory.filter(function(x){return x.stars===3;}).length;
+        profile.data.perfectChallenges+=perfect-syncedPerfect; syncedPerfect=perfect;
+        profile.data.bestCycles=Math.max(profile.data.bestCycles,S.cyclesDone);
+        profile.data.bestStars=Math.max(profile.data.bestStars,S.stars);
+        profile.data.seenIds=Array.from(new Set(profile.data.seenIds.concat(S.seenIds))).slice(0,30);
+        profile.save();
+      }
 
       /* ---------- Rendering: bars & header ---------- */
       function renderRes(){
@@ -1074,6 +1196,8 @@
           else if (i === S.day - 1) dayDots[i].className = 'now';
         }
         restartBtn.hidden = !S.started || S.over;
+        document.getElementById('starCount').textContent=S.started && S.mode==='challenge' ? 'Sao: '+S.stars : '';
+        document.getElementById('storageNoteGame').hidden=profile.available;
       }
 
       function fxChips(fx, extra){
@@ -1108,8 +1232,8 @@
         var gain=CONFIG.sysYield[S.systems[key]]-CONFIG.sysYield[S.systems[key]-1];
         return RESNAME[key]+' mỗi ngày +'+gain+' (hệ thống cấp '+(S.systems[key]+1)+')';
       }
-      function challengeStars(){
-        return S.cyclesDone>=10 ? 3 : S.cyclesDone>=6 ? 2 : S.cyclesDone>=3 ? 1 : 0;
+      function rank(){
+        return S.cyclesDone>=10?'👑 Chỉ huy trưởng':S.cyclesDone>=6?'🚀 Chỉ huy':S.cyclesDone>=3?'🛸 Phi công':'🌙 Học viên';
       }
 
       /* ---------- Rendering: phases ---------- */
@@ -1122,6 +1246,7 @@
             + '<p class="phase-text">Trạm Mặt Trăng có <strong>4 thanh tài nguyên</strong>: Không khí, Nước, Thức ăn và Năng lượng. Chọn Thử thách để đi qua nhiều chu kỳ, hoặc Cổ điển để chơi 5 ngày. Đừng để thanh nào chạm 0! Năng lượng của trạm còn đi theo <strong>nắng và nhiệt độ thật trên Mặt Trăng</strong> (dữ liệu NASA) — nhớ đọc dự báo mỗi ngày nhé.</p>'
             + '<ol class="howto-mini"><li>Mỗi ngày, chọn 1 trong 3 thẻ quyết định.</li><li>Đôi khi vũ trụ gửi tới một sự kiện bất ngờ — hãy chọn cách ứng phó.</li><li>Đừng để thanh tài nguyên nào chạm 0.</li></ol>'
             + '<div class="mode-choice"><strong>Thử thách · 70 mỗi thanh</strong><p>Chơi tiếp nhiều chu kỳ 5 ngày, vượt thử thách và chọn phần thưởng.</p><button type="button" class="btn btn-sun" data-action="start" data-mode="challenge">Chơi Thử thách</button></div>'
+            + '<button type="button" class="small-action collection-btn" data-action="collection">Bộ sưu tập</button>'
             + '<div class="mode-choice"><strong>Cổ điển · 70 mỗi thanh</strong><p>Sống sót qua 5 ngày để hoàn thành nhiệm vụ và nhận sao.</p><button type="button" class="btn btn-teal" data-action="start" data-mode="classic">Chơi Cổ điển</button></div>'
             + '</div><img src="{{ASSET:1}}" alt="Phi hành gia nhí giơ ngón tay cái khích lệ" /></div>';
         }
@@ -1197,10 +1322,12 @@
         }
         else if (S.phase === 'challenge'){
           h = '<div class="result-box"><h2 class="phase-title">'+S.challenge.name+'</h2><p>Thanh chịu ảnh hưởng: <strong>'+RESNAME[S.challenge.resource]+'</strong>.</p><p>'+(S.prepared?'Con đã chọn đúng thẻ chuẩn bị. Giỏi lắm, thiệt hại giảm đi một nửa!':'Con chưa chọn thẻ chuẩn bị. Lần sau mình sẽ sẵn sàng hơn!')+'</p><p>Thiệt hại: <strong>−'+S.challengeDamage+' '+RESNAME[S.challenge.resource]+'</strong>.</p></div>'
+            + '<div class="badge-new" role="img" aria-label="Kết quả '+S.challengeStars+' sao"><strong>Kết quả: +'+S.challengeStars+' sao '+ '★'.repeat(S.challengeStars)+'</strong><p>'+(S.challengeStarReason==='safe'?'Đã chuẩn bị và mọi thanh còn ít nhất 30.':S.challengeStarReason==='prepared'?'Đã chuẩn bị đúng thẻ.':'Đã vượt thử thách.')+'</p></div>'
             + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="challenge-ok">Tiếp tục</button></div>';
         }
         else if (S.phase === 'cycleEnd'){
           h = '<h2 class="phase-title">Hoàn thành chu kỳ '+S.cycle+'</h2><p class="phase-text">Cả đội đã giữ trạm an toàn! Chọn một phần thưởng cho hành trình tiếp theo.</p>'
+            + '<p class="record-note">Chu kỳ này: +'+S.cycleStars+' sao</p>'+badgeMarkup(pendingBadges)
             + '<div class="result-box"><p><strong>Dữ liệu NASA:</strong> '+S.lastNasa.label+' — nắng '+S.lastNasa.sun+'%, nhiệt độ khoảng '+S.lastNasa.temp+'°C. '+S.lastNasa.why+'</p></div>'
             + '<p class="reward-prompt">Chu kỳ sau: mức dùng tăng '+Math.round(CONFIG.g*100)+'%.</p>'
             + ((S.cycle+1===2 || S.cycle+1===3) ? '<div class="rule-box"><strong>Luật khó mới: '+(S.cycle+1===2?'Đêm lạnh hơn':'Tiếp tế thưa')+'</strong><p>'+ruleText(S.cycle+1).slice(-1)[0]+'</p></div>' : '')
@@ -1238,10 +1365,10 @@
           h = '<div class="end-flex"><img src="{{ASSET:1}}" alt="Phi hành gia nhí vẫn mỉm cười khích lệ" />'
             + '<div><h2 class="phase-title">Thanh ' + RESNAME[S.loseRes] + ' đã cạn!</h2>'
             + '<p class="phase-text">Đừng lo — <strong>cả đội đã về Trái Đất an toàn</strong> bằng tàu dự phòng, không ai bị sao cả. Chỉ huy giỏi là người biết nhìn lại và thử lại!</p>'
-            + (S.mode==='challenge' ? '<p class="phase-text">Con giữ trạm qua '+S.cyclesDone+' chu kỳ và '+S.day+' ngày.</p><p class="record-note">Kỷ lục cũ: '+bestBeforeRun+' chu kỳ · Kỷ lục '+(bestRecord>bestBeforeRun?'mới':'hiện tại')+': '+bestRecord+' chu kỳ.</p><p class="record-note" role="img" aria-label="Con được '+challengeStars()+' trên 3 sao">Sao: '+(challengeStars()?'★'.repeat(challengeStars()):'0')+'</p><p class="record-note">★ từ 3 chu kỳ, ★★ từ 6, ★★★ từ 10.</p>' : '')
+            + (S.mode==='challenge' ? '<p class="phase-text">Con giữ trạm qua '+S.cyclesDone+' chu kỳ và '+S.day+' ngày.</p><p class="record-note">Hạng chỉ huy: <strong>'+rank()+'</strong></p><p class="record-note">Học viên: dưới 3 chu kỳ · Phi công: từ 3 · Chỉ huy: từ 6 · Chỉ huy trưởng: từ 10</p><p class="record-note">Tổng sao ván: '+S.stars+' ★</p><p class="record-note">Kỷ lục: '+profile.data.bestCycles+' chu kỳ · '+profile.data.bestStars+' sao.</p>'+badgeMarkup(pendingBadges) : '')
             + '<ul class="fact-list"><li><b>Mẹo cho ván sau</b>' + LOSE_TIP[S.loseRes] + ' Và nhớ: thanh nào thấp nhất thì ưu tiên chăm sóc thanh đó trước.</li></ul>'
             + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="play-again">'+(S.mode==='challenge'?'Chơi lại (mất phần thưởng đã chọn)':'Chơi ván mới')+'</button>'
-            + (S.mode==='challenge' ? '<button type="button" class="small-action" data-action="clear-record">Xóa kỷ lục trên máy này</button>' : '')+'</div>'
+            + (S.mode==='challenge' ? '<button type="button" class="small-action" data-action="collection">Bộ sưu tập</button>' : '')+'</div>'
             + '</div></div>';
         }
         stage.innerHTML = h;
@@ -1249,28 +1376,50 @@
 
       /* ---------- Flow ---------- */
       function lock(){ S.lock = true; setTimeout(function(){ S.lock = false; }, 600); }
-      var bestRecord=0;
-      try { bestRecord=Math.max(0,Math.floor(Number(localStorage.getItem('tmtn.v2.best'))||0)); } catch (_) {}
-      var bestBeforeRun=bestRecord;
-      function startGame(mode){ bestBeforeRun=bestRecord; Engine.step(S,{type:'start',mode:mode||S.mode}); render(); }
+      function startGame(mode){ Engine.step(S,{type:'start',mode:mode||S.mode}); runBaseline={perfectChallenges:profile.data.perfectChallenges,seenIds:profile.data.seenIds.slice()}; syncedStars=0; syncedPerfect=0; pendingBadges=[]; render(); }
 
       stage.addEventListener('click', function(e){
         var btn = e.target.closest('[data-action]');
         if (!btn || S.lock) return;
         var action = btn.getAttribute('data-action');
-        if (action==='clear-record'){
-          bestRecord=0; bestBeforeRun=0;
-          try { localStorage.removeItem('tmtn.v2.best'); } catch (_) {}
-          render(); return;
-        }
-        if (action==='start' || action==='play-again') bestBeforeRun=bestRecord;
+        if (action==='collection'){ openCollection(); return; }
+        if (action==='start' || action==='play-again'){ startGame(btn.getAttribute('data-mode')||S.mode); return; }
         if (action !== 'select' && action !== 'pick-reward') lock();
         Engine.step(S,{type:action,i:Number(btn.getAttribute('data-i')),mode:btn.getAttribute('data-mode')||S.mode});
-        if (S.cyclesDone>bestRecord){
-          bestRecord=S.cyclesDone;
-          try { localStorage.setItem('tmtn.v2.best',String(bestRecord)); } catch (_) {}
-        }
+        syncProfile();
+        if (action==='next-cycle') pendingBadges=[];
         render();
+      });
+
+      var collectionModal=document.getElementById('collectionModal'), lastCollectionFocus=null;
+      function renderCollection(){
+        document.getElementById('collectionSummary').textContent='Tổng sao tích lũy: '+profile.data.starsTotal+' ★';
+        document.getElementById('badgeGrid').innerHTML=Engine.BADGES.map(function(b){
+          var has=!!profile.data.badges[b.id];
+          return '<div class="badge-tile" aria-label="'+(has?'Đã có huy hiệu ':'Chưa có huy hiệu ')+b.name+'"><h3>'+(has?'🏅 '+b.name:'? '+b.name)+'</h3><p>'+(has?'Điều con học được: '+b.learn:'Cách đạt: '+b.how)+'</p></div>';
+        }).join('');
+        document.getElementById('storageNote').hidden=profile.available;
+      }
+      function openCollection(){
+        lastCollectionFocus=document.activeElement; renderCollection(); collectionModal.hidden=false; collectionModal.classList.add('open');
+        document.body.classList.add('modal-open'); collectionModal.querySelector('[data-close-collection]').focus();
+      }
+      function closeCollection(){
+        collectionModal.classList.remove('open'); collectionModal.hidden=true; document.body.classList.remove('modal-open');
+        if(lastCollectionFocus && lastCollectionFocus.focus) lastCollectionFocus.focus();
+      }
+      collectionModal.querySelector('[data-close-collection]').addEventListener('click',closeCollection);
+      collectionModal.addEventListener('click',function(e){if(e.target===collectionModal) closeCollection();});
+      var deleteData=document.getElementById('deleteData'), deleteTimer=null;
+      deleteData.addEventListener('click',function(){
+        if(deleteData.getAttribute('data-confirm')==='yes'){
+          clearTimeout(deleteTimer); deleteData.removeAttribute('data-confirm'); deleteData.textContent='Xóa dữ liệu của tôi';
+          profile.clear(); runBaseline={perfectChallenges:0,seenIds:[]}; syncedStars=S.starLog.length; syncedPerfect=S.challengeHistory.filter(function(x){return x.stars===3;}).length;
+          renderCollection(); render();
+        } else {
+          deleteData.setAttribute('data-confirm','yes'); deleteData.textContent='Xác nhận xóa dữ liệu?';
+          deleteTimer=setTimeout(function(){deleteData.removeAttribute('data-confirm');deleteData.textContent='Xóa dữ liệu của tôi';},5000);
+        }
       });
 
       /* ---------- Guide modal ---------- */
@@ -1299,6 +1448,7 @@
       guideModal.addEventListener('click', function(e){ if (e.target === guideModal) closeGuide(); });
       document.addEventListener('keydown', function(e){
         if (e.key === 'Escape' && guideModal.classList.contains('open')) closeGuide();
+        if (e.key === 'Escape' && collectionModal.classList.contains('open')) closeCollection();
       });
 
       var restartTimer = null;

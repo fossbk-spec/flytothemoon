@@ -8,7 +8,7 @@ const sum = fx => keys.reduce((n,k) => n + (fx[k] || 0), 0);
 const choice = n => Math.floor(Engine.rand()*n);
 const median = a => { const x=[...a].sort((u,v)=>u-v); return (x[(x.length-1)>>1]+x[x.length>>1])/2; };
 
-export function play(strategy, seed) {
+export function play(strategy, seed, detail=false) {
   Engine.setSeed(seed);
   const s=Engine.newState('challenge');
   Engine.step(s,{type:'start',mode:'challenge'});
@@ -47,7 +47,7 @@ export function play(strategy, seed) {
       default: throw new Error('Unexpected phase '+s.phase);
     }
   }
-  return {cycles:s.cyclesDone, loss:s.loseRes, phase:s.phase};
+  return detail ? {cycles:s.cyclesDone, loss:s.loseRes, phase:s.phase, state:s} : {cycles:s.cyclesDone, loss:s.loseRes, phase:s.phase};
 }
 
 export function simulate(count=500, seed=1){
