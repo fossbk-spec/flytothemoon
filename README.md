@@ -16,13 +16,13 @@ Build a Junior Astronaut Mission Trainer** (Hà Nội, 14–15/11/2026).
 
 ## Cách chơi (tóm tắt)
 
-1. **Chọn vị trí trạm** ở cực Nam Mặt Trăng.
+1. **Chọn chế độ**: Thử thách (80 mỗi thanh) hoặc Cổ điển (70 mỗi thanh), rồi đặt trạm ở cực Nam Mặt Trăng.
 2. **Mỗi ngày chọn 1 thẻ quyết định** trong 3 thẻ được rút — mỗi thẻ là một
    đánh đổi thật (ví dụ: bật khiên chắn bức xạ tốn Năng lượng nhưng bảo vệ phi
    hành đoàn).
 3. **Ứng phó sự kiện bất ngờ**: bão Mặt Trời, thiên thạch nhỏ, mất điện đêm...
-4. **Sống sót 5 ngày** với 4 thanh tài nguyên không chạm 0.
-5. Xem màn hình kết thúc: số sao (1–3) và 2 điều con học được về vũ trụ thật.
+4. **Giữ 4 thanh tài nguyên trên 0.** Cổ điển kết thúc sau 5 ngày với 1–3 sao và các điều con học được về vũ trụ.
+5. **Trong Thử thách**, mỗi chu kỳ có 5 ngày; ngày 5 có thử thách báo trước để con chọn thẻ chuẩn bị. Qua mỗi chu kỳ, chọn một phần thưởng rồi chơi tiếp. Kỷ lục số chu kỳ hoàn thành được lưu trên máy này và có thể xóa ở màn hình kết thúc.
 
 Khung **“Dữ liệu NASA hôm nay”** trong game cho biết % nắng, nhiệt độ bề mặt
 và ngày Mặt Trăng tương ứng của từng ngày chơi; Năng lượng cuối ngày được
@@ -90,8 +90,7 @@ Nội dung giáo dục và tài liệu đặc tả đi kèm thuộc dự án Tr�
 ## Ghi nhận
 
 - NASA Space Apps Challenge 2026, Challenge 3 — đề bài và dữ liệu mở NASA.
-- Thiết kế và phát triển: Hoàng Quang Huy (iBME Lab, Đại học Bách Khoa Hà Nội)
-  cùng trợ lý AI Muse.
+- Thiết kế và phát triển: Hoàng Quang Huy (iBME Lab, Đại học Bách Khoa Hà Nội).
 - Bộ tài liệu đặc tả 7 tài liệu (SRS/SAD/SDD/UX/kiểm thử/triển khai/hướng dẫn
   sửa đổi) và tài liệu đánh giá theo bảng chấm BTC được lưu riêng trong quá
   trình phát triển.

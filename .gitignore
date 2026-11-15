@@ -5,3 +5,5 @@ node_modules/
 __pycache__/
 *.zip
 Tr*Nh*.html
+logs/
+.playwright-mcp/

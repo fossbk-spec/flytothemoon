@@ -17,9 +17,9 @@
         --panel:#ffffff; --panel-2:#f1f6fd; --line:#c3d7ef;
         --sun:#f5a800; --sun-soft:#fdeec3;
         --coral:#e85d3d; --coral-soft:#fde3da;
-        --teal:#0e9594; --teal-soft:#d5f0ef;
-        --good:#1e8e4f; --good-soft:#dcf3e4;
-        --bad:#d63a54; --bad-soft:#fbdee3;
+        --teal:#087170; --teal-soft:#d5f0ef;
+        --good:#166638; --good-soft:#dcf3e4;
+        --bad:#a9233d; --bad-soft:#fbdee3;
         --air:#1f9bd8; --water:#3f7de0; --food:#3d9d54; --energy:#e8a100;
         --stage:#101d42; --stage-2:#182a5e; --stage-ink:#f2f6ff; --stage-muted:#b9c8ee; --stage-line:#31498f;
         --shadow:0 10px 30px rgba(22,45,95,.14);
@@ -108,7 +108,7 @@
       .day-dots i.now{ background:var(--stage-ink); border-color:var(--stage-ink); box-shadow:0 0 0 4px rgba(245,168,0,.35); }
       .restart-btn{
         background:transparent; color:var(--stage-muted); border:2px solid var(--stage-line);
-        border-radius:999px; min-height:44px; padding:6px 16px; font-weight:600; font-size:.92rem;
+        border-radius:999px; min-height:48px; padding:6px 16px; font-weight:600; font-size:.92rem;
       }
       .restart-btn.confirm{ color:#fff; border-color:var(--bad); background:var(--bad); }
 
@@ -245,7 +245,7 @@
       .guide-btn{
         display:inline-flex; align-items:center; gap:8px;
         background:var(--sun); color:#3a2700; border:2px solid var(--sun);
-        border-radius:999px; min-height:44px; padding:6px 16px; font-weight:700; font-size:.95rem;
+        border-radius:999px; min-height:48px; padding:6px 16px; font-weight:700; font-size:.95rem;
         font-family:"Baloo 2",sans-serif;
       }
       .guide-btn svg{ width:20px; height:20px; flex:none; }
@@ -289,6 +289,18 @@
       .modal ol.guide-steps b{ color:var(--ink); }
       .modal ul.guide-list{ margin:0; padding-left:20px; color:var(--muted); display:grid; gap:5px; }
       .modal .modal-actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; }
+      .mode-choice{ background:var(--stage-2); border:2px solid var(--stage-line); border-radius:16px; padding:14px; margin-top:12px; }
+      .mode-choice p{ color:var(--stage-muted); margin:4px 0 12px; }
+      .notice-box{ background:#49300d; color:#fff4d8; border:2px solid #d58b18; border-radius:16px; padding:14px 16px; margin-top:14px; }
+      .notice-box strong{ color:#fff; }
+      .notice-box p{ margin-top:4px; }
+      .rule-box{ background:var(--stage-2); border:2px solid var(--stage-line); border-radius:16px; padding:12px 16px; margin-top:12px; color:var(--stage-ink); }
+      .rule-box p + p{ margin-top:5px; }
+      .card .prep-label{ background:#49300d; color:#fff4d8; border-radius:8px; padding:5px 8px; font-size:.82rem; font-weight:700; }
+      .reward-prompt{ color:var(--stage-muted); margin-top:12px; }
+      .event-opt[aria-pressed="true"]{ border-color:var(--sun); box-shadow:0 0 0 3px var(--sun-soft); }
+      .small-action{ min-height:48px; border:2px solid var(--stage-muted); background:transparent; color:var(--stage-ink); border-radius:12px; padding:8px 14px; font-weight:700; }
+      .record-note{ color:var(--stage-muted); margin-top:10px; }
       body.modal-open{ overflow:hidden; }
 
       /* ---------- Mission guide & NASA data sections ---------- */
@@ -410,33 +422,33 @@
               <div class="res" data-r="air">
                 <div class="res-top">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h9a3 3 0 1 0-3-3"/><path d="M2 12h13a3 3 0 1 1-3 3"/><path d="M3 16h6"/></svg>
-                  Không khí <span class="res-num" data-num>70</span>
+                  Không khí <span class="res-num" data-num>80</span>
                 </div>
-                <div class="res-bar" role="progressbar" aria-label="Không khí" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70"><div class="res-fill" data-fill style="width:70%"></div></div>
+                <div class="res-bar" role="progressbar" aria-label="Không khí" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
                 <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
               </div>
               <div class="res" data-r="water">
                 <div class="res-top">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3c3.2 3.8 6 6.9 6 10a6 6 0 1 1-12 0c0-3.1 2.8-6.2 6-10z"/></svg>
-                  Nước <span class="res-num" data-num>70</span>
+                  Nước <span class="res-num" data-num>80</span>
                 </div>
-                <div class="res-bar" role="progressbar" aria-label="Nước" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70"><div class="res-fill" data-fill style="width:70%"></div></div>
+                <div class="res-bar" role="progressbar" aria-label="Nước" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
                 <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
               </div>
               <div class="res" data-r="food">
                 <div class="res-top">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16a8 8 0 0 1-16 0z"/><path d="M9 8c0-1.5 1.5-1.5 1.5-3M14 8c0-1.5 1.5-1.5 1.5-3"/></svg>
-                  Thức ăn <span class="res-num" data-num>70</span>
+                  Thức ăn <span class="res-num" data-num>80</span>
                 </div>
-                <div class="res-bar" role="progressbar" aria-label="Thức ăn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70"><div class="res-fill" data-fill style="width:70%"></div></div>
+                <div class="res-bar" role="progressbar" aria-label="Thức ăn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
                 <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
               </div>
               <div class="res" data-r="energy">
                 <div class="res-top">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="13 2 4 14 11 14 9 22 20 9 13 9"/></svg>
-                  Năng lượng <span class="res-num" data-num>70</span>
+                  Năng lượng <span class="res-num" data-num>80</span>
                 </div>
-                <div class="res-bar" role="progressbar" aria-label="Năng lượng" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70"><div class="res-fill" data-fill style="width:70%"></div></div>
+                <div class="res-bar" role="progressbar" aria-label="Năng lượng" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
                 <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
               </div>
             </div>
@@ -643,7 +655,7 @@
           <button type="button" class="modal-close" data-close-guide aria-label="Đóng hướng dẫn">×</button>
         </div>
         <h3>Nhiệm vụ của con</h3>
-        <p>Làm chỉ huy một trạm trên Mặt Trăng và đưa cả đội <strong>sống sót hết 5 ngày</strong>. Trạm có 4 thanh tài nguyên — Không khí, Nước, Thức ăn, Năng lượng — tất cả bắt đầu ở mức 70. <strong>Đừng để thanh nào chạm 0!</strong></p>
+        <p>Con chọn <strong>Thử thách</strong> để chơi qua nhiều chu kỳ 5 ngày, bắt đầu với 80 ở mỗi thanh; hoặc chọn <strong>Cổ điển</strong> để hoàn thành một nhiệm vụ 5 ngày, bắt đầu với 70. Trạm có Không khí, Nước, Thức ăn và Năng lượng. <strong>Đừng để thanh nào chạm 0!</strong></p>
         <h3>Cách chơi — mỗi ngày làm 4 việc</h3>
         <ol class="guide-steps">
           <li><b>Kiểm tra 4 thanh tài nguyên.</b> Thanh nào dưới 25 sẽ nhấp nháy đỏ — hãy ưu tiên chăm sóc thanh đó hôm nay.</li>
@@ -653,8 +665,9 @@
         </ol>
         <h3>Thắng, sao và thử lại</h3>
         <ul class="guide-list">
-          <li>Sống sót hết ngày 5 là hoàn thành nhiệm vụ. Trung bình 4 thanh còn từ 50 trở lên: <b>3 sao</b>; từ 38: <b>2 sao</b>; dưới mức đó: <b>1 sao</b>.</li>
-          <li>Nếu một thanh chạm 0, nhiệm vụ kết thúc sớm — nhưng cả đội về Trái Đất an toàn bằng tàu dự phòng, và con bấm “Thử lại ván mới” để chơi lại.</li>
+          <li>Ở Cổ điển, sống sót hết ngày 5 là hoàn thành nhiệm vụ. Trung bình 4 thanh còn từ 50 trở lên: <b>3 sao</b>; từ 38: <b>2 sao</b>; dưới mức đó: <b>1 sao</b>.</li>
+          <li>Ở Thử thách, ngày 5 của mỗi chu kỳ có một thử thách đã báo trước. Chọn thẻ chuẩn bị đúng từ ngày 3 để giảm thiệt hại. Qua chu kỳ, con chọn một phần thưởng rồi tiếp tục; kỷ lục là số chu kỳ đã hoàn thành nhiều nhất trên máy này.</li>
+          <li>Nếu một thanh chạm 0, nhiệm vụ kết thúc sớm — nhưng cả đội về Trái Đất an toàn bằng tàu dự phòng, và con bấm “Chơi lại” để thử lại.</li>
           <li>Muốn chơi lại giữa chừng: bấm nút “Chơi lại từ đầu” ở góc khung game, rồi bấm lần nữa để xác nhận.</li>
           <li>Không có đồng hồ đếm ngược — cứ thong thả đọc thẻ và bàn với bạn bè, thầy cô trước khi chốt.</li>
         </ul>
@@ -713,6 +726,8 @@
         water:'background:rgba(63,125,224,.16);color:#3f7de0'
       };
 
+      /* ENGINE:BEGIN */
+      var CONFIG = {g:0.14, sysYield:[5,9,12]};
       var CARDS = [
         {id:'trong-rau', icon:'sprout', tint:'good', title:'Trồng rau trong nhà kính',
          desc:'Rau lớn lên thành thức ăn cho cả đội. Nhưng cây cần nước và đèn sưởi để sống.',
@@ -878,58 +893,162 @@
         energy:'Lần sau hãy để ý các thẻ: Mở thêm tấm pin Mặt Trời, Phơi pin sạc ngoài nắng, Tắt đèn đi ngủ sớm.'
       };
 
+      var KEYS = ['air','water','food','energy'];
+      var CHALLENGES = [
+        {id:'bao', name:'Bão Mặt Trời lớn', resource:'energy', card:'dung-khien'},
+        {id:'ong', name:'Hỏng đường ống', resource:'water', card:'bom-nuoc'},
+        {id:'thien-thach', name:'Mưa thiên thạch', resource:'air', card:'sua-ro-ri'}
+      ];
+      var seed = null;
+      function rand(){
+        if (seed === null) return Math.random();
+        seed = (Math.imul(seed,1664525) + 1013904223) >>> 0;
+        return seed / 4294967296;
+      }
+      function shuffle(a){
+        for (var i=a.length-1;i>0;i--){ var j=Math.floor(rand()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+        return a;
+      }
+      function lowest(S){
+        return KEYS.reduce(function(a,b){ return S.res[b] < S.res[a] ? b : a; });
+      }
+      function applyDelta(S, fx){
+        var applied = {};
+        KEYS.forEach(function(k){
+          var before = S.res[k];
+          var d = Number(fx[k] || 0);
+          S.res[k] = Math.max(0, Math.min(100, Math.floor(before + d + 0.5)));
+          applied[k] = S.res[k] - before;
+        });
+        return applied;
+      }
+      function loseCheck(S, where){
+        var k = KEYS.find(function(key){ return S.res[key] <= 0; });
+        if (k){ S.loseRes=k; S.loseWhere=where; S.phase='lose'; S.over=true; }
+        return !!k;
+      }
+      function chooseChallenge(previous){
+        var list = CHALLENGES.filter(function(c){ return c.id !== previous; });
+        return list[Math.floor(rand()*list.length)];
+      }
+      function drawHand(S){
+        var low=lowest(S), pool=shuffle(CARDS.slice()), booster=pool.find(function(c){ return (c.fx[low]||0)>=10; });
+        var hand = booster ? [booster] : [];
+        pool.forEach(function(c){ if (hand.length<3 && hand.indexOf(c)<0) hand.push(c); });
+        if (S.mode==='challenge' && S.day>=3){
+          var prep=CARDS.find(function(c){ return c.id===S.challenge.card; });
+          if (hand.indexOf(prep)<0){
+            var replace=hand.findIndex(function(c){ return c!==booster; });
+            hand[replace<0 ? 2 : replace]=prep;
+          }
+        }
+        S.hand=shuffle(hand); S.selected=-1;
+      }
+      function rewards(S){
+        var pool=KEYS.filter(function(k){ return S.systems[k]<3; }).map(function(k){ return {id:'up-'+k, resource:k, name:'Nâng hệ thống '+k}; });
+        if (KEYS.some(function(k){ return S.res[k]<40; })) pool.push({id:'heal',name:'Sửa thanh thấp nhất'});
+        pool.push({id:'stash',name:'Tiếp tế cả trạm'});
+        return shuffle(pool).slice(0,3);
+      }
+      function newState(mode){
+        var classic=mode==='classic';
+        return {v:2, mode:classic?'classic':'challenge', started:false, over:false, phase:'intro', day:1, cycle:1, cyclesDone:0,
+          res:{air:classic?70:80,water:classic?70:80,food:classic?70:80,energy:classic?70:80},
+          systems:{air:1,water:1,food:1,energy:1}, challenge:null, previousChallenge:null, prepared:false,
+          rewards:[], rewardPicked:null, shield:false, usedEvents:[], facts:[], hand:[], selected:-1,
+          lastCard:null,lastApplied:null,lastEvent:null,lastEventMsg:'',lastEventApplied:null,lastCons:null,lastNasa:null,
+          challengeDamage:0,loseRes:null,loseWhere:''};
+      }
+      function endDay(S){
+        var delta={}, lunar=LUNAR[S.day-1];
+        KEYS.forEach(function(k){
+          if (S.mode==='classic') delta[k]=-(CONS[k]+S.day-1);
+          else delta[k]=CONFIG.sysYield[S.systems[k]-1]-CONS[k]*(1+CONFIG.g*(S.cycle-1));
+        });
+        var solar=lunar.energyFx;
+        if (S.mode==='challenge' && S.cycle>=2 && solar<0) solar*=1.5;
+        delta.energy+=solar;
+        S.lastCons=applyDelta(S,delta); S.lastNasa=lunar;
+        if (loseCheck(S,'cuối ngày')) return;
+        if (S.day===5){
+          if (S.mode==='classic'){ S.phase='win'; S.over=true; }
+          else { S.cyclesDone++; S.rewards=rewards(S); S.rewardPicked=null; S.phase='cycleEnd'; }
+        } else S.phase='dayEnd';
+      }
+      function afterCard(S){
+        if (S.mode==='challenge' && S.day===5){
+          var p=Math.min(10+3*S.cycle,25);
+          S.challengeDamage=S.prepared ? Math.floor(p*0.5+0.5) : p;
+          var fx={}; fx[S.challenge.resource]=-S.challengeDamage;
+          S.challengeApplied=applyDelta(S,fx);
+          if (!loseCheck(S,'thử thách')) S.phase='challenge';
+          return;
+        }
+        var avail=EVENTS.filter(function(e){ return S.usedEvents.indexOf(e.id)<0; });
+        if (avail.length && rand()<EVENT_CHANCE[S.day]){
+          S.lastEvent=avail[Math.floor(rand()*avail.length)];
+          S.usedEvents.push(S.lastEvent.id); S.phase='event';
+        } else endDay(S);
+      }
+      var Engine = {
+        CONFIG:CONFIG, CARDS:CARDS, EVENTS:EVENTS, LUNAR:LUNAR, CONS:CONS, CHALLENGES:CHALLENGES,
+        setSeed:function(n){ seed=(Number(n)>>>0); },
+        rand:rand, newState:newState, drawHand:drawHand, applyDelta:applyDelta,
+        step:function(S, action){
+          var a=typeof action==='string' ? {type:action} : action;
+          if (!a) return S;
+          if (a.type==='start' || a.type==='play-again'){
+            var mode=a.mode || S.mode;
+            Object.assign(S,newState(mode)); S.started=true; S.phase='choose';
+            if (S.mode==='challenge') S.challenge=chooseChallenge(null);
+            drawHand(S); return S;
+          }
+          if (S.over) return S;
+          if (a.type==='select' && S.phase==='choose' && S.hand[a.i]) S.selected=a.i;
+          else if (a.type==='confirm-card' && S.phase==='choose' && S.hand[S.selected]){
+            var c=S.hand[S.selected], fx=c.fx;
+            if (S.mode==='challenge' && S.cycle>=3 && c.id==='goi-tiep-te'){
+              fx={}; KEYS.forEach(function(k){ if (c.fx[k]) fx[k]=c.fx[k]*0.5; });
+            }
+            S.lastCard=c; S.lastApplied=applyDelta(S,fx);
+            if (c.shield) S.shield=true;
+            if (S.mode==='challenge' && S.day>=3 && c.id===S.challenge.card) S.prepared=true;
+            if (S.facts.indexOf(c.fact)<0) S.facts.push(c.fact);
+            if (!loseCheck(S,'thẻ')) S.phase='cardResult';
+          }
+          else if (a.type==='after-card' && S.phase==='cardResult') afterCard(S);
+          else if (a.type==='event-opt' && S.phase==='event' && S.lastEvent.options[a.i]){
+            var o=S.lastEvent.options[a.i], efx=o.fx;
+            S.lastEventMsg=o.msg;
+            if (o.shieldFree && S.shield){ efx={}; S.lastEventMsg=o.msgShield; S.shield=false; }
+            S.lastEventApplied=applyDelta(S,efx);
+            if (S.facts.indexOf(S.lastEvent.fact)<0) S.facts.push(S.lastEvent.fact);
+            if (!loseCheck(S,'sự kiện')) S.phase='eventResult';
+          }
+          else if (a.type==='after-event' && S.phase==='eventResult') endDay(S);
+          else if (a.type==='challenge-ok' && S.phase==='challenge') endDay(S);
+          else if (a.type==='next-day' && S.phase==='dayEnd'){ S.day++; drawHand(S); S.phase='choose'; }
+          else if (a.type==='pick-reward' && S.phase==='cycleEnd' && !S.rewardPicked && S.rewards[a.i]){
+            var reward=S.rewards[a.i]; S.rewardPicked=reward.id;
+            if (reward.id==='stash') applyDelta(S,{air:8,water:8,food:8,energy:8});
+            else if (reward.id==='heal'){ var h={}; h[lowest(S)]=20; applyDelta(S,h); }
+            else S.systems[reward.resource]++;
+          }
+          else if (a.type==='next-cycle' && S.phase==='cycleEnd' && S.rewardPicked){
+            S.previousChallenge=S.challenge.id; S.cycle++; S.day=1; S.usedEvents=[]; S.prepared=false;
+            S.challenge=chooseChallenge(S.previousChallenge); drawHand(S); S.phase='choose';
+          }
+          return S;
+        }
+      };
+      /* ENGINE:END */
+
       /* ---------- State ---------- */
       var stage = document.getElementById('stage');
       var dayLabel = document.getElementById('dayLabel');
       var dayDots = document.getElementById('dayDots').children;
       var restartBtn = document.getElementById('restartBtn');
-      var S = null;
-
-      function freshState(){
-        return {
-          started:false, over:false, lock:false,
-          day:1, res:{air:70, water:70, food:70, energy:70},
-          shield:false, usedEvents:[], facts:[],
-          hand:[], selected:-1, phase:'intro',
-          lastCard:null, lastApplied:null, lastEvent:null, lastEventMsg:'',
-          lastEventApplied:null, lastCons:null, lastNasa:null, loseRes:null, loseWhere:''
-        };
-      }
-      S = freshState();
-
-      function shuffle(a){
-        for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
-        return a;
-      }
-      function clamp(v){ return Math.max(0, Math.min(100, v)); }
-
-      function applyFx(fx){
-        var applied = {};
-        RES.forEach(function(r){
-          var d = fx[r.k] || 0;
-          if (!d) return;
-          var before = S.res[r.k];
-          S.res[r.k] = clamp(before + d);
-          applied[r.k] = S.res[r.k] - before;
-        });
-        return applied;
-      }
-      function loseCheck(){
-        for (var i=0;i<RES.length;i++){ if (S.res[RES[i].k] <= 0) return RES[i].k; }
-        return null;
-      }
-      function drawHand(){
-        var lowest = RES[0].k, lv = 101;
-        RES.forEach(function(r){ if (S.res[r.k] < lv){ lv = S.res[r.k]; lowest = r.k; } });
-        var pool = shuffle(CARDS.slice());
-        var booster = null;
-        for (var i=0;i<pool.length;i++){ if ((pool[i].fx[lowest]||0) >= 10){ booster = pool[i]; break; } }
-        var hand = [];
-        if (booster) hand.push(booster);
-        for (var j=0;j<pool.length && hand.length<3;j++){ if (hand.indexOf(pool[j]) === -1) hand.push(pool[j]); }
-        S.hand = shuffle(hand);
-        S.selected = -1;
-      }
+      var S = Engine.newState('challenge');
 
       /* ---------- Rendering: bars & header ---------- */
       function renderRes(){
@@ -939,6 +1058,7 @@
           box.querySelector('[data-num]').textContent = v;
           box.querySelector('[data-fill]').style.width = v + '%';
           box.querySelector('.res-bar').setAttribute('aria-valuenow', v);
+          box.querySelector('.res-bar').setAttribute('aria-valuetext', v + ' trên 100');
           box.classList.toggle('low', v < 25 && S.started && !S.over);
         });
       }
@@ -946,7 +1066,7 @@
         if (!S.started){ dayLabel.textContent = 'Sẵn sàng lên Mặt Trăng?'; }
         else if (S.phase === 'win'){ dayLabel.textContent = 'Nhiệm vụ hoàn thành!'; }
         else if (S.phase === 'lose'){ dayLabel.textContent = 'Nhiệm vụ kết thúc sớm'; }
-        else { dayLabel.textContent = 'Ngày ' + S.day + ' trong 5 ngày trên Mặt Trăng'; }
+        else { dayLabel.textContent = S.mode==='challenge' ? 'Chu kỳ '+S.cycle+' · Ngày '+S.day+'/5' : 'Ngày ' + S.day + ' trong 5 ngày trên Mặt Trăng'; }
         for (var i=0;i<5;i++){
           dayDots[i].className = '';
           if (!S.started) continue;
@@ -975,6 +1095,22 @@
         });
         return h + '</ul>';
       }
+      function ruleText(cycle){
+        var lines=[];
+        if (cycle>=2) lines.push('Đêm lạnh làm trạm tốn thêm Năng lượng vì pin cần sưởi ấm.');
+        if (cycle>=3) lines.push('Gói tiếp tế cho ít tài nguyên hơn vì nguồn hàng từ Trái Đất có hạn.');
+        return lines;
+      }
+      function rewardText(reward){
+        if (reward.id==='stash') return 'Tiếp tế cả trạm: +8 mỗi thanh';
+        if (reward.id==='heal') return 'Sửa thanh thấp nhất: +20';
+        var key=reward.resource;
+        var gain=CONFIG.sysYield[S.systems[key]]-CONFIG.sysYield[S.systems[key]-1];
+        return RESNAME[key]+' mỗi ngày +'+gain+' (hệ thống cấp '+(S.systems[key]+1)+')';
+      }
+      function challengeStars(){
+        return S.cyclesDone>=10 ? 3 : S.cyclesDone>=6 ? 2 : S.cyclesDone>=3 ? 1 : 0;
+      }
 
       /* ---------- Rendering: phases ---------- */
       function render(){
@@ -983,17 +1119,20 @@
         if (S.phase === 'intro'){
           h = '<div class="intro-flex"><div>'
             + '<h2 class="phase-title">Chào chỉ huy nhí!</h2>'
-            + '<p class="phase-text">Trạm Mặt Trăng có <strong>4 thanh tài nguyên</strong>: Không khí, Nước, Thức ăn và Năng lượng — tất cả đang ở mức 70. Mỗi ngày, cả đội sẽ dùng bớt một ít. Nhiệm vụ của con: <strong>sống sót hết 5 ngày</strong> và đừng để thanh nào chạm 0! Năng lượng của trạm còn đi theo <strong>nắng và nhiệt độ thật trên Mặt Trăng</strong> (dữ liệu NASA) — nhớ đọc dự báo mỗi ngày nhé.</p>'
-            + '<ol class="howto-mini"><li>Mỗi ngày, chọn 1 trong 3 thẻ quyết định.</li><li>Đôi khi vũ trụ gửi tới một sự kiện bất ngờ — hãy chọn cách ứng phó.</li><li>Hết ngày 5, trạm còn càng đầy đủ, con càng được nhiều sao.</li></ol>'
-            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="start">Bắt đầu ngày 1</button></div>'
+            + '<p class="phase-text">Trạm Mặt Trăng có <strong>4 thanh tài nguyên</strong>: Không khí, Nước, Thức ăn và Năng lượng. Chọn Thử thách để đi qua nhiều chu kỳ, hoặc Cổ điển để chơi 5 ngày. Đừng để thanh nào chạm 0! Năng lượng của trạm còn đi theo <strong>nắng và nhiệt độ thật trên Mặt Trăng</strong> (dữ liệu NASA) — nhớ đọc dự báo mỗi ngày nhé.</p>'
+            + '<ol class="howto-mini"><li>Mỗi ngày, chọn 1 trong 3 thẻ quyết định.</li><li>Đôi khi vũ trụ gửi tới một sự kiện bất ngờ — hãy chọn cách ứng phó.</li><li>Đừng để thanh tài nguyên nào chạm 0.</li></ol>'
+            + '<div class="mode-choice"><strong>Thử thách · 80 mỗi thanh</strong><p>Chơi tiếp nhiều chu kỳ 5 ngày, vượt thử thách và chọn phần thưởng.</p><button type="button" class="btn btn-sun" data-action="start" data-mode="challenge">Chơi Thử thách</button></div>'
+            + '<div class="mode-choice"><strong>Cổ điển · 70 mỗi thanh</strong><p>Sống sót qua 5 ngày để hoàn thành nhiệm vụ và nhận sao.</p><button type="button" class="btn btn-teal" data-action="start" data-mode="classic">Chơi Cổ điển</button></div>'
             + '</div><img src="{{ASSET:1}}" alt="Phi hành gia nhí giơ ngón tay cái khích lệ" /></div>';
         }
         else if (S.phase === 'choose'){
           var nd = LUNAR[S.day - 1];
           var nx = S.day < 5 ? LUNAR[S.day] : null;
           h = '<h2 class="phase-title">Ngày ' + S.day + ': hôm nay đội mình làm gì?</h2>'
+            + (S.mode==='challenge' && S.day>=2 ? '<div class="notice-box"><strong>Thử thách ngày 5: '+S.challenge.name+'</strong><p>Chuẩn bị bằng thẻ '+CARDS.find(function(c){return c.id===S.challenge.card;}).title+'.</p></div>' : '')
+            + (S.mode==='challenge' && ruleText(S.cycle).length ? '<div class="rule-box"><strong>Luật khó đang bật</strong>'+ruleText(S.cycle).map(function(t){return '<p>'+t+'</p>';}).join('')+'</div>' : '')
             + '<div class="nasa-strip"><span class="nasa-head"><span class="nasa-tag">DỮ LIỆU NASA</span> ' + nd.label + '</span>'
-            + '<span>Ngày Mặt Trăng ~' + nd.lunarDay + ' trong chu kỳ 29,5 ngày · Nắng <b>' + nd.sun + '%</b> · Nhiệt độ khoảng <b>' + (nd.temp > 0 ? '+' : '') + nd.temp + '°C</b> (đo bởi tàu LRO của NASA)</span>'
+            + '<span>Ngày Mặt Trăng ~' + nd.lunarDay + ' trong chu kỳ 29,5 ngày · Nắng <b>' + nd.sun + '%</b> · Nhiệt độ khoảng <b>' + (nd.temp > 0 ? '+' : '') + nd.temp + '°C</b> (đo bởi tàu LRO của NASA). % là độ nắng.</span>'
             + '<span class="fxline"><span class="chip ' + (nd.energyFx >= 0 ? 'plus' : 'minus') + '">Cuối ngày: Năng lượng ' + (nd.energyFx >= 0 ? '+' : '−') + Math.abs(nd.energyFx) + ' vì nắng &amp; nhiệt độ</span>'
             + (nx ? '<span class="chip shield">Ngày mai: nắng ' + nx.sun + '%, ' + (nx.temp > 0 ? '+' : '') + nx.temp + '°C, Năng lượng ' + (nx.energyFx >= 0 ? '+' : '−') + Math.abs(nx.energyFx) + '</span>' : '<span class="chip shield">Ngày mai: đêm Mặt Trăng dài bắt đầu</span>')
             + '</span></div>'
@@ -1002,7 +1141,9 @@
           S.hand.forEach(function(c, i){
             h += '<button type="button" class="card' + (S.selected===i ? ' selected' : '') + '" data-action="select" data-i="' + i + '" aria-pressed="' + (S.selected===i) + '">'
               + '<span class="card-icon" style="' + TINTS[c.tint] + '">' + icon(c.icon) + '</span>'
-              + '<h3>' + c.title + '</h3><p>' + c.desc + '</p>'
+              + '<h3>' + c.title + '</h3>'
+              + (S.mode==='challenge' && S.day>=3 && c.id===S.challenge.card ? '<span class="prep-label">Chuẩn bị cho '+S.challenge.name+'</span>' : '')
+              + '<p>' + c.desc + '</p>'
               + '<span class="fx">' + fxChips(c.fx, c.shield ? '<span class="chip shield">Dựng khiên chắn bão</span>' : '') + '</span>'
               + '</button>';
           });
@@ -1051,8 +1192,21 @@
             + '<p>Trong một ngày, cả đội đã dùng bớt một ít tài nguyên để thở, uống, ăn và chạy máy móc:</p>'
             + deltaChips(S.lastCons)
             + (S.lastNasa ? '<p style="margin-top:10px"><strong>Dữ liệu NASA hôm nay:</strong> ' + S.lastNasa.label + ' — nắng ' + S.lastNasa.sun + '%, nhiệt độ khoảng ' + (S.lastNasa.temp > 0 ? '+' : '') + S.lastNasa.temp + '°C. Trong mức thay đổi Năng lượng ở trên đã gồm ' + (S.lastNasa.energyFx >= 0 ? '+' : '−') + Math.abs(S.lastNasa.energyFx) + ' từ nắng &amp; nhiệt độ thật. ' + S.lastNasa.why + '</p>' : '')
-            + '<p style="margin-top:10px">Ngày mai mức dùng sẽ <strong>nhiều hơn một chút</strong> đấy — hãy để ý thanh nào đang thấp nhất nhé.</p></div>'
+            + (S.mode==='challenge' ? '<p>Hệ thống giúp trạm có thêm tài nguyên mỗi ngày.</p>' : '<p style="margin-top:10px">Ngày mai mức dùng sẽ <strong>nhiều hơn một chút</strong> đấy — hãy để ý thanh nào đang thấp nhất nhé.</p>') + '</div>'
             + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="next-day">Sang ngày ' + (S.day + 1) + '</button></div>';
+        }
+        else if (S.phase === 'challenge'){
+          h = '<div class="result-box"><h2 class="phase-title">'+S.challenge.name+'</h2><p>Thanh chịu ảnh hưởng: <strong>'+RESNAME[S.challenge.resource]+'</strong>.</p><p>'+(S.prepared?'Con đã chọn đúng thẻ chuẩn bị. Giỏi lắm, thiệt hại giảm đi một nửa!':'Con chưa chọn thẻ chuẩn bị. Lần sau mình sẽ sẵn sàng hơn!')+'</p><p>Thiệt hại: <strong>−'+S.challengeDamage+' '+RESNAME[S.challenge.resource]+'</strong>.</p></div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="challenge-ok">Tiếp tục</button></div>';
+        }
+        else if (S.phase === 'cycleEnd'){
+          h = '<h2 class="phase-title">Hoàn thành chu kỳ '+S.cycle+'</h2><p class="phase-text">Cả đội đã giữ trạm an toàn! Chọn một phần thưởng cho hành trình tiếp theo.</p>'
+            + '<div class="result-box"><p><strong>Dữ liệu NASA:</strong> '+S.lastNasa.label+' — nắng '+S.lastNasa.sun+'%, nhiệt độ khoảng '+S.lastNasa.temp+'°C. '+S.lastNasa.why+'</p></div>'
+            + '<p class="reward-prompt">Chu kỳ sau: mức dùng tăng '+Math.round(CONFIG.g*100)+'%.</p>'
+            + ((S.cycle+1===2 || S.cycle+1===3) ? '<div class="rule-box"><strong>Luật khó mới: '+(S.cycle+1===2?'Đêm lạnh hơn':'Tiếp tế thưa')+'</strong><p>'+ruleText(S.cycle+1).slice(-1)[0]+'</p></div>' : '')
+            + '<div class="event-opts" role="group" aria-label="Chọn một phần thưởng">'
+            + S.rewards.map(function(r,i){ return '<button type="button" class="event-opt" data-action="pick-reward" data-i="'+i+'" aria-pressed="'+(S.rewardPicked===r.id)+'" '+(S.rewardPicked?'disabled':'')+'><b>'+rewardText(r)+'</b></button>'; }).join('')
+            + '</div><div class="stage-actions"><button type="button" class="btn btn-sun" data-action="next-cycle" '+(S.rewardPicked?'':'disabled')+'>Sang chu kỳ '+(S.cycle+1)+'</button></div>';
         }
         else if (S.phase === 'win'){
           var avg = Math.round((S.res.air + S.res.water + S.res.food + S.res.energy) / 4);
@@ -1062,7 +1216,7 @@
             : 'Hoàn thành nhiệm vụ! Lần sau, hãy để ý thanh nào sắp hết sớm hơn một chút nhé.';
           var starH = '';
           for (var si=0; si<3; si++){ starH += '<svg viewBox="0 0 24 24" class="' + (si < stars ? 'on' : '') + '" aria-hidden="true">' + P.star + '</svg>'; }
-          var facts = shuffle(S.facts.slice()).slice(0, 2);
+          var facts = S.facts.slice(0, 2);
           h = '<div class="end-flex"><img src="{{ASSET:0}}" alt="Trạm Mặt Trăng sau 5 ngày, hai phi hành gia nhí vẫy tay chào" />'
             + '<div><h2 class="phase-title">Sống sót hết 5 ngày!</h2>'
             + '<div class="stars" role="img" aria-label="Con được ' + stars + ' trên 3 sao">' + starH + '</div>'
@@ -1084,8 +1238,10 @@
           h = '<div class="end-flex"><img src="{{ASSET:1}}" alt="Phi hành gia nhí vẫn mỉm cười khích lệ" />'
             + '<div><h2 class="phase-title">Thanh ' + RESNAME[S.loseRes] + ' đã cạn!</h2>'
             + '<p class="phase-text">Đừng lo — <strong>cả đội đã về Trái Đất an toàn</strong> bằng tàu dự phòng, không ai bị sao cả. Chỉ huy giỏi là người biết nhìn lại và thử lại!</p>'
+            + (S.mode==='challenge' ? '<p class="phase-text">Con giữ trạm qua '+S.cyclesDone+' chu kỳ và '+S.day+' ngày.</p><p class="record-note">Kỷ lục cũ: '+bestBeforeRun+' chu kỳ · Kỷ lục '+(bestRecord>bestBeforeRun?'mới':'hiện tại')+': '+bestRecord+' chu kỳ.</p><p class="record-note" role="img" aria-label="Con được '+challengeStars()+' trên 3 sao">Sao: '+(challengeStars()?'★'.repeat(challengeStars()):'0')+'</p><p class="record-note">★ từ 3 chu kỳ, ★★ từ 6, ★★★ từ 10.</p>' : '')
             + '<ul class="fact-list"><li><b>Mẹo cho ván sau</b>' + LOSE_TIP[S.loseRes] + ' Và nhớ: thanh nào thấp nhất thì ưu tiên chăm sóc thanh đó trước.</li></ul>'
-            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="play-again">Thử lại ván mới</button></div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="play-again">'+(S.mode==='challenge'?'Chơi lại (mất phần thưởng đã chọn)':'Chơi ván mới')+'</button>'
+            + (S.mode==='challenge' ? '<button type="button" class="small-action" data-action="clear-record">Xóa kỷ lục trên máy này</button>' : '')+'</div>'
             + '</div></div>';
         }
         stage.innerHTML = h;
@@ -1093,85 +1249,28 @@
 
       /* ---------- Flow ---------- */
       function lock(){ S.lock = true; setTimeout(function(){ S.lock = false; }, 600); }
-
-      function startGame(){
-        var keepFacts = [];
-        S = freshState();
-        S.started = true; S.phase = 'choose'; S.facts = keepFacts;
-        drawHand();
-        render();
-      }
-      function endDay(){
-        var cons = {}, applied;
-        RES.forEach(function(r){ cons[r.k] = -(CONS[r.k] + (S.day - 1)); });
-        var nasa = LUNAR[S.day - 1];
-        cons.energy += nasa.energyFx;   /* real lunar sun/temperature drives Energy */
-        applied = applyFx(cons);
-        S.lastCons = applied;
-        S.lastNasa = nasa;
-        var lose = loseCheck();
-        if (lose){ S.loseRes = lose; S.loseWhere = 'cuối ngày'; S.phase = 'lose'; S.over = true; render(); return; }
-        if (S.day >= 5){ S.phase = 'win'; S.over = true; render(); return; }
-        S.phase = 'dayEnd'; render();
-      }
-      function afterCard(){
-        var avail = EVENTS.filter(function(e){ return S.usedEvents.indexOf(e.id) === -1; });
-        var chance = EVENT_CHANCE[S.day] || 0.5;
-        if (avail.length && Math.random() < chance){
-          var ev = avail[Math.floor(Math.random() * avail.length)];
-          S.usedEvents.push(ev.id);
-          S.lastEvent = ev;
-          S.phase = 'event'; render();
-        } else {
-          endDay();
-        }
-      }
+      var bestRecord=0;
+      try { bestRecord=Math.max(0,Math.floor(Number(localStorage.getItem('tmtn.v2.best'))||0)); } catch (_) {}
+      var bestBeforeRun=bestRecord;
+      function startGame(mode){ bestBeforeRun=bestRecord; Engine.step(S,{type:'start',mode:mode||S.mode}); render(); }
 
       stage.addEventListener('click', function(e){
         var btn = e.target.closest('[data-action]');
         if (!btn || S.lock) return;
         var action = btn.getAttribute('data-action');
-
-        if (action === 'start' || action === 'play-again'){ lock(); startGame(); return; }
-
-        if (action === 'select'){
-          S.selected = parseInt(btn.getAttribute('data-i'), 10);
+        if (action==='clear-record'){
+          bestRecord=0; bestBeforeRun=0;
+          try { localStorage.removeItem('tmtn.v2.best'); } catch (_) {}
           render(); return;
         }
-        if (action === 'confirm-card'){
-          lock();
-          var c = S.hand[S.selected];
-          if (!c) return;
-          S.lastCard = c;
-          S.lastApplied = applyFx(c.fx);
-          if (c.shield) S.shield = true;
-          if (S.facts.indexOf(c.fact) === -1) S.facts.push(c.fact);
-          var lose = loseCheck();
-          if (lose){ S.loseRes = lose; S.phase = 'lose'; S.over = true; render(); return; }
-          S.phase = 'cardResult'; render(); return;
+        if (action==='start' || action==='play-again') bestBeforeRun=bestRecord;
+        if (action !== 'select' && action !== 'pick-reward') lock();
+        Engine.step(S,{type:action,i:Number(btn.getAttribute('data-i')),mode:btn.getAttribute('data-mode')||S.mode});
+        if (S.cyclesDone>bestRecord){
+          bestRecord=S.cyclesDone;
+          try { localStorage.setItem('tmtn.v2.best',String(bestRecord)); } catch (_) {}
         }
-        if (action === 'after-card'){ lock(); afterCard(); return; }
-        if (action === 'event-opt'){
-          lock();
-          var ev = S.lastEvent;
-          var o = ev.options[parseInt(btn.getAttribute('data-i'), 10)];
-          var fx = o.fx, msg = o.msg;
-          if (o.shieldFree && S.shield){ fx = {}; msg = o.msgShield; S.shield = false; }
-          S.lastEventApplied = applyFx(fx);
-          S.lastEventMsg = msg;
-          if (S.facts.indexOf(ev.fact) === -1) S.facts.push(ev.fact);
-          var lose2 = loseCheck();
-          if (lose2){ S.loseRes = lose2; S.phase = 'lose'; S.over = true; render(); return; }
-          S.phase = 'eventResult'; render(); return;
-        }
-        if (action === 'after-event'){ lock(); endDay(); return; }
-        if (action === 'next-day'){
-          lock();
-          S.day += 1;
-          drawHand();
-          S.phase = 'choose';
-          render(); return;
-        }
+        render();
       });
 
       /* ---------- Guide modal ---------- */
