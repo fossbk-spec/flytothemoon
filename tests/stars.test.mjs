@@ -9,7 +9,7 @@ const profile=()=>({v:1,starsTotal:0,bestCycles:0,bestStars:0,perfectChallenges:
 
 test('challenge scores cover all levels and loss',()=>{
   for(const [prepared,level,want,reason] of [[false,40,1,'pass'],[true,49,2,'prepared'],[true,50,3,'safe'],[true,0,0,null]]){
-    const s=fresh(); s.prepared=prepared; keys.forEach(k=>s.res[k]=40); s.res.air=level;
+    const s=fresh(); s.prepared=prepared; keys.forEach(k=>s.res[k]=60); s.res.air=level;
     assert.deepEqual(Engine.challengeScore(s),{stars:want,reason});
   }
   const s=fresh(); Engine.step(s,'start'); s.phase='cardResult'; s.day=5; s.prepared=true;
