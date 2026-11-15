@@ -16,7 +16,7 @@ Build a Junior Astronaut Mission Trainer** (Hà Nội, 14–15/11/2026).
 
 ## Cách chơi (tóm tắt)
 
-1. **Chọn chế độ**: Thử thách (80 mỗi thanh) hoặc Cổ điển (70 mỗi thanh), rồi đặt trạm ở cực Nam Mặt Trăng.
+1. **Chọn chế độ**: Thử thách (70 mỗi thanh) hoặc Cổ điển (70 mỗi thanh), rồi đặt trạm ở cực Nam Mặt Trăng.
 2. **Mỗi ngày chọn 1 thẻ quyết định** trong 3 thẻ được rút — mỗi thẻ là một
    đánh đổi thật (ví dụ: bật khiên chắn bức xạ tốn Năng lượng nhưng bảo vệ phi
    hành đoàn).
