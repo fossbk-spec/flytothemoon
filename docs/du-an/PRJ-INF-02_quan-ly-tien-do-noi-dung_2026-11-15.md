@@ -3,7 +3,7 @@
 | Hạng mục | Nội dung |
 |---|---|
 | Mã tài liệu | PRJ-INF-02 |
-| Phiên bản | **v0.3** (bản cũ cùng ngày: `archive/PRJ-INF-02_2026-11-15_v0.1.md`) |
+| Phiên bản | **v0.4** (bản cũ cùng ngày: `archive/PRJ-INF-02_2026-11-15_v0.3.md`, `archive/PRJ-INF-02_2026-11-15_v0.1.md`) |
 | Ngày | 15/11/2026 |
 | Tác giả | Nhóm phát triển Trạm Mặt Trăng Nhí |
 | Trạng thái | Draft — các mốc ngày là mục tiêu, điều chỉnh sau Sprint 0 |
@@ -15,6 +15,7 @@
 | Phiên bản | Ngày | Thay đổi |
 |---|---|---|
 | v0.1 | 15/11/2026 | Bản đầu: vai trò, lịch, backlog, quản lý nội dung, rủi ro, kiểm soát thay đổi |
+| v0.4 | 15/11/2026 | Thêm D-08; tham chiếu PRJ-INF-04 (lộ trình lai N1 → N2) cho lịch và backlog giai đoạn đầu |
 | v0.3 | 15/11/2026 | Sửa theo RV-03: tài liệu gốc PRJ-INF-01 v0.4; INF-001 gồm D-07; lịch A thêm tuần đệm phát hành; kịch bản B tính lại ~1/3/2027 |
 | v0.2 | 15/11/2026 | Sửa theo RV-02: ước lượng backlog tính lại (≈ 73 ngày công, không phải 40–48); lịch dựng theo năng lực (kịch bản C=10/C=5); số thẻ mới thống nhất (≥ 3); danh mục CR-01…CR-03; bỏ chữ "bản dự thi"; thêm D-07 năng lực |
 
@@ -317,6 +318,7 @@ Các rủi ro điểm ≥ 6 xem lại **mỗi tuần**; điểm 9 (R8) cần ph�
 | D-05 | chờ | Kỷ lục chỉ `localStorage` | PO | Khuyến nghị Có |
 | D-06 | chờ | Nhúng font để chạy offline hoàn toàn | PO | Khuyến nghị Có nếu kích thước cho phép |
 | D-07 | chờ | Năng lực C (ngày công/tuần) và kịch bản A/B/C | PO | Quyết định lịch v1.1; mặc định B + v1.1-lite nếu không xác nhận |
+| D-08 | chờ | Giá trị tài nguyên khởi điểm theo chế độ | PO | Khuyến nghị Thử thách 80, Khám phá 90, Cổ điển 70 (PRJ-INF-04 mục 2) |
 
 Cập nhật ngay khi có quyết định; mỗi dòng giữ mãi, không xóa.
 

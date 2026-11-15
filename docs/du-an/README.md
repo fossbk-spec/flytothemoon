@@ -6,8 +6,10 @@ Bộ tài liệu phân tích, thiết kế, phát triển và quản lý cho ch�
 
 | Mã | Tài liệu | Phiên bản | Ngày | File |
 |---|---|---|---|---|
-| PRJ-INF-01 | Phân tích, thiết kế và phát triển | v0.4 | 15/11/2026 | `PRJ-INF-01_phan-tich-thiet-ke-phat-trien_2026-11-15.md` |
-| PRJ-INF-02 | Quản lý tiến độ và nội dung | v0.3 | 15/11/2026 | `PRJ-INF-02_quan-ly-tien-do-noi-dung_2026-11-15.md` |
+| PRJ-INF-01 | Phân tích, thiết kế và phát triển | v0.5 | 15/11/2026 | `PRJ-INF-01_phan-tich-thiet-ke-phat-trien_2026-11-15.md` |
+| PRJ-INF-02 | Quản lý tiến độ và nội dung | v0.4 | 15/11/2026 | `PRJ-INF-02_quan-ly-tien-do-noi-dung_2026-11-15.md` |
+| PRJ-INF-03 | Đối chiếu review mockup và phương án nâng cấp | v0.2 | 15/11/2026 | `PRJ-INF-03_phuong-an-nang-cap-game_2026-11-15.md` |
+| PRJ-INF-04 | Phương án thực hiện lộ trình lai (N1 → N2) và giá trị khởi điểm | v0.1 | 15/11/2026 | `PRJ-INF-04_phuong-an-thuc-hien-lo-trinh-lai_2026-11-15.md` |
 
 ## Quy ước đặt tên và phiên bản
 
@@ -25,6 +27,8 @@ Bộ tài liệu phân tích, thiết kế, phát triển và quản lý cho ch�
 | `reviews/` | `RV-01_ra-soat-ky-thuat_PRJ-INF-01-v0.1_2026-11-15.md` (FAIL, xử lý trong v0.2) |
 | `reviews/` | `RV-02_ra-soat-vong-2_PRJ-INF-01-v0.2_2026-11-15.md` (FAIL; xử lý ở INF-01 mục 12.4) |
 | `reviews/` | `RV-03_ra-soat-vong-3_PRJ-INF-01-v0.3_2026-11-15.md` (FAIL; xử lý ở INF-01 mục 12.5; còn lại là chứng minh cân bằng bằng engine thật) |
+| `reviews/` | `RV-04_ra-soat-vong-4_PRJ-INF-03-v0.1_2026-11-15.md` (PASS WITH FIXES; đã xử lý trong INF-03 v0.2 và INF-04) |
+| `mockup/` | Nguồn 6 màn mockup (`*.dc.html`, `canvas.json`) |
 
 ## Công cụ liên quan
 

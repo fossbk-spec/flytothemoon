@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Tổng hợp và phương án xây game</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#eef3fb}
+.t{border-collapse:collapse;width:100%;font-size:14px}
+.t th{text-align:left;background:#e3edf9;color:#16233f;padding:9px 12px;font-weight:700;border-bottom:2px solid #c3d7ef}
+.t td{padding:9px 12px;border-bottom:1px solid #d6e3f4;vertical-align:top;color:#16233f}
+.sec{font-family:'Baloo 2',sans-serif;font-size:28px;font-weight:700;color:#16233f;margin:0}
+.chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+</style>
+</helmet>
+<div style="width:100%;max-width:1280px;margin:0 auto;box-sizing:border-box;font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#16233f;font-size:15px;line-height:1.55;background:#eef3fb">
+
+<div style="background:#101d42;color:#f2f6ff;padding:44px 56px 40px;display:flex;flex-direction:column;gap:12px">
+<div style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#f5a800">TRẠM MẶT TRĂNG NHÍ · DỰ ÁN SỨ MỆNH VÔ HẠN</div>
+<h1 style="margin:0;font-family:'Baloo 2',sans-serif;font-size:46px;line-height:1.1;font-weight:800">Tổng hợp tài liệu và phương án xây game</h1>
+<p style="margin:0;max-width:820px;color:#b9c8ee;font-size:17px">Từ game 5 ngày thành chuỗi chu kỳ vô hạn: giữ vòng chơi 4 tài nguyên + 1 thẻ/ngày, thêm thử thách báo trước, phần thưởng 1 trong 3 và luật khó cộng dồn. Bản review ngày 15/11/2026 (PRJ-INF-01 v0.4, PRJ-INF-02 v0.3).</p>
+</div>
+
+<div style="padding:36px 56px 8px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:18px 20px"><div style="font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:800;color:#0e9594;line-height:1.1">5 → ∞</div><div style="font-size:14px;color:#45587c">ngày chơi → chu kỳ 5 ngày, không có chu kỳ cuối</div></div>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:18px 20px"><div style="font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:800;color:#0e9594;line-height:1.1">≈ 73</div><div style="font-size:14px;color:#45587c">ngày công cho v1.1 (29 việc: 8 S, 16 M, 5 L); bản rút gọn ≈ 51</div></div>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:18px 20px"><div style="font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:800;color:#0e9594;line-height:1.1">≈ 8,7</div><div style="font-size:14px;color:#45587c">chu kỳ trung vị của bot tham lam (mô hình nháp, chưa là bằng chứng)</div></div>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:18px 20px"><div style="font-family:'Baloo 2',sans-serif;font-size:36px;font-weight:800;color:#e85d3d;line-height:1.1">3 vòng</div><div style="font-size:14px;color:#45587c">review độc lập đều FAIL; lỗi tài liệu đã sửa, còn chờ engine thật</div></div>
+</div>
+
+<div style="padding:32px 56px 8px;display:flex;flex-direction:column;gap:16px">
+<h2 class="sec">1. Vòng chơi đề xuất</h2>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<span class="chip" style="background:#d5f0ef;color:#0a5f5e">Ngày 1–4</span>
+<span style="padding:8px 14px;border-radius:12px;background:#e3edf9;font-weight:600">Dự báo 3 ngày</span><span aria-hidden="true">→</span>
+<span style="padding:8px 14px;border-radius:12px;background:#e3edf9;font-weight:600">Chọn 1 thẻ / 3</span><span aria-hidden="true">→</span>
+<span style="padding:8px 14px;border-radius:12px;background:#e3edf9;font-weight:600">Sự kiện (xác suất)</span><span aria-hidden="true">→</span>
+<span style="padding:8px 14px;border-radius:12px;background:#e3edf9;font-weight:600">Tiêu thụ cuối ngày</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<span class="chip" style="background:#fde3da;color:#8a2a13">Ngày 5</span>
+<span style="padding:8px 14px;border-radius:12px;background:#fde3da;font-weight:600">Thử thách (báo trước từ ngày 2)</span><span aria-hidden="true">→</span>
+<span class="chip" style="background:#fdeec3;color:#6b4a00">Hết chu kỳ</span>
+<span style="padding:8px 14px;border-radius:12px;background:#fdeec3;font-weight:600">Thưởng 1 trong 3</span><span aria-hidden="true">→</span>
+<span style="padding:8px 14px;border-radius:12px;background:#fdeec3;font-weight:600">Luật khó mới cộng dồn</span><span aria-hidden="true">→</span>
+<span style="padding:8px 14px;border-radius:12px;background:#101d42;color:#fff;font-weight:600">Chu kỳ n + 1</span>
+</div>
+<p style="margin:0;color:#45587c;font-size:14px">Ván hữu hạn có chủ ý: độ khó tăng 12%/chu kỳ rồi chậm dần đến trần; người chơi chủ động sống lâu hơn nhưng không bất tử. Kỷ lục là số chu kỳ. Chế độ Khám phá không thua; chế độ Cổ điển giữ nguyên MVP.</p>
+</div>
+</div>
+
+<div style="padding:28px 56px 8px;display:flex;flex-direction:column;gap:14px">
+<h2 class="sec">2. Bộ tài liệu đã có</h2>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;overflow:hidden">
+<table class="t">
+<tr><th>Tài liệu</th><th>Vai trò</th><th>Trạng thái</th></tr>
+<tr><td>SRS, SAD, SDD, UX-04, Kế hoạch kiểm thử, Triển khai, Hướng dẫn sửa (7 file .docx)</td><td>Yêu cầu, kiến trúc, thiết kế, giao diện, kiểm thử, vận hành cho MVP 5 ngày</td><td>Nguồn gốc; cần CR-01…03 để thêm yêu cầu vô hạn</td></tr>
+<tr><td>chien-luoc-gameplay (6 level L1–L6)</td><td>Roadmap theo kế hoạch trạm Mặt Trăng NASA</td><td>Chuyển thành "Chương" sau v2.0</td></tr>
+<tr><td>PRJ-INF-01 v0.4</td><td>Phân tích, thiết kế luật, phát triển, nghiệm thu</td><td>Draft, chờ 7 quyết định</td></tr>
+<tr><td>PRJ-INF-02 v0.3</td><td>Lịch, backlog 29 việc, quản lý nội dung, rủi ro, phát hành</td><td>Draft</td></tr>
+<tr><td>RV-01, RV-02, RV-03</td><td>Ba vòng review độc lập</td><td>FAIL × 3; đã xử lý, còn chứng minh cân bằng</td></tr>
+<tr><td>tools/proto_balance.py</td><td>Mô hình cân bằng nháp</td><td>Thay bằng sim.mjs ở Sprint 1</td></tr>
+</table>
+</div>
+</div>
+
+<div style="padding:28px 56px 8px;display:flex;flex-direction:column;gap:14px">
+<h2 class="sec">3. Ba phương án xây</h2>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+
+<div style="background:#fff;border:3px solid #0e9594;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px">
+<span class="chip" style="background:#0e9594;color:#fff;align-self:flex-start">Khuyến nghị</span>
+<h3 style="margin:0;font-family:'Baloo 2',sans-serif;font-size:24px">A. Nâng cấp tại chỗ</h3>
+<p style="margin:0;color:#45587c;font-size:14px">Giữ sản phẩm là một file <b>index.html</b>. Tách mã ra <code>src/</code> (engine thuần, nội dung, giao diện) và ghép lại bằng một script build nhỏ. Kiểm thử bằng <code>node --test</code>.</p>
+<ul style="margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:column;gap:4px">
+<li>Giữ lời hứa: một file, offline, không tài khoản</li>
+<li>Kích thước tăng ít, dễ giữ ≤ +150 KB</li>
+<li>Ít công cụ nhất, hợp nhóm nhỏ</li>
+<li>Nhược: không kiểm kiểu; giao diện vẫn viết DOM tay</li>
+</ul>
+<div style="margin-top:auto;font-weight:700">Công: ≈ 73 ngày công (v1.1) · Rủi ro: thấp</div>
+</div>
+
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px">
+<span class="chip" style="background:#e3edf9;color:#16233f;align-self:flex-start">Phương án thay thế</span>
+<h3 style="margin:0;font-family:'Baloo 2',sans-serif;font-size:24px">B. Vite + TypeScript</h3>
+<p style="margin:0;color:#45587c;font-size:14px">Dựng lại thành dự án module có kiểu, build ra một file bằng plugin gộp. Giao diện vẫn là DOM, chia thành thành phần nhỏ.</p>
+<ul style="margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:column;gap:4px">
+<li>Kiểm kiểu bắt lỗi sớm; engine lớn lên dễ giữ</li>
+<li>Thêm toolchain, CI, nâng phiên bản phụ thuộc</li>
+<li>Cần người quen TypeScript</li>
+<li>Nhược: dựng lại mã MVP trước khi có tính năng mới</li>
+</ul>
+<div style="margin-top:auto;font-weight:700">Công: ≈ 80–85 ngày công · Rủi ro: trung bình</div>
+</div>
+
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px">
+<span class="chip" style="background:#fde3da;color:#8a2a13;align-self:flex-start">Không khuyến nghị</span>
+<h3 style="margin:0;font-family:'Baloo 2',sans-serif;font-size:24px">C. Engine game (Phaser/canvas)</h3>
+<p style="margin:0;color:#45587c;font-size:14px">Vẽ bằng canvas, có hoạt ảnh phong phú và lưới đẹp, dùng thư viện game.</p>
+<ul style="margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:column;gap:4px">
+<li>Hoạt ảnh và hiệu ứng tốt nhất</li>
+<li>Vượt ngân sách +150 KB (thư viện hàng trăm KB)</li>
+<li>Khó đạt tiếp cận bàn phím/đọc màn hình</li>
+<li>Game thẻ và thanh không cần cơ chế vật lý</li>
+</ul>
+<div style="margin-top:auto;font-weight:700">Công: ≈ 100+ ngày công · Rủi ro: cao</div>
+</div>
+
+</div>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;overflow:hidden;margin-top:6px">
+<table class="t">
+<tr><th>Tiêu chí</th><th>A. Tại chỗ</th><th>B. Vite + TS</th><th>C. Engine game</th></tr>
+<tr><td>Một file, offline (NFR-INF-03)</td><td>Đạt</td><td>Đạt (cần plugin)</td><td>Đạt, nặng</td></tr>
+<tr><td>Kích thước ≤ +150 KB (NFR-INF-02)</td><td>Đạt</td><td>Đạt</td><td>Không đạt</td></tr>
+<tr><td>Tiếp cận (NFR-INF-04)</td><td>DOM, dễ đạt</td><td>DOM, dễ đạt</td><td>Khó</td></tr>
+<tr><td>Kiểm thử engine không DOM (FR-INF-16)</td><td>Có (Node)</td><td>Có, tốt hơn</td><td>Khó tách</td></tr>
+<tr><td>Phù hợp 1–2 người, lịch sau dự thi</td><td>Có</td><td>Vừa</td><td>Không</td></tr>
+</table>
+</div>
+<p style="margin:0;font-size:14px;color:#45587c">Đề xuất: chọn A ngay; nếu nhóm lớn hơn hoặc engine vượt ~3.000 dòng thì chuyển sang B ở v2.0 mà không phải đổi luật chơi (engine đã tách khỏi giao diện).</p>
+</div>
+
+<div style="padding:28px 56px 8px;display:flex;flex-direction:column;gap:14px">
+<h2 class="sec">4. Lộ trình (kịch bản 2 người toàn thời gian)</h2>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;overflow:hidden">
+<table class="t">
+<tr><th>Bản</th><th>Nội dung</th><th>Mục tiêu</th></tr>
+<tr><td>v1.1</td><td>Chu kỳ vô hạn, thử thách, thưởng, luật #1–#4, Khám phá, Cổ điển, kỷ lục, mô phỏng, CI</td><td>~10/1/2027</td></tr>
+<tr><td>v1.2</td><td>Lưới 3×3 + module, dự báo 3 ngày, bảng luật #5–#8, pilot 10 em</td><td>~7/2/2027</td></tr>
+<tr><td>v1.3</td><td>Đội + chuyên gia, kề nhau, luật #9–#12, lưới 4×4</td><td>~21/3/2027</td></tr>
+<tr><td>v2.0+</td><td>Chương Cực Nam/ISRU, checkpoint, Sao Hỏa, chế độ Chuyên gia</td><td>Lên kế hoạch sau v1.3</td></tr>
+</table>
+</div>
+<p style="margin:0;font-size:14px;color:#45587c">Một người toàn thời gian: v1.1 lùi tới ~1/3/2027 (chưa tính nghỉ Tết); nên làm bản rút gọn. Năng lực thực tế là quyết định D-07.</p>
+</div>
+
+<div style="padding:28px 56px 8px;display:flex;flex-direction:column;gap:14px">
+<h2 class="sec">5. Quyết định cần chốt</h2>
+<div style="background:#fff;border:1px solid #c3d7ef;border-radius:16px;overflow:hidden">
+<table class="t">
+<tr><th>Mã</th><th>Câu hỏi</th><th>Khuyến nghị</th></tr>
+<tr><td>D-01</td><td>Phạm vi bản đầu</td><td>Chỉ v1.1 (chưa lưới)</td></tr>
+<tr><td>D-02</td><td>L2–L6 thành "Chương" rồi vào vô hạn</td><td>Có</td></tr>
+<tr><td>D-03</td><td>Chế độ Khám phá (không thua) ngay bản đầu</td><td>Có</td></tr>
+<tr><td>D-04</td><td>Một nguồn HTML, xóa bản trùng</td><td>Giữ index.html</td></tr>
+<tr><td>D-05</td><td>Kỷ lục chỉ lưu trên máy (localStorage)</td><td>Có</td></tr>
+<tr><td>D-06</td><td>Nhúng font để chạy hoàn toàn offline</td><td>Có, nếu kích thước cho phép</td></tr>
+<tr><td>D-07</td><td>Năng lực (ngày công/tuần): kịch bản A, B hay C</td><td>Mặc định B + bản rút gọn</td></tr>
+</table>
+</div>
+</div>
+
+<div style="padding:28px 56px 56px;display:flex;flex-direction:column;gap:14px">
+<h2 class="sec">6. Cách review mockup</h2>
+<div style="background:#fdeec3;border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:8px;font-size:15px">
+<div>Bên phải là 5 màn hình tablet 1024×768. Màn "Ngày chơi" bấm được. Hãy trả lời:</div>
+<ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+<li>Trẻ 6–8 tuổi có hiểu "dự báo", "thử thách", "thưởng" chỉ nhìn màn hình không?</li>
+<li>Khối "Thử thách sắp tới" nên ở trên thanh tài nguyên hay ở dải dự báo?</li>
+<li>Màn thưởng 3 thẻ: xem trước hiệu ứng bằng số hay bằng biểu tượng?</li>
+<li>Lưới trạm (v1.2) có làm quá tải ở chu kỳ 2 không, hay nên mở sau?</li>
+<li>Màn kết thúc: câu chữ có đủ khích lệ không?</li>
+</ol>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

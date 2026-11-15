@@ -1,0 +1,1325 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Trạm Mặt Trăng Nhí — Game chỉ huy trạm Mặt Trăng cho học sinh tiểu học</title>
+    <meta name="description" content="Game web tiếng Việt cho học sinh tiểu học: làm chỉ huy một trạm trên Mặt Trăng trong 5 ngày, cân bằng Không khí, Nước, Thức ăn và Năng lượng qua các thẻ quyết định và sự kiện bất ngờ." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#e9f2fb; --bg-soft:#dcebf9;
+        --ink:#16233f; --muted:#45587c;
+        --panel:#ffffff; --panel-2:#f1f6fd; --line:#c3d7ef;
+        --sun:#f5a800; --sun-soft:#fdeec3;
+        --coral:#e85d3d; --coral-soft:#fde3da;
+        --teal:#087170; --teal-soft:#d5f0ef;
+        --good:#166638; --good-soft:#dcf3e4;
+        --bad:#a9233d; --bad-soft:#fbdee3;
+        --air:#1f9bd8; --water:#3f7de0; --food:#3d9d54; --energy:#e8a100;
+        --stage:#101d42; --stage-2:#182a5e; --stage-ink:#f2f6ff; --stage-muted:#b9c8ee; --stage-line:#31498f;
+        --shadow:0 10px 30px rgba(22,45,95,.14);
+        --radius:20px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#070f29; --bg-soft:#0b173a;
+          --ink:#eef3ff; --muted:#a9badd;
+          --panel:#101c42; --panel-2:#0c1737; --line:#2a3f78;
+          --sun-soft:#3d2f05; --coral-soft:#472016; --teal-soft:#0a3535;
+          --good-soft:#0d3520; --bad-soft:#471623;
+          --shadow:0 10px 30px rgba(0,0,0,.45);
+        }
+      }
+      *{ box-sizing:border-box; }
+      html{ scroll-behavior:smooth; }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Be Vietnam Pro",system-ui,sans-serif;
+        font-size:17px; line-height:1.55;
+        -webkit-text-size-adjust:100%;
+      }
+      h1,h2,h3,.display{ font-family:"Baloo 2","Be Vietnam Pro",sans-serif; line-height:1.15; margin:0; }
+      p{ margin:0; }
+      img{ max-width:100%; display:block; }
+      button{ font:inherit; cursor:pointer; }
+      :focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:8px; }
+      .wrap{ max-width:1060px; margin:0 auto; padding:0 18px; }
+
+      /* ---------- Hero ---------- */
+      .hero{ padding:30px 0 8px; }
+      .hero-grid{ display:grid; grid-template-columns:1fr; gap:22px; align-items:center; }
+      @media (min-width:860px){ .hero-grid{ grid-template-columns:1.05fr .95fr; gap:34px; } }
+      .hero-tag{
+        display:inline-block; background:var(--teal-soft); color:var(--teal);
+        font-weight:700; font-size:.85rem; padding:6px 14px; border-radius:999px; margin-bottom:14px;
+      }
+      @media (prefers-color-scheme: dark){ .hero-tag{ color:#5fd4d2; } }
+      .hero h1{ font-size:clamp(2.3rem,6.5vw,3.6rem); font-weight:800; letter-spacing:.2px; }
+      .hero h1 .hl{ color:var(--coral); }
+      .hero-sub{ margin-top:14px; font-size:1.08rem; color:var(--muted); max-width:34em; }
+      .hero-facts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+      .hero-facts span{
+        background:var(--panel); border:1.5px solid var(--line); border-radius:999px;
+        padding:7px 14px; font-weight:600; font-size:.92rem;
+      }
+      .hero-cta{ margin-top:22px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+      .hero-img{
+        border-radius:26px; overflow:hidden; box-shadow:var(--shadow);
+        border:3px solid var(--panel);
+      }
+      .hero-img img{ width:100%; height:100%; object-fit:cover; aspect-ratio:3/2; }
+
+      .btn{
+        display:inline-flex; align-items:center; justify-content:center; gap:9px;
+        min-height:56px; padding:12px 26px; border-radius:999px; border:none;
+        font-family:"Baloo 2",sans-serif; font-weight:700; font-size:1.12rem; text-decoration:none;
+        transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      }
+      .btn:active{ transform:scale(.97); }
+      .btn-sun{ background:var(--sun); color:#3a2700; box-shadow:0 6px 0 #b97e00; }
+      .btn-sun:hover{ background:#ffb81f; }
+      .btn-ghost{ background:var(--panel); color:var(--ink); border:2px solid var(--line); box-shadow:0 4px 0 var(--line); }
+      .btn-teal{ background:var(--teal); color:#fff; box-shadow:0 6px 0 #0a6b6a; }
+      .btn[disabled]{ opacity:.55; cursor:default; transform:none; }
+
+      /* ---------- Game shell ---------- */
+      .game-section{ padding:26px 0 10px; }
+      .game-shell{
+        background:var(--stage); color:var(--stage-ink);
+        border-radius:28px; box-shadow:var(--shadow); overflow:hidden;
+        border:3px solid var(--stage-line);
+      }
+      .game-head{
+        display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
+        padding:16px 20px 6px;
+      }
+      .day-label{ font-family:"Baloo 2",sans-serif; font-weight:800; font-size:1.35rem; }
+      .day-dots{ display:flex; gap:7px; align-items:center; }
+      .day-dots i{
+        width:17px; height:17px; border-radius:50%; display:block;
+        border:2px solid var(--stage-muted); background:transparent;
+      }
+      .day-dots i.done{ background:var(--sun); border-color:var(--sun); }
+      .day-dots i.now{ background:var(--stage-ink); border-color:var(--stage-ink); box-shadow:0 0 0 4px rgba(245,168,0,.35); }
+      .restart-btn{
+        background:transparent; color:var(--stage-muted); border:2px solid var(--stage-line);
+        border-radius:999px; min-height:48px; padding:6px 16px; font-weight:600; font-size:.92rem;
+      }
+      .restart-btn.confirm{ color:#fff; border-color:var(--bad); background:var(--bad); }
+
+      .resources{
+        display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+        padding:12px 20px 4px;
+      }
+      @media (min-width:760px){ .resources{ grid-template-columns:repeat(4,1fr); gap:14px; } }
+      .res{
+        background:var(--stage-2); border:2px solid var(--stage-line); border-radius:16px; padding:10px 12px;
+      }
+      .res-top{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:.95rem; }
+      .res-top svg{ width:21px; height:21px; flex:none; }
+      .res-num{ margin-left:auto; font-family:"Baloo 2",sans-serif; font-size:1.15rem; font-weight:800; }
+      .res-bar{ height:13px; border-radius:99px; background:rgba(255,255,255,.14); margin-top:8px; overflow:hidden; }
+      .res-fill{ height:100%; border-radius:99px; transition:width .7s ease; }
+      .res[data-r="air"] .res-fill{ background:var(--air); } .res[data-r="air"] .res-top svg{ color:#6fd3ff; }
+      .res[data-r="water"] .res-fill{ background:var(--water); } .res[data-r="water"] .res-top svg{ color:#8db4ff; }
+      .res[data-r="food"] .res-fill{ background:var(--food); } .res[data-r="food"] .res-top svg{ color:#7ed491; }
+      .res[data-r="energy"] .res-fill{ background:var(--energy); } .res[data-r="energy"] .res-top svg{ color:#ffd34d; }
+      .res.low .res-fill{ background:var(--bad); }
+      .res.low .res-num{ color:#ff8fa5; }
+      .res-warn{ display:none; font-size:.8rem; font-weight:700; color:#ff8fa5; margin-top:5px; }
+      .res.low .res-warn{ display:block; }
+      @media (prefers-reduced-motion: no-preference){
+        .res.low .res-bar{ animation:pulse 1.1s ease-in-out infinite; }
+        @keyframes pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(214,58,84,0);} 50%{ box-shadow:0 0 0 4px rgba(214,58,84,.45);} }
+      }
+
+      .stage{ padding:16px 20px 24px; min-height:340px; }
+      .phase-title{ font-size:clamp(1.35rem,3.6vw,1.7rem); font-weight:800; margin-bottom:6px; }
+      .phase-text{ color:var(--stage-muted); max-width:40em; }
+      .phase-text strong{ color:var(--stage-ink); }
+
+      .cards{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:16px; }
+      @media (min-width:760px){ .cards{ grid-template-columns:repeat(3,1fr); } }
+      .card{
+        text-align:left; background:var(--panel); color:var(--ink);
+        border:3px solid var(--line); border-radius:var(--radius); padding:16px;
+        display:flex; flex-direction:column; gap:9px; min-height:56px; width:100%;
+        transition:border-color .12s ease, transform .12s ease, box-shadow .12s ease;
+      }
+      .card:hover{ transform:translateY(-2px); }
+      .card.selected{ border-color:var(--sun); box-shadow:0 0 0 3px var(--sun-soft), var(--shadow); }
+      .card-icon{
+        width:52px; height:52px; border-radius:15px; display:grid; place-items:center; flex:none;
+      }
+      .card-icon svg{ width:29px; height:29px; }
+      .card h3{ font-size:1.14rem; font-weight:700; }
+      .card p{ font-size:.94rem; color:var(--muted); flex:1; }
+      .fx{ display:flex; flex-wrap:wrap; gap:6px; }
+      .chip{
+        display:inline-flex; align-items:center; gap:5px; font-size:.83rem; font-weight:700;
+        padding:4px 10px; border-radius:999px;
+      }
+      .chip svg{ width:14px; height:14px; }
+      .chip.plus{ background:var(--good-soft); color:var(--good); }
+      .chip.minus{ background:var(--bad-soft); color:var(--bad); }
+      .chip.shield{ background:var(--sun-soft); color:#8a5c00; }
+      @media (prefers-color-scheme: dark){
+        .chip.plus{ color:#6fe3a1; } .chip.minus{ color:#ff9db0; } .chip.shield{ color:#ffd34d; }
+      }
+      .confirm-bar{
+        margin-top:16px; background:var(--stage-2); border:2px dashed var(--stage-line);
+        border-radius:var(--radius); padding:14px 16px;
+        display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
+      }
+      .confirm-bar .hint{ color:var(--stage-muted); font-size:.95rem; max-width:26em; }
+
+      .result-box{
+        background:var(--stage-2); border:2px solid var(--stage-line); border-radius:var(--radius);
+        padding:20px; margin-top:14px;
+      }
+      .result-box h3{ font-size:1.3rem; margin-bottom:6px; }
+      .result-box p{ color:var(--stage-muted); }
+      .result-box p strong, .result-box li strong{ color:var(--stage-ink); }
+      .delta-list{ list-style:none; margin:12px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+      .stage-actions{ margin-top:18px; display:flex; flex-wrap:wrap; gap:12px; }
+
+      .event-box{
+        margin-top:14px; border-radius:var(--radius); padding:20px;
+        background:#2b1608; border:3px solid var(--coral); color:#fff3ec;
+      }
+      @media (prefers-color-scheme: light){ .event-box{ background:#fff4ee; color:var(--ink); border-color:var(--coral); } }
+      .event-tag{
+        display:inline-block; background:var(--coral); color:#fff; font-weight:700; font-size:.82rem;
+        padding:4px 12px; border-radius:999px; margin-bottom:10px;
+      }
+      .event-box h3{ font-size:1.4rem; margin-bottom:6px; }
+      .event-box p{ opacity:.92; max-width:42em; }
+      .event-opts{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:16px; }
+      @media (min-width:700px){ .event-opts{ grid-template-columns:1fr 1fr; } }
+      .event-opt{
+        text-align:left; border-radius:16px; padding:14px 16px; min-height:56px; width:100%;
+        background:var(--panel); color:var(--ink); border:3px solid var(--line);
+        display:flex; flex-direction:column; gap:8px;
+      }
+      .event-opt:hover{ border-color:var(--coral); }
+      .event-opt b{ font-family:"Baloo 2",sans-serif; font-size:1.05rem; }
+
+      .end-flex{ display:grid; grid-template-columns:1fr; gap:18px; margin-top:8px; align-items:start; }
+      @media (min-width:760px){ .end-flex{ grid-template-columns:230px 1fr; } }
+      .end-flex img{ border-radius:18px; border:3px solid var(--stage-line); }
+      .stars{ display:flex; gap:6px; margin:8px 0 4px; }
+      .stars svg{ width:44px; height:44px; color:rgba(255,255,255,.22); }
+      .stars svg.on{ color:var(--sun); }
+      .fact-list{ list-style:none; margin:12px 0 0; padding:0; display:grid; gap:10px; }
+      .fact-list li{
+        background:var(--stage-2); border:2px solid var(--stage-line); border-radius:14px; padding:12px 14px;
+        color:var(--stage-muted); font-size:.96rem;
+      }
+      .fact-list li b{ color:var(--sun); display:block; font-family:"Baloo 2",sans-serif; margin-bottom:2px; }
+      .final-bars{ display:grid; gap:8px; margin-top:14px; }
+      .final-bars .fb{ display:grid; grid-template-columns:110px 1fr 34px; gap:10px; align-items:center; font-size:.92rem; font-weight:600; }
+      .final-bars .track{ height:11px; background:rgba(255,255,255,.14); border-radius:99px; overflow:hidden; }
+      .final-bars .fill{ height:100%; border-radius:99px; }
+
+      .intro-flex{ display:grid; grid-template-columns:1fr; gap:18px; align-items:center; }
+      @media (min-width:760px){ .intro-flex{ grid-template-columns:1fr 240px; } }
+      .intro-flex img{ border-radius:18px; border:3px solid var(--stage-line); }
+      .howto-mini{ list-style:none; counter-reset:step; margin:14px 0 0; padding:0; display:grid; gap:8px; color:var(--stage-muted); }
+      .howto-mini li{ display:flex; gap:10px; align-items:flex-start; }
+      .howto-mini li::before{
+        counter-increment:step; content:counter(step);
+        background:var(--sun); color:#3a2700; font-family:"Baloo 2",sans-serif; font-weight:800;
+        width:27px; height:27px; border-radius:50%; display:grid; place-items:center; flex:none; font-size:.95rem;
+      }
+
+      /* ---------- Guide button, NASA strip & modal ---------- */
+      .btn-help{ background:var(--teal); color:#fff; box-shadow:0 6px 0 #0a6b6a; }
+      .btn-help:hover{ background:#12a8a7; }
+      .btn-help svg{ width:24px; height:24px; flex:none; }
+      .head-actions{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; }
+      .guide-btn{
+        display:inline-flex; align-items:center; gap:8px;
+        background:var(--sun); color:#3a2700; border:2px solid var(--sun);
+        border-radius:999px; min-height:48px; padding:6px 16px; font-weight:700; font-size:.95rem;
+        font-family:"Baloo 2",sans-serif;
+      }
+      .guide-btn svg{ width:20px; height:20px; flex:none; }
+      .guide-btn:hover{ background:#ffb81f; }
+      .nasa-strip{
+        margin-top:14px; background:var(--stage-2); border:2px solid var(--stage-line);
+        border-radius:14px; padding:12px 14px;
+        display:grid; gap:6px; color:var(--stage-muted); font-size:.95rem;
+      }
+      .nasa-strip b{ color:var(--stage-ink); }
+      .nasa-strip .nasa-head{
+        display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+        font-family:"Baloo 2",sans-serif; color:var(--stage-ink); font-size:1.02rem;
+      }
+      .nasa-strip .nasa-tag{
+        background:var(--sun); color:#3a2700; font-weight:800; font-size:.74rem;
+        padding:3px 10px; border-radius:999px; letter-spacing:.02em;
+      }
+      .nasa-strip .fxline{ display:flex; flex-wrap:wrap; gap:6px; }
+      .modal-backdrop{
+        position:fixed; inset:0; z-index:60; background:rgba(7,13,32,.66);
+        display:none; align-items:flex-end; justify-content:center; padding:0;
+      }
+      .modal-backdrop.open{ display:flex; }
+      @media (min-width:700px){ .modal-backdrop{ align-items:center; padding:22px; } }
+      .modal{
+        background:var(--panel); color:var(--ink); width:100%; max-width:680px;
+        max-height:92vh; overflow:auto; border-radius:24px 24px 0 0; padding:24px 22px 28px;
+        box-shadow:var(--shadow);
+      }
+      @media (min-width:700px){ .modal{ border-radius:24px; } }
+      .modal-head{ display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
+      .modal-head h2{ font-size:1.55rem; font-weight:800; }
+      .modal-close{
+        flex:none; width:48px; height:48px; border-radius:50%; border:2px solid var(--line);
+        background:var(--panel-2); color:var(--ink); font-size:1.35rem; line-height:1; font-weight:700;
+      }
+      .modal h3{ font-size:1.12rem; margin:20px 0 8px; }
+      .modal p{ color:var(--muted); }
+      .modal ol.guide-steps{ margin:0; padding-left:22px; color:var(--muted); display:grid; gap:7px; }
+      .modal ol.guide-steps b{ color:var(--ink); }
+      .modal ul.guide-list{ margin:0; padding-left:20px; color:var(--muted); display:grid; gap:5px; }
+      .modal .modal-actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; }
+      .mode-choice{ background:var(--stage-2); border:2px solid var(--stage-line); border-radius:16px; padding:14px; margin-top:12px; }
+      .mode-choice p{ color:var(--stage-muted); margin:4px 0 12px; }
+      .notice-box{ background:#49300d; color:#fff4d8; border:2px solid #d58b18; border-radius:16px; padding:14px 16px; margin-top:14px; }
+      .notice-box strong{ color:#fff; }
+      .notice-box p{ margin-top:4px; }
+      .rule-box{ background:var(--stage-2); border:2px solid var(--stage-line); border-radius:16px; padding:12px 16px; margin-top:12px; color:var(--stage-ink); }
+      .rule-box p + p{ margin-top:5px; }
+      .card .prep-label{ background:#49300d; color:#fff4d8; border-radius:8px; padding:5px 8px; font-size:.82rem; font-weight:700; }
+      .reward-prompt{ color:var(--stage-muted); margin-top:12px; }
+      .event-opt[aria-pressed="true"]{ border-color:var(--sun); box-shadow:0 0 0 3px var(--sun-soft); }
+      .small-action{ min-height:48px; border:2px solid var(--stage-muted); background:transparent; color:var(--stage-ink); border-radius:12px; padding:8px 14px; font-weight:700; }
+      .record-note{ color:var(--stage-muted); margin-top:10px; }
+      body.modal-open{ overflow:hidden; }
+
+      /* ---------- Mission guide & NASA data sections ---------- */
+      .mission-list{ list-style:none; margin:20px 0 0; padding:0; display:grid; gap:12px; }
+      .mission-list li{
+        display:flex; gap:14px; background:var(--panel); border:2px solid var(--line);
+        border-radius:var(--radius); padding:16px 18px; align-items:flex-start;
+      }
+      .mission-list .m-ico{
+        flex:none; width:46px; height:46px; border-radius:13px; display:grid; place-items:center;
+        background:var(--teal-soft); color:var(--teal);
+      }
+      .mission-list .m-ico svg{ width:25px; height:25px; }
+      .mission-list h3{ font-size:1.06rem; margin-bottom:3px; }
+      .mission-list p{ color:var(--muted); font-size:.95rem; }
+      .nasa-table-wrap{ margin-top:20px; background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:6px 18px 14px; overflow:hidden; }
+      .nasa-row{
+        display:grid; grid-template-columns:1fr; gap:2px; padding:13px 0; border-bottom:1.5px dashed var(--line);
+      }
+      .nasa-row:last-child{ border-bottom:none; }
+      @media (min-width:760px){ .nasa-row{ grid-template-columns:170px 1fr 1fr 150px; gap:14px; align-items:baseline; } }
+      .nasa-row .d{ font-family:"Baloo 2",sans-serif; font-weight:700; }
+      .nasa-row span{ color:var(--muted); font-size:.95rem; }
+      .nasa-row .e{ font-weight:700; }
+      .source-note{ margin-top:14px; color:var(--muted); font-size:.93rem; max-width:46em; }
+
+      /* ---------- Info sections ---------- */
+      section.info{ padding:34px 0 6px; }
+      .info h2{ font-size:clamp(1.6rem,4.4vw,2.1rem); font-weight:800; margin-bottom:8px; }
+      .info .lead{ color:var(--muted); max-width:44em; }
+      .steps{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:20px; }
+      @media (min-width:760px){ .steps{ grid-template-columns:repeat(3,1fr); } }
+      .step{
+        background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:20px;
+      }
+      .step .num{
+        font-family:"Baloo 2",sans-serif; font-weight:800; font-size:1rem;
+        background:var(--sun-soft); color:#8a5c00; width:38px; height:38px; border-radius:12px;
+        display:grid; place-items:center; margin-bottom:12px;
+      }
+      @media (prefers-color-scheme: dark){ .step .num{ color:#ffd34d; } }
+      .step h3{ font-size:1.15rem; margin-bottom:6px; }
+      .step p{ color:var(--muted); font-size:.96rem; }
+      .learn-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:20px; }
+      @media (min-width:760px){ .learn-grid{ grid-template-columns:1fr 1fr; } }
+      .learn-item{ display:flex; gap:14px; background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:18px; }
+      .learn-item .card-icon{ width:48px; height:48px; border-radius:13px; }
+      .learn-item .card-icon svg{ width:26px; height:26px; }
+      .learn-item h3{ font-size:1.08rem; margin-bottom:4px; }
+      .learn-item p{ color:var(--muted); font-size:.95rem; }
+      .qa{ background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin-top:20px; }
+      .qa h3{ font-size:1.12rem; margin-bottom:10px; }
+      .qa ol{ margin:0; padding-left:22px; color:var(--muted); display:grid; gap:6px; }
+      .qa ol b{ color:var(--ink); }
+      .roadmap{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:20px; }
+      @media (min-width:760px){ .roadmap{ grid-template-columns:1fr 1fr; } }
+      .roadmap .col{ border-radius:var(--radius); padding:20px; border:2px solid var(--line); background:var(--panel); }
+      .roadmap .col.now{ border-color:var(--teal); background:var(--teal-soft); }
+      .roadmap h3{ font-size:1.12rem; margin-bottom:10px; }
+      .roadmap ul{ margin:0; padding-left:20px; color:var(--muted); display:grid; gap:5px; font-size:.96rem; }
+      footer{ padding:36px 0 44px; color:var(--muted); font-size:.92rem; }
+      footer .wrap{ border-top:2px solid var(--line); padding-top:18px; display:grid; gap:6px; }
+      footer a{ color:var(--teal); font-weight:600; }
+      @media (prefers-reduced-motion: reduce){
+        html{ scroll-behavior:auto; }
+        *{ transition:none !important; animation:none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="hero-tag">NASA Space Apps Challenge 2026 · Thử thách 3 — Junior Astronaut Mission Trainer</span>
+          <h1>Trạm Mặt Trăng <span class="hl">Nhí</span></h1>
+          <p class="hero-sub">Con là <strong>chỉ huy một trạm trên Mặt Trăng</strong> trong 5 ngày. Mỗi ngày chọn 1 thẻ quyết định, giữ cho cả đội đủ không khí, nước, thức ăn và năng lượng — và sẵn sàng ứng phó những sự kiện bất ngờ từ vũ trụ!</p>
+          <div class="hero-facts">
+            <span>Cho học sinh lớp 1–5</span>
+            <span>Một ván 10–15 phút</span>
+            <span>Chơi ngay, không cần đăng nhập</span>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-sun" href="#game">Bắt đầu nhiệm vụ</a>
+            <button type="button" class="btn btn-help" data-open-guide aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9.2 8.2a2.9 2.9 0 0 1 5.6.8c0 1.9-2.8 2.3-2.8 3.8"/><circle cx="12" cy="16.6" r=".4" fill="currentColor"/></svg>
+              Hướng dẫn cách chơi
+            </button>
+            <a class="btn btn-ghost" href="#huong-dan-nhiem-vu">Cách thực hiện nhiệm vụ</a>
+          </div>
+        </div>
+        <div class="hero-img">
+          <img src="{{ASSET:0}}" alt="Minh họa trạm Mặt Trăng với nhà vòm, tấm pin Mặt Trời, nhà kính trồng cây và hai phi hành gia nhí vẫy tay chào, Trái Đất ở phía xa" />
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= GAME ================= -->
+      <section class="game-section" id="game" aria-label="Khu vực chơi game">
+        <div class="wrap">
+          <div class="game-shell">
+            <div class="game-head">
+              <div>
+                <div class="day-label" id="dayLabel">Sẵn sàng lên Mặt Trăng?</div>
+                <div class="day-dots" id="dayDots" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+              <div class="head-actions">
+                <button type="button" class="guide-btn" data-open-guide aria-haspopup="dialog" aria-label="Mở hướng dẫn cách chơi và thực hiện nhiệm vụ">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.3a2.8 2.8 0 0 1 5.5.7c0 1.8-2.7 2.2-2.7 3.7"/><circle cx="12.2" cy="16.8" r=".4" fill="currentColor"/></svg>
+                  Hướng dẫn
+                </button>
+                <button type="button" class="restart-btn" id="restartBtn" hidden>Chơi lại từ đầu</button>
+              </div>
+            </div>
+
+            <div class="resources" id="resources" aria-label="Bốn thanh tài nguyên của trạm">
+              <div class="res" data-r="air">
+                <div class="res-top">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h9a3 3 0 1 0-3-3"/><path d="M2 12h13a3 3 0 1 1-3 3"/><path d="M3 16h6"/></svg>
+                  Không khí <span class="res-num" data-num>80</span>
+                </div>
+                <div class="res-bar" role="progressbar" aria-label="Không khí" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
+                <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
+              </div>
+              <div class="res" data-r="water">
+                <div class="res-top">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3c3.2 3.8 6 6.9 6 10a6 6 0 1 1-12 0c0-3.1 2.8-6.2 6-10z"/></svg>
+                  Nước <span class="res-num" data-num>80</span>
+                </div>
+                <div class="res-bar" role="progressbar" aria-label="Nước" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
+                <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
+              </div>
+              <div class="res" data-r="food">
+                <div class="res-top">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16a8 8 0 0 1-16 0z"/><path d="M9 8c0-1.5 1.5-1.5 1.5-3M14 8c0-1.5 1.5-1.5 1.5-3"/></svg>
+                  Thức ăn <span class="res-num" data-num>80</span>
+                </div>
+                <div class="res-bar" role="progressbar" aria-label="Thức ăn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
+                <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
+              </div>
+              <div class="res" data-r="energy">
+                <div class="res-top">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="13 2 4 14 11 14 9 22 20 9 13 9"/></svg>
+                  Năng lượng <span class="res-num" data-num>80</span>
+                </div>
+                <div class="res-bar" role="progressbar" aria-label="Năng lượng" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><div class="res-fill" data-fill style="width:80%"></div></div>
+                <div class="res-warn">Sắp hết rồi, cẩn thận!</div>
+              </div>
+            </div>
+
+            <div class="stage" id="stage" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CÁCH CHƠI ================= -->
+      <section class="info" id="cach-choi">
+        <div class="wrap">
+          <h2>Cách chơi</h2>
+          <p class="lead">Không cần hướng dẫn dài — một màn hình chỉ có một việc để quyết định, chữ to và nút bấm lớn để các con tự chơi được.</p>
+          <div class="steps">
+            <div class="step">
+              <div class="num">1</div>
+              <h3>Xem 4 thanh tài nguyên</h3>
+              <p>Mỗi ngày trạm đều dùng bớt Không khí, Nước, Thức ăn và Năng lượng. Thanh nào xuống thấp là thanh đó cần được chăm sóc trước.</p>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <h3>Chọn 1 trong 3 thẻ quyết định</h3>
+              <p>Mỗi thẻ giúp trạm ở mặt này nhưng tốn ở mặt khác — không có thẻ nào “đúng tuyệt đối”. Đọc kỹ các nhãn + và − trên thẻ, đổi ý thoải mái trước khi bấm chốt.</p>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <h3>Ứng phó sự kiện bất ngờ</h3>
+              <p>Bão Mặt Trời, thiên thạch nhỏ, mất điện ban đêm… có thể ập đến bất cứ ngày nào. Sống sót hết 5 ngày với tài nguyên còn càng nhiều, con càng được nhiều sao.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= THỰC HIỆN NHIỆM VỤ ================= -->
+      <section class="info" id="huong-dan-nhiem-vu">
+        <div class="wrap">
+          <h2>Hướng dẫn thực hiện nhiệm vụ</h2>
+          <p class="lead">Nhiệm vụ của chỉ huy nhí: <strong>đưa cả đội sống sót hết 5 ngày trên Mặt Trăng</strong>. Cứ làm đúng 5 bước này mỗi ngày là hoàn thành nhiệm vụ — và đừng quên đọc dự báo NASA trước khi chốt quyết định.</p>
+          <ul class="mission-list">
+            <li>
+              <span class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h9a3 3 0 1 0-3-3"/><path d="M2 12h13a3 3 0 1 1-3 3"/><path d="M3 16h6"/></svg></span>
+              <div>
+                <h3>Bước 1 — Kiểm tra 4 thanh tài nguyên</h3>
+                <p>Nhìn 4 thanh ở đầu màn hình chơi. Thanh nào dưới 25 sẽ nhấp nháy đỏ “Sắp hết rồi” — đó là thanh cần được ưu tiên hôm nay. Không để bất kỳ thanh nào chạm 0.</p>
+              </div>
+            </li>
+            <li>
+              <span class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.5 4.5l1.5 1.5M18 18l1.5 1.5M19.5 4.5L18 6M6 18l-1.5 1.5"/></svg></span>
+              <div>
+                <h3>Bước 2 — Đọc dự báo Mặt Trăng của NASA</h3>
+                <p>Khung “Dữ liệu NASA hôm nay” cho biết nắng và nhiệt độ thật của ngày Mặt Trăng tương ứng, cùng mức Năng lượng trạm sẽ thu thêm hoặc tốn thêm vào cuối ngày — và dự báo của ngày mai. Ngày ít nắng, lạnh: hãy chọn thẻ nạp Năng lượng hoặc tiết kiệm điện từ hôm nay.</p>
+              </div>
+            </li>
+            <li>
+              <span class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span>
+              <div>
+                <h3>Bước 3 — Chọn và chốt 1 thẻ quyết định</h3>
+                <p>Chạm vào 1 trong 3 thẻ, đọc kỹ nhãn +/− rồi bấm “Chốt quyết định này”. Mỗi ngày luôn có ít nhất một thẻ bổ sung cho thanh đang thấp nhất. Cân nhắc dựng khiên chắn bức xạ sớm — bão Mặt Trời có thể tới bất cứ ngày nào.</p>
+              </div>
+            </li>
+            <li>
+              <span class="m-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.4 8.2-7 10-3.6-1.8-7-5-7-10V6z"/></svg></span>
+              <div>
+                <h3>Bước 4 — Ứng phó sự kiện bất ngờ (nếu có)</h3>
+                <p>Bão Mặt Trời, thiên thạch, mất điện, đêm lạnh… mỗi sự kiện có 2 cách xử lý, cách nào cũng tốn một ít tài nguyên. Nếu trạm đã có khiên chắn, bão Mặt Trời sẽ được đỡ hết mà không tốn gì.</p>
+              </div>
+            </li>
+            <li>
+              <span class="m-ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2.5 14.9 8.6 21.5 9.4 16.6 14 18 20.5 12 17.2 6 20.5 7.4 14 2.5 9.4 9.1 8.6"/></svg></span>
+              <div>
+                <h3>Bước 5 — Qua hết ngày 5 và nhận sao</h3>
+                <p>Cuối mỗi ngày trạm tự dùng bớt tài nguyên, cộng thêm hiệu ứng nắng/nhiệt độ thật của NASA. Sống sót hết ngày 5 là thắng: trung bình 4 thanh còn từ 50 trở lên được 3 sao, từ 38 được 2 sao, dưới mức đó 1 sao. Nếu một thanh chạm 0, cả đội về Trái Đất an toàn bằng tàu dự phòng và con chơi lại ván mới.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= DỮ LIỆU NASA ================= -->
+      <section class="info" id="du-lieu-nasa">
+        <div class="wrap">
+          <h2>Dữ liệu NASA thật đang lái trò chơi</h2>
+          <p class="lead">Năng lượng của trạm không phải con số bịa ra: nó đi theo <strong>chu kỳ ngày Mặt Trăng thật</strong>. Một ngày trên Mặt Trăng (từ bình minh này tới bình minh sau) dài khoảng <strong>29,5 ngày Trái Đất</strong>, và nhiệt độ bề mặt đo bởi thiết bị Diviner trên tàu Lunar Reconnaissance Orbiter (LRO) của NASA dao động từ khoảng <strong>−173°C ban đêm tới +127°C giữa trưa Mặt Trăng</strong> ở vùng xích đạo. Năm ngày chơi tương ứng với năm lát cắt của một buổi ban ngày Mặt Trăng:</p>
+          <div class="nasa-table-wrap" role="table" aria-label="Bảng dữ liệu Mặt Trăng thật theo ngày chơi">
+            <div class="nasa-row" role="row"><span class="d">Ngày 1 — Sáng sớm</span><span>Ngày Mặt Trăng ~2 · Nắng yếu 30%</span><span>Nhiệt độ khoảng −80°C</span><span class="e">Năng lượng −4</span></div>
+            <div class="nasa-row" role="row"><span class="d">Ngày 2 — Buổi sáng</span><span>Ngày Mặt Trăng ~5 · Nắng 65%</span><span>Nhiệt độ khoảng +20°C</span><span class="e">Năng lượng +4</span></div>
+            <div class="nasa-row" role="row"><span class="d">Ngày 3 — Trưa Mặt Trăng</span><span>Ngày Mặt Trăng ~8 · Nắng 100%</span><span>Nhiệt độ khoảng +120°C</span><span class="e">Năng lượng +6</span></div>
+            <div class="nasa-row" role="row"><span class="d">Ngày 4 — Buổi chiều</span><span>Ngày Mặt Trăng ~11 · Nắng 65%</span><span>Nhiệt độ khoảng +70°C</span><span class="e">Năng lượng +3</span></div>
+            <div class="nasa-row" role="row"><span class="d">Ngày 5 — Hoàng hôn</span><span>Ngày Mặt Trăng ~14 · Nắng yếu 25%</span><span>Nhiệt độ khoảng −40°C</span><span class="e">Năng lượng −5</span></div>
+          </div>
+          <p class="source-note">Cách tính trong game: cuối mỗi ngày, mức Năng lượng được cộng/trừ theo nắng và nhiệt độ của ngày Mặt Trăng tương ứng — nắng mạnh thì pin sạc đầy thêm, nắng yếu và lạnh thì trạm tốn điện sưởi ấm. Nhiệt độ là giá trị điển hình vùng xích đạo Mặt Trăng theo dữ liệu Diviner/LRO của NASA, được đơn giản hóa thành 5 mức để học sinh tiểu học đọc và dự đoán được. Nguồn dữ liệu: NASA Lunar Reconnaissance Orbiter (LRO) — Diviner Lunar Radiometer Experiment; chu kỳ ngày Mặt Trăng 29,5 ngày theo tài liệu khoa học Mặt Trăng của NASA.</p>
+        </div>
+      </section>
+
+      <!-- ================= HỌC ĐƯỢC GÌ ================= -->
+      <section class="info" id="hoc-duoc-gi">
+        <div class="wrap">
+          <h2>Con học được gì qua trò chơi?</h2>
+          <p class="lead">Mỗi quyết định trong game đều gắn với một kiến thức thật về cuộc sống trên trạm vũ trụ, được kể lại ở màn hình tổng kết cuối ván.</p>
+          <div class="learn-grid">
+            <div class="learn-item">
+              <div class="card-icon" style="background:var(--teal-soft);color:var(--teal)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3v4h-4"/></svg>
+              </div>
+              <div>
+                <h3>Mọi thứ đều phải tái chế</h3>
+                <p>Trên Mặt Trăng không có siêu thị. Nước được lọc dùng lại, cây xanh vừa cho thức ăn vừa nhả oxy — giống như trên Trạm Vũ trụ Quốc tế thật.</p>
+              </div>
+            </div>
+            <div class="learn-item">
+              <div class="card-icon" style="background:var(--sun-soft);color:#8a5c00">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.5 4.5l1.5 1.5M18 18l1.5 1.5M19.5 4.5L18 6M6 18l-1.5 1.5"/></svg>
+              </div>
+              <div>
+                <h3>Năng lượng đến từ Mặt Trời — và có đêm rất dài</h3>
+                <p>Ban ngày trạm sạc pin bằng nắng, nhưng một đêm trên Mặt Trăng dài bằng 14 ngày ở Trái Đất. Giữ pin đầy là giữ trạm sống.</p>
+              </div>
+            </div>
+            <div class="learn-item">
+              <div class="card-icon" style="background:var(--coral-soft);color:var(--coral)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.4 8.2-7 10-3.6-1.8-7-5-7-10V6z"/></svg>
+              </div>
+              <div>
+                <h3>An toàn luôn đi trước</h3>
+                <p>Bức xạ Mặt Trời và đá trời là nguy hiểm thật ngoài không gian. Dựng khiên chắn sớm, kiểm tra bình oxy đều đặn — chuẩn bị trước luôn rẻ hơn sửa chữa sau.</p>
+              </div>
+            </div>
+            <div class="learn-item">
+              <div class="card-icon" style="background:var(--good-soft);color:var(--good)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21v-8"/><path d="M12 13c0-3.2-2.2-5-6-5 0 3.2 2.2 5 6 5z"/><path d="M12 10c0-3 2-4.7 5.5-4.7 0 3-2 4.7-5.5 4.7z"/></svg>
+              </div>
+              <div>
+                <h3>Quyết định nào cũng là một sự đánh đổi</h3>
+                <p>Trồng rau tốn nước, lắp pin tốn không khí, gọi tiếp tế tốn điện. Chỉ huy giỏi không phải người chọn thẻ “mạnh nhất”, mà là người nhìn cả 4 thanh cùng lúc.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= GIÁO VIÊN ================= -->
+      <section class="info" id="giao-vien">
+        <div class="wrap">
+          <h2>Dành cho giáo viên và phụ huynh</h2>
+          <p class="lead">Một ván kéo dài 10–15 phút, vừa một hoạt động khởi động hoặc củng cố trong tiết học khoa học / STEM. Chiếu game lên màn hình lớp, cho cả lớp thảo luận và biểu quyết thẻ quyết định của từng ngày — không cần tài khoản, không thu thập thông tin của trẻ.</p>
+          <div class="qa">
+            <h3>Câu hỏi thảo luận sau ván chơi</h3>
+            <ol>
+              <li><b>Ngày nào khó nhất?</b> Thanh tài nguyên nào làm con lo nhất, vì sao?</li>
+              <li><b>Nếu chơi lại,</b> con sẽ chọn khác ở ngày nào? Quyết định mới đánh đổi điều gì?</li>
+              <li><b>Ngoài đời thật,</b> phi hành gia trên Trạm Vũ trụ Quốc tế lấy nước và oxy ở đâu?</li>
+              <li><b>Ở nhà mình,</b> có thứ gì cũng cần “cân bằng” như 4 thanh tài nguyên không — ví dụ tiền điện, nước sinh hoạt?</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PHẠM VI MVP ================= -->
+      <section class="info" id="phien-ban">
+        <div class="wrap">
+          <h2>Phiên bản MVP này có gì?</h2>
+          <p class="lead">Đây là phiên bản sản phẩm tối thiểu (MVP) làm cho thử thách 3 của NASA Space Apps Challenge 2026 — <em>Build a Junior Astronaut Mission Trainer</em>: một game huấn luyện nhiệm vụ cho phi hành gia nhí, để các em tự điều hành một trạm và thấy quyết định của mình làm sứ mệnh thành hay bại.</p>
+          <div class="roadmap">
+            <div class="col now">
+              <h3>Đã có trong MVP</h3>
+              <ul>
+                <li>1 kịch bản trạm Mặt Trăng, 5 ngày chơi</li>
+                <li>4 thanh tài nguyên: Không khí, Nước, Thức ăn, Năng lượng</li>
+                <li>15 thẻ quyết định, mỗi ngày rút 3 thẻ để chọn</li>
+                <li>8 sự kiện bất ngờ: bão Mặt Trời, thiên thạch, mất điện, tàu tiếp tế…</li>
+                <li>Chấm sao cuối ván và “điều con học được” bằng tiếng Việt</li>
+                <li><strong>Dữ liệu NASA thật (LRO/Diviner):</strong> nắng và nhiệt độ của ngày Mặt Trăng tương ứng quyết định Năng lượng mỗi ngày, có dự báo ngày mai</li>
+                <li>Nút Hướng dẫn mở hộp thoại cách chơi và các bước thực hiện nhiệm vụ ngay trong game</li>
+                <li>Chữ lớn, nút bấm lớn, không áp lực thời gian, không đăng nhập</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h3>Dành cho bản tiếp theo</h3>
+              <ul>
+                <li>Kịch bản trạm Sao Hỏa với luật chơi khó hơn</li>
+                <li>Chế độ chơi theo nhóm lớp và bảng thành tích của lớp</li>
+                <li>Cập nhật dữ liệu NASA theo thời gian thực qua API (pha Mặt Trăng, vị trí LRO) thay cho bảng dữ liệu tĩnh hiện tại</li>
+                <li>Thêm ngày chơi, thêm thẻ quyết định theo chủ đề (y tế, sửa chữa, thám hiểm)</li>
+                <li>Giọng đọc tiếng Việt cho học sinh lớp 1–2 chưa đọc thạo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p><strong>Trạm Mặt Trăng Nhí</strong> — sản phẩm MVP cho thử thách 3 “Build a Junior Astronaut Mission Trainer”, <a href="https://www.spaceappschallenge.org/2026/challenges/" target="_blank" rel="noopener">NASA Space Apps Challenge 2026</a>.</p>
+        <p>Các con số trong game (mức tiêu thụ, hiệu ứng thẻ) là giá trị cân bằng khởi điểm cho bản MVP, sẽ được hiệu chỉnh sau đợt chơi thử với học sinh thật. Riêng nắng và nhiệt độ theo ngày lấy theo dữ liệu thật của NASA (tàu Lunar Reconnaissance Orbiter, thiết bị Diviner; chu kỳ ngày Mặt Trăng 29,5 ngày), đơn giản hóa thành 5 mức cho học sinh tiểu học. Hình minh họa được vẽ riêng cho sản phẩm.</p>
+      </div>
+    </footer>
+    <!-- ================= HỘP THOẠI HƯỚNG DẪN ================= -->
+    <div class="modal-backdrop" id="guideModal" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+        <div class="modal-head">
+          <h2 id="guideTitle">Hướng dẫn cách chơi &amp; thực hiện nhiệm vụ</h2>
+          <button type="button" class="modal-close" data-close-guide aria-label="Đóng hướng dẫn">×</button>
+        </div>
+        <h3>Nhiệm vụ của con</h3>
+        <p>Con chọn <strong>Thử thách</strong> để chơi qua nhiều chu kỳ 5 ngày, bắt đầu với 80 ở mỗi thanh; hoặc chọn <strong>Cổ điển</strong> để hoàn thành một nhiệm vụ 5 ngày, bắt đầu với 70. Trạm có Không khí, Nước, Thức ăn và Năng lượng. <strong>Đừng để thanh nào chạm 0!</strong></p>
+        <h3>Cách chơi — mỗi ngày làm 4 việc</h3>
+        <ol class="guide-steps">
+          <li><b>Kiểm tra 4 thanh tài nguyên.</b> Thanh nào dưới 25 sẽ nhấp nháy đỏ — hãy ưu tiên chăm sóc thanh đó hôm nay.</li>
+          <li><b>Đọc dự báo NASA của hôm nay.</b> Khung “Dữ liệu NASA hôm nay” cho biết nắng và nhiệt độ thật của ngày Mặt Trăng: nắng mạnh thì cuối ngày trạm được cộng Năng lượng, nắng yếu và lạnh thì bị trừ thêm điện sưởi ấm. Có cả dự báo ngày mai để con tính trước.</li>
+          <li><b>Chọn 1 trong 3 thẻ quyết định rồi bấm “Chốt quyết định này”.</b> Nhãn xanh là được thêm, nhãn đỏ là bị tốn. Đổi ý thoải mái trước khi chốt. Mỗi ngày luôn có một thẻ bổ sung cho thanh đang thấp nhất.</li>
+          <li><b>Ứng phó sự kiện bất ngờ (nếu vũ trụ gửi tới).</b> Chọn 1 trong 2 cách xử lý. Mẹo: dựng khiên chắn bức xạ từ sớm thì bão Mặt Trời không làm trạm tốn gì cả.</li>
+        </ol>
+        <h3>Thắng, sao và thử lại</h3>
+        <ul class="guide-list">
+          <li>Ở Cổ điển, sống sót hết ngày 5 là hoàn thành nhiệm vụ. Trung bình 4 thanh còn từ 50 trở lên: <b>3 sao</b>; từ 38: <b>2 sao</b>; dưới mức đó: <b>1 sao</b>.</li>
+          <li>Ở Thử thách, ngày 5 của mỗi chu kỳ có một thử thách đã báo trước. Chọn thẻ chuẩn bị đúng từ ngày 3 để giảm thiệt hại. Qua chu kỳ, con chọn một phần thưởng rồi tiếp tục; kỷ lục là số chu kỳ đã hoàn thành nhiều nhất trên máy này.</li>
+          <li>Nếu một thanh chạm 0, nhiệm vụ kết thúc sớm — nhưng cả đội về Trái Đất an toàn bằng tàu dự phòng, và con bấm “Chơi lại” để thử lại.</li>
+          <li>Muốn chơi lại giữa chừng: bấm nút “Chơi lại từ đầu” ở góc khung game, rồi bấm lần nữa để xác nhận.</li>
+          <li>Không có đồng hồ đếm ngược — cứ thong thả đọc thẻ và bàn với bạn bè, thầy cô trước khi chốt.</li>
+        </ul>
+        <div class="modal-actions">
+          <a class="btn btn-sun" href="#game" data-close-guide>Bắt đầu chơi</a>
+          <a class="btn btn-ghost" href="#huong-dan-nhiem-vu" data-close-guide>Xem hướng dẫn đầy đủ</a>
+        </div>
+      </div>
+    </div>
+    <script>
+    (function(){
+      "use strict";
+
+      /* ---------- Icons (simple stroke SVG) ---------- */
+      var P = {
+        wind:'<path d="M3 8h9a3 3 0 1 0-3-3"/><path d="M2 12h13a3 3 0 1 1-3 3"/><path d="M3 16h6"/>',
+        droplet:'<path d="M12 3c3.2 3.8 6 6.9 6 10a6 6 0 1 1-12 0c0-3.1 2.8-6.2 6-10z"/>',
+        bowl:'<path d="M4 12h16a8 8 0 0 1-16 0z"/><path d="M9 8c0-1.5 1.5-1.5 1.5-3M14 8c0-1.5 1.5-1.5 1.5-3"/>',
+        sprout:'<path d="M12 21v-8"/><path d="M12 13c0-3.2-2.2-5-6-5 0 3.2 2.2 5 6 5z"/><path d="M12 10c0-3 2-4.7 5.5-4.7 0 3-2 4.7-5.5 4.7z"/>',
+        sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.5 4.5l1.5 1.5M18 18l1.5 1.5M19.5 4.5L18 6M6 18l-1.5 1.5"/>',
+        refresh:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3v4h-4"/>',
+        snow:'<path d="M12 3v18"/><path d="M5 7l14 10"/><path d="M19 7L5 17"/>',
+        gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/>',
+        shield:'<path d="M12 3l7 3v5c0 5-3.4 8.2-7 10-3.6-1.8-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+        moon:'<path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a7 7 0 0 0 9.5 9.5z"/>',
+        signal:'<circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><path d="M8.6 15.4a4.8 4.8 0 0 1 0-6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M6 18a8.5 8.5 0 0 1 0-12M18 6a8.5 8.5 0 0 1 0 12"/>',
+        tank:'<rect x="9" y="7" width="6" height="13" rx="3"/><path d="M12 7V4M9.5 4h5"/>',
+        battery:'<rect x="2.5" y="8" width="16" height="8" rx="2"/><path d="M21.5 11v2"/><path d="M6.5 11v2M10 11v2M13.5 11v2"/>',
+        leaf:'<path d="M5 19C5 10.5 11.5 4.5 20 4c.5 8.5-5.5 15-14 15z"/><path d="M5 19c2.5-5 6-8.5 10-10.5"/>',
+        panel:'<rect x="3" y="9" width="18" height="9" rx="1.5"/><path d="M9 9v9M15 9v9M3 13.5h18"/><path d="M12 18v3"/>',
+        meteor:'<circle cx="15" cy="15" r="5"/><path d="M4 4l5.5 5.5M7.5 2.5L12 7M2.5 8L8 11"/>',
+        heart:'<path d="M12 20.5s-7.5-4.6-9.3-9A5.2 5.2 0 0 1 12 6.6a5.2 5.2 0 0 1 9.3 4.9c-1.8 4.4-9.3 9-9.3 9z"/>',
+        gift:'<rect x="4" y="10" width="16" height="10"/><path d="M12 10v10M4 14.5h16"/><path d="M12 10a2.5 2.5 0 1 1 2.5-2.5C14.5 9 12 10 12 10zM12 10a2.5 2.5 0 1 0-2.5-2.5C9.5 9 12 10 12 10z"/>',
+        bolt:'<polygon points="13 2 4 14 11 14 9 22 20 9 13 9" fill="currentColor" stroke="none"/>',
+        star:'<polygon points="12 2.5 14.9 8.6 21.5 9.4 16.6 14 18 20.5 12 17.2 6 20.5 7.4 14 2.5 9.4 9.1 8.6" fill="currentColor" stroke="none"/>'
+      };
+      function icon(name){
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[name]||"") + '</svg>';
+      }
+
+      /* ---------- Game data ---------- */
+      var RES = [
+        {k:'air',    name:'Không khí',  icon:'wind'},
+        {k:'water',  name:'Nước',       icon:'droplet'},
+        {k:'food',   name:'Thức ăn',    icon:'bowl'},
+        {k:'energy', name:'Năng lượng', icon:'bolt'}
+      ];
+      var RESNAME = {air:'Không khí', water:'Nước', food:'Thức ăn', energy:'Năng lượng'};
+
+      var TINTS = {
+        teal:'background:var(--teal-soft);color:var(--teal)',
+        sun:'background:var(--sun-soft);color:#a86e00',
+        coral:'background:var(--coral-soft);color:var(--coral)',
+        good:'background:var(--good-soft);color:var(--good)',
+        air:'background:rgba(31,155,216,.16);color:#1f9bd8',
+        water:'background:rgba(63,125,224,.16);color:#3f7de0'
+      };
+
+      /* ENGINE:BEGIN */
+      var CONFIG = {g:0.14, sysYield:[5,9,12]};
+      var CARDS = [
+        {id:'trong-rau', icon:'sprout', tint:'good', title:'Trồng rau trong nhà kính',
+         desc:'Rau lớn lên thành thức ăn cho cả đội. Nhưng cây cần nước và đèn sưởi để sống.',
+         fx:{food:16, water:-8, energy:-6},
+         fact:'Trên trạm vũ trụ thật, phi hành gia đã trồng được xà lách và ăn ngay ngoài không gian.'},
+        {id:'mo-tam-pin', icon:'sun', tint:'sun', title:'Mở thêm tấm pin Mặt Trời',
+         desc:'Ra ngoài lắp tấm pin mới để hứng nắng. Đội sẽ có thêm nhiều điện.',
+         fx:{energy:18, air:-4},
+         fact:'Mặt Trăng hầu như không có mây che, nên pin Mặt Trời hứng nắng rất tốt — trừ những đêm dài lạnh giá.'},
+        {id:'tai-che-nuoc', icon:'refresh', tint:'water', title:'Tái chế nước đã dùng',
+         desc:'Máy lọc biến nước rửa mặt, nước tắm thành nước sạch uống được.',
+         fx:{water:16, energy:-8},
+         fact:'Trên Trạm Vũ trụ Quốc tế, hơn 90% lượng nước được lọc và dùng lại nhiều lần.'},
+        {id:'loc-khong-khi', icon:'wind', tint:'air', title:'Chạy máy lọc không khí',
+         desc:'Máy lọc chạy một vòng lớn, làm không khí trong trạm sạch và giàu oxy trở lại.',
+         fx:{air:16, energy:-8},
+         fact:'Không khí trên trạm vũ trụ được lọc liên tục, và oxy còn được tạo ra từ nước nhờ điện.'},
+        {id:'dao-bang', icon:'snow', tint:'water', title:'Đào băng dưới mặt đất',
+         desc:'Dưới lớp đất ở vùng cực của Mặt Trăng có băng. Đào lên, làm tan là có nước!',
+         fx:{water:18, energy:-6, air:-4},
+         fact:'Các tàu thăm dò đã tìm thấy băng nước trong những hố sâu luôn tối gần cực Nam của Mặt Trăng.'},
+        {id:'sua-ro-ri', icon:'gear', tint:'coral', title:'Sửa chỗ rò rỉ trên trạm',
+         desc:'Một đường ống bị rò đang làm thoát không khí ra ngoài. Sửa ngay cho an toàn.',
+         fx:{air:12, energy:-6},
+         fact:'Phi hành gia phải thường xuyên kiểm tra trạm — có lần họ ra ngoài không gian nhiều giờ chỉ để sửa một tấm pin.'},
+        {id:'dung-khien', icon:'shield', tint:'sun', title:'Dựng khiên chắn bức xạ',
+         desc:'Dựng tấm khiên dày che cho trạm. Nếu bão Mặt Trời tới, cả đội sẽ an toàn hơn nhiều.',
+         fx:{energy:-10}, shield:true,
+         fact:'Bức xạ từ Mặt Trời rất mạnh ngoài không gian. Khi bão Mặt Trời đến, phi hành gia cần nơi trú ẩn có tường thật dày.'},
+        {id:'ngu-som', icon:'moon', tint:'air', title:'Tắt đèn, đi ngủ sớm',
+         desc:'Cả đội ngủ sớm một hôm. Trạm tắt bớt đèn và máy móc, tiết kiệm được nhiều điện.',
+         fx:{energy:12, food:-4},
+         fact:'Phi hành gia vẫn phải ngủ đủ giấc theo giờ hẹn, dù ngoài cửa sổ Mặt Trời mọc và lặn liên tục.'},
+        {id:'thu-hoach', icon:'leaf', tint:'good', title:'Thu hoạch rau đã chín',
+         desc:'Rau trong nhà kính đã lớn. Hái vào kho để dành ăn dần trong những ngày tới.',
+         fx:{food:14, water:-4},
+         fact:'Rau trồng ngoài không gian lớn chậm hơn ở Trái Đất, vì không có trọng lực kéo rễ cây xuống đất.'},
+        {id:'goi-tiep-te', icon:'signal', tint:'teal', title:'Gọi tàu tiếp tế từ Trái Đất',
+         desc:'Gửi tín hiệu về Trái Đất. Một con tàu nhỏ sẽ thả xuống một thùng đồ cho trạm.',
+         fx:{food:8, water:8, energy:-6},
+         fact:'Tàu tiếp tế bay từ Trái Đất lên trạm vũ trụ mất khoảng 1–2 ngày, chỉ chở đồ chứ không chở người.'},
+        {id:'kiem-tra-oxy', icon:'tank', tint:'air', title:'Kiểm tra và nạp bình oxy',
+         desc:'Kiểm tra từng bình oxy của cả đội và nạp đầy những bình sắp cạn.',
+         fx:{air:12, energy:-4},
+         fact:'Bộ đồ phi hành gia mang theo bình oxy đủ thở khoảng 6–8 giờ cho một chuyến đi ra ngoài không gian.'},
+        {id:'bom-nuoc', icon:'droplet', tint:'water', title:'Bơm nước từ bể dự trữ',
+         desc:'Mở bể dự trữ của trạm và bơm nước vào hệ thống dùng hằng ngày.',
+         fx:{water:10, energy:-4},
+         fact:'Mang nước từ Trái Đất lên rất tốn kém, nên mọi trạm vũ trụ đều có bể dự trữ và tái chế tối đa.'},
+        {id:'sac-pin', icon:'battery', tint:'sun', title:'Phơi pin sạc ngoài nắng',
+         desc:'Mang các cục pin dự phòng ra phơi nắng cả buổi để sạc thật đầy.',
+         fx:{energy:14, food:-5},
+         fact:'Một đêm trên Mặt Trăng dài bằng 14 ngày ở Trái Đất — lúc không có nắng, trạm phải sống bằng pin đã sạc sẵn.'},
+        {id:'trong-nam', icon:'bowl', tint:'good', title:'Trồng nấm trong khoang tối',
+         desc:'Nấm không cần nắng, lớn rất nhanh trong khoang tối và cho cả đội món ăn mới.',
+         fx:{food:12, water:-5, air:4},
+         fact:'Cây xanh và nấm giúp lẫn nhau: cây nhả oxy, còn nấm phân hủy rác hữu cơ thành đất trồng.'},
+        {id:'mo-rong-nha-kinh', icon:'sprout', tint:'teal', title:'Mở rộng nhà kính',
+         desc:'Dự án lớn trong một ngày: nhà kính rộng hơn, cây cho thêm cả oxy lẫn thức ăn.',
+         fx:{air:10, food:8, water:-8, energy:-6},
+         fact:'Các nhà khoa học đang thử trồng cây trên đất Mặt Trăng mô phỏng, để chuẩn bị cho những trạm ở lâu dài.'}
+      ];
+
+      var EVENTS = [
+        {id:'bao-mat-troi', icon:'bolt', title:'Bão Mặt Trời đang tới!',
+         text:'Một luồng gió Mặt Trời rất mạnh đang lao về phía trạm. Bức xạ có thể làm hỏng thiết bị. Con sẽ làm gì?',
+         fact:'Bão Mặt Trời thật có thể làm nhiễu sóng radio và vệ tinh ở Trái Đất — và nguy hiểm hơn nhiều với phi hành gia ngoài không gian.',
+         options:[
+           {label:'Bật khiên chắn bảo vệ trạm', fx:{energy:-12}, shieldFree:true,
+            msg:'Khiên chắn chặn hết bức xạ. Cả đội an toàn!',
+            msgShield:'May quá — khiên chắn con dựng lúc trước đã đỡ hết cơn bão. Cả đội an toàn mà không tốn thêm gì!'},
+           {label:'Cả đội nấp vào khoang an toàn', fx:{food:-6, water:-6},
+            msg:'Cả đội nấp trong khoang có tường dày nhất, ăn uống tại chỗ và chờ bão qua đi.'}
+         ]},
+        {id:'thien-thach', icon:'meteor', title:'Một viên đá trời rơi trúng mái trạm!',
+         text:'Mái trạm bị thủng một lỗ nhỏ và không khí đang xì ra ngoài. Phải xử lý nhanh!',
+         fact:'Mỗi ngày có hàng tấn bụi và đá nhỏ từ vũ trụ rơi xuống Trái Đất — phần lớn cháy hết trong khí quyển, nhưng Mặt Trăng không có khí quyển để che chắn.',
+         options:[
+           {label:'Mặc đồ, ra ngoài vá mái ngay', fx:{air:-6, energy:-6},
+            msg:'Ra ngoài vá mái rất mệt nhưng lỗ thủng được bịt kín hoàn toàn.'},
+           {label:'Bịt lỗ tạm từ bên trong', fx:{air:-10, energy:-2},
+            msg:'Bịt tạm từ bên trong nhanh hơn, nhưng không khí vẫn rò rỉ thêm một lúc mới kín hẳn.'}
+         ]},
+        {id:'mat-dien', icon:'moon', title:'Đêm nay trạm bị mất điện!',
+         text:'Một mạch điện bị hỏng. Trạm tối om và đang lạnh dần. Con sẽ làm gì?',
+         fact:'Nhiệt độ ban đêm trên Mặt Trăng có thể xuống tới khoảng −130°C, nên giữ ấm là việc sống còn.',
+         options:[
+           {label:'Dùng pin dự phòng thắp sáng', fx:{energy:-10},
+            msg:'Pin dự phòng giúp trạm có ánh sáng và sưởi ấm qua đêm.'},
+           {label:'Mặc áo ấm, ngủ sớm chờ trời sáng', fx:{energy:4, food:-6},
+            msg:'Cả đội mặc thật ấm, ăn thêm một bữa phụ rồi ngủ sớm. Trạm còn tiết kiệm được ít điện.'}
+         ]},
+        {id:'bui-pin', icon:'panel', title:'Bụi Mặt Trăng bám đầy tấm pin!',
+         text:'Lớp bụi mịn phủ kín các tấm pin Mặt Trời nên điện yếu hẳn đi.',
+         fact:'Bụi trên Mặt Trăng rất mịn và sắc, bám vào mọi thứ — đây là một trong những rắc rối lớn nhất của các sứ mệnh Mặt Trăng thật.',
+         options:[
+           {label:'Ra ngoài lau sạch các tấm pin', fx:{air:-5, energy:10},
+            msg:'Pin sạch bóng hứng nắng trở lại, điện mạnh hẳn lên!'},
+           {label:'Để yên, hôm khác tính sau', fx:{energy:-10},
+            msg:'Bụi vẫn phủ kín pin, trạm thiếu điện cả ngày hôm đó.'}
+         ]},
+        {id:'ro-nuoc', icon:'droplet', title:'Ống nước bị rò!',
+         text:'Nước đang nhỏ giọt từ một ống dẫn và tạo thành vũng trên sàn trạm.',
+         fact:'Trên trạm vũ trụ, nước rò rỉ không rơi xuống sàn mà bay thành từng giọt tròn lơ lửng — phi hành gia phải đi “bắt” từng giọt.',
+         options:[
+           {label:'Khóa van và sửa ống ngay', fx:{water:-5, energy:-5},
+            msg:'Sửa dứt điểm tuy tốn công, nhưng nước chỉ mất một ít.'},
+           {label:'Lấy xô hứng, để mai sửa', fx:{water:-12},
+            msg:'Chỗ rò nhỏ giọt suốt đêm — đến sáng thì mất khá nhiều nước.'}
+         ]},
+        {id:'ban-om', icon:'heart', title:'Bạn Mi bị cảm, hơi sốt',
+         text:'Mi — một phi hành gia trong đội — mệt và cần được chăm sóc để mau khỏe lại.',
+         fact:'Trong không gian, hệ miễn dịch của phi hành gia yếu đi một chút, nên giữ gìn sức khỏe cho nhau là nhiệm vụ của cả đội.',
+         options:[
+           {label:'Cho Mi nghỉ ngơi, uống nước ấm', fx:{water:-5, food:-5},
+            msg:'Mi được nghỉ một ngày, ăn cháo và uống nước ấm. Hôm sau bạn ấy khỏe hơn nhiều.'},
+           {label:'Gọi bác sĩ ở Trái Đất tư vấn', fx:{energy:-6},
+            msg:'Bác sĩ ở Trái Đất khám qua màn hình và dặn cách chăm sóc. Đường truyền tốn khá nhiều điện.'}
+         ]},
+        {id:'qua-tiep-te', icon:'gift', title:'Tin vui: tàu tiếp tế đến sớm!',
+         text:'Một tàu tiếp tế vừa thả xuống một thùng quà cho trạm. Con muốn nhận phần nào nhất?',
+         fact:'Các tàu tiếp tế như Cygnus hay Dragon thường mang lên trạm vũ trụ vài tấn hàng: thức ăn, nước, thiết bị và cả quà từ gia đình.',
+         options:[
+           {label:'Nhận thùng thức ăn', fx:{food:12},
+            msg:'Thùng đầy trái cây khô, bánh và đồ ăn ngon. Cả đội vui hẳn lên!'},
+           {label:'Nhận thùng nước và pin', fx:{water:7, energy:7},
+            msg:'Nước sạch và pin mới được nạp vào kho. Trạm yên tâm hơn hẳn.'}
+         ]},
+        {id:'dem-lanh', icon:'snow', title:'Đêm Mặt Trăng lạnh buốt!',
+         text:'Nhiệt độ bên ngoài rơi xuống rất thấp. Trạm cần giữ ấm cho cả đội suốt đêm dài.',
+         fact:'Một ngày trên Mặt Trăng (từ sáng tới sáng hôm sau) dài bằng khoảng 29,5 ngày ở Trái Đất.',
+         options:[
+           {label:'Bật máy sưởi hết công suất', fx:{energy:-12},
+            msg:'Máy sưởi chạy suốt đêm, cả đội ngủ ngon trong trạm ấm áp.'},
+           {label:'Cả đội chui chung một túi ngủ lớn', fx:{food:-5},
+            msg:'Cả đội ăn thêm bữa khuya cho ấm người rồi chui chung túi ngủ lớn, kể chuyện cho nhau nghe.'}
+         ]}
+      ];
+
+      /* Real NASA data driving the game: one lunar day lasts ~29.5 Earth days.
+         Surface temperatures are typical equatorial values from NASA's Lunar
+         Reconnaissance Orbiter (LRO) Diviner Lunar Radiometer, simplified to
+         5 steps. energyFx is applied to Energy at the end of each game day. */
+      var LUNAR = [
+        {label:'Sáng sớm trên Mặt Trăng', lunarDay:2,  sun:30,  temp:-80, energyFx:-4,
+         why:'Mặt Trời vừa mọc, nắng còn yếu và trạm đang rất lạnh — tốn điện sưởi ấm.'},
+        {label:'Buổi sáng trên Mặt Trăng', lunarDay:5,  sun:65,  temp:20,  energyFx:4,
+         why:'Nắng mạnh dần, pin Mặt Trời sạc được kha khá điện cho trạm.'},
+        {label:'Trưa Mặt Trăng', lunarDay:8,  sun:100, temp:120, energyFx:6,
+         why:'Nắng gắt nhất ngày! Pin sạc đầy ắp, dù trạm phải tốn một ít điện làm mát.'},
+        {label:'Buổi chiều trên Mặt Trăng', lunarDay:11, sun:65,  temp:70,  energyFx:3,
+         why:'Nắng dịu dần nhưng vẫn đủ cho pin sạc thêm điện.'},
+        {label:'Hoàng hôn trên Mặt Trăng', lunarDay:14, sun:25,  temp:-40, energyFx:-5,
+         why:'Mặt Trời sắp lặn, nắng tắt nhanh và trời lạnh xuống — trạm lại tốn điện sưởi ấm trước đêm dài.'}
+      ];
+
+      var CONS = {air:6, water:7, food:8, energy:5};       /* daily use, +1 per resource each new day */
+      var EVENT_CHANCE = {1:0.45, 2:0.6, 3:0.6, 4:0.6, 5:0.5};
+      var LOSE_TIP = {
+        air:'Lần sau hãy để ý các thẻ: Chạy máy lọc không khí, Kiểm tra và nạp bình oxy, Mở rộng nhà kính.',
+        water:'Lần sau hãy để ý các thẻ: Đào băng dưới mặt đất, Tái chế nước đã dùng, Bơm nước từ bể dự trữ.',
+        food:'Lần sau hãy để ý các thẻ: Trồng rau trong nhà kính, Thu hoạch rau đã chín, Trồng nấm trong khoang tối.',
+        energy:'Lần sau hãy để ý các thẻ: Mở thêm tấm pin Mặt Trời, Phơi pin sạc ngoài nắng, Tắt đèn đi ngủ sớm.'
+      };
+
+      var KEYS = ['air','water','food','energy'];
+      var CHALLENGES = [
+        {id:'bao', name:'Bão Mặt Trời lớn', resource:'energy', card:'dung-khien'},
+        {id:'ong', name:'Hỏng đường ống', resource:'water', card:'bom-nuoc'},
+        {id:'thien-thach', name:'Mưa thiên thạch', resource:'air', card:'sua-ro-ri'}
+      ];
+      var seed = null;
+      function rand(){
+        if (seed === null) return Math.random();
+        seed = (Math.imul(seed,1664525) + 1013904223) >>> 0;
+        return seed / 4294967296;
+      }
+      function shuffle(a){
+        for (var i=a.length-1;i>0;i--){ var j=Math.floor(rand()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+        return a;
+      }
+      function lowest(S){
+        return KEYS.reduce(function(a,b){ return S.res[b] < S.res[a] ? b : a; });
+      }
+      function applyDelta(S, fx){
+        var applied = {};
+        KEYS.forEach(function(k){
+          var before = S.res[k];
+          var d = Number(fx[k] || 0);
+          S.res[k] = Math.max(0, Math.min(100, Math.floor(before + d + 0.5)));
+          applied[k] = S.res[k] - before;
+        });
+        return applied;
+      }
+      function loseCheck(S, where){
+        var k = KEYS.find(function(key){ return S.res[key] <= 0; });
+        if (k){ S.loseRes=k; S.loseWhere=where; S.phase='lose'; S.over=true; }
+        return !!k;
+      }
+      function chooseChallenge(previous){
+        var list = CHALLENGES.filter(function(c){ return c.id !== previous; });
+        return list[Math.floor(rand()*list.length)];
+      }
+      function drawHand(S){
+        var low=lowest(S), pool=shuffle(CARDS.slice()), booster=pool.find(function(c){ return (c.fx[low]||0)>=10; });
+        var hand = booster ? [booster] : [];
+        pool.forEach(function(c){ if (hand.length<3 && hand.indexOf(c)<0) hand.push(c); });
+        if (S.mode==='challenge' && S.day>=3){
+          var prep=CARDS.find(function(c){ return c.id===S.challenge.card; });
+          if (hand.indexOf(prep)<0){
+            var replace=hand.findIndex(function(c){ return c!==booster; });
+            hand[replace<0 ? 2 : replace]=prep;
+          }
+        }
+        S.hand=shuffle(hand); S.selected=-1;
+      }
+      function rewards(S){
+        var pool=KEYS.filter(function(k){ return S.systems[k]<3; }).map(function(k){ return {id:'up-'+k, resource:k, name:'Nâng hệ thống '+k}; });
+        if (KEYS.some(function(k){ return S.res[k]<40; })) pool.push({id:'heal',name:'Sửa thanh thấp nhất'});
+        pool.push({id:'stash',name:'Tiếp tế cả trạm'});
+        return shuffle(pool).slice(0,3);
+      }
+      function newState(mode){
+        var classic=mode==='classic';
+        return {v:2, mode:classic?'classic':'challenge', started:false, over:false, phase:'intro', day:1, cycle:1, cyclesDone:0,
+          res:{air:classic?70:80,water:classic?70:80,food:classic?70:80,energy:classic?70:80},
+          systems:{air:1,water:1,food:1,energy:1}, challenge:null, previousChallenge:null, prepared:false,
+          rewards:[], rewardPicked:null, shield:false, usedEvents:[], facts:[], hand:[], selected:-1,
+          lastCard:null,lastApplied:null,lastEvent:null,lastEventMsg:'',lastEventApplied:null,lastCons:null,lastNasa:null,
+          challengeDamage:0,loseRes:null,loseWhere:''};
+      }
+      function endDay(S){
+        var delta={}, lunar=LUNAR[S.day-1];
+        KEYS.forEach(function(k){
+          if (S.mode==='classic') delta[k]=-(CONS[k]+S.day-1);
+          else delta[k]=CONFIG.sysYield[S.systems[k]-1]-CONS[k]*(1+CONFIG.g*(S.cycle-1));
+        });
+        var solar=lunar.energyFx;
+        if (S.mode==='challenge' && S.cycle>=2 && solar<0) solar*=1.5;
+        delta.energy+=solar;
+        S.lastCons=applyDelta(S,delta); S.lastNasa=lunar;
+        if (loseCheck(S,'cuối ngày')) return;
+        if (S.day===5){
+          if (S.mode==='classic'){ S.phase='win'; S.over=true; }
+          else { S.cyclesDone++; S.rewards=rewards(S); S.rewardPicked=null; S.phase='cycleEnd'; }
+        } else S.phase='dayEnd';
+      }
+      function afterCard(S){
+        if (S.mode==='challenge' && S.day===5){
+          var p=Math.min(10+3*S.cycle,25);
+          S.challengeDamage=S.prepared ? Math.floor(p*0.5+0.5) : p;
+          var fx={}; fx[S.challenge.resource]=-S.challengeDamage;
+          S.challengeApplied=applyDelta(S,fx);
+          if (!loseCheck(S,'thử thách')) S.phase='challenge';
+          return;
+        }
+        var avail=EVENTS.filter(function(e){ return S.usedEvents.indexOf(e.id)<0; });
+        if (avail.length && rand()<EVENT_CHANCE[S.day]){
+          S.lastEvent=avail[Math.floor(rand()*avail.length)];
+          S.usedEvents.push(S.lastEvent.id); S.phase='event';
+        } else endDay(S);
+      }
+      var Engine = {
+        CONFIG:CONFIG, CARDS:CARDS, EVENTS:EVENTS, LUNAR:LUNAR, CONS:CONS, CHALLENGES:CHALLENGES,
+        setSeed:function(n){ seed=(Number(n)>>>0); },
+        rand:rand, newState:newState, drawHand:drawHand, applyDelta:applyDelta,
+        step:function(S, action){
+          var a=typeof action==='string' ? {type:action} : action;
+          if (!a) return S;
+          if (a.type==='start' || a.type==='play-again'){
+            var mode=a.mode || S.mode;
+            Object.assign(S,newState(mode)); S.started=true; S.phase='choose';
+            if (S.mode==='challenge') S.challenge=chooseChallenge(null);
+            drawHand(S); return S;
+          }
+          if (S.over) return S;
+          if (a.type==='select' && S.phase==='choose' && S.hand[a.i]) S.selected=a.i;
+          else if (a.type==='confirm-card' && S.phase==='choose' && S.hand[S.selected]){
+            var c=S.hand[S.selected], fx=c.fx;
+            if (S.mode==='challenge' && S.cycle>=3 && c.id==='goi-tiep-te'){
+              fx={}; KEYS.forEach(function(k){ if (c.fx[k]) fx[k]=c.fx[k]*0.5; });
+            }
+            S.lastCard=c; S.lastApplied=applyDelta(S,fx);
+            if (c.shield) S.shield=true;
+            if (S.mode==='challenge' && S.day>=3 && c.id===S.challenge.card) S.prepared=true;
+            if (S.facts.indexOf(c.fact)<0) S.facts.push(c.fact);
+            if (!loseCheck(S,'thẻ')) S.phase='cardResult';
+          }
+          else if (a.type==='after-card' && S.phase==='cardResult') afterCard(S);
+          else if (a.type==='event-opt' && S.phase==='event' && S.lastEvent.options[a.i]){
+            var o=S.lastEvent.options[a.i], efx=o.fx;
+            S.lastEventMsg=o.msg;
+            if (o.shieldFree && S.shield){ efx={}; S.lastEventMsg=o.msgShield; S.shield=false; }
+            S.lastEventApplied=applyDelta(S,efx);
+            if (S.facts.indexOf(S.lastEvent.fact)<0) S.facts.push(S.lastEvent.fact);
+            if (!loseCheck(S,'sự kiện')) S.phase='eventResult';
+          }
+          else if (a.type==='after-event' && S.phase==='eventResult') endDay(S);
+          else if (a.type==='challenge-ok' && S.phase==='challenge') endDay(S);
+          else if (a.type==='next-day' && S.phase==='dayEnd'){ S.day++; drawHand(S); S.phase='choose'; }
+          else if (a.type==='pick-reward' && S.phase==='cycleEnd' && !S.rewardPicked && S.rewards[a.i]){
+            var reward=S.rewards[a.i]; S.rewardPicked=reward.id;
+            if (reward.id==='stash') applyDelta(S,{air:8,water:8,food:8,energy:8});
+            else if (reward.id==='heal'){ var h={}; h[lowest(S)]=20; applyDelta(S,h); }
+            else S.systems[reward.resource]++;
+          }
+          else if (a.type==='next-cycle' && S.phase==='cycleEnd' && S.rewardPicked){
+            S.previousChallenge=S.challenge.id; S.cycle++; S.day=1; S.usedEvents=[]; S.prepared=false;
+            S.challenge=chooseChallenge(S.previousChallenge); drawHand(S); S.phase='choose';
+          }
+          return S;
+        }
+      };
+      /* ENGINE:END */
+
+      /* ---------- State ---------- */
+      var stage = document.getElementById('stage');
+      var dayLabel = document.getElementById('dayLabel');
+      var dayDots = document.getElementById('dayDots').children;
+      var restartBtn = document.getElementById('restartBtn');
+      var S = Engine.newState('challenge');
+
+      /* ---------- Rendering: bars & header ---------- */
+      function renderRes(){
+        RES.forEach(function(r){
+          var box = document.querySelector('.res[data-r="' + r.k + '"]');
+          var v = S.res[r.k];
+          box.querySelector('[data-num]').textContent = v;
+          box.querySelector('[data-fill]').style.width = v + '%';
+          box.querySelector('.res-bar').setAttribute('aria-valuenow', v);
+          box.querySelector('.res-bar').setAttribute('aria-valuetext', v + ' trên 100');
+          box.classList.toggle('low', v < 25 && S.started && !S.over);
+        });
+      }
+      function renderHead(){
+        if (!S.started){ dayLabel.textContent = 'Sẵn sàng lên Mặt Trăng?'; }
+        else if (S.phase === 'win'){ dayLabel.textContent = 'Nhiệm vụ hoàn thành!'; }
+        else if (S.phase === 'lose'){ dayLabel.textContent = 'Nhiệm vụ kết thúc sớm'; }
+        else { dayLabel.textContent = S.mode==='challenge' ? 'Chu kỳ '+S.cycle+' · Ngày '+S.day+'/5' : 'Ngày ' + S.day + ' trong 5 ngày trên Mặt Trăng'; }
+        for (var i=0;i<5;i++){
+          dayDots[i].className = '';
+          if (!S.started) continue;
+          if (S.phase === 'win' || i < S.day - 1) dayDots[i].className = 'done';
+          else if (i === S.day - 1) dayDots[i].className = 'now';
+        }
+        restartBtn.hidden = !S.started || S.over;
+      }
+
+      function fxChips(fx, extra){
+        var h = '';
+        RES.forEach(function(r){
+          var d = fx[r.k] || 0;
+          if (!d) return;
+          h += '<span class="chip ' + (d>0 ? 'plus' : 'minus') + '">' + (d>0 ? '+' : '−') + Math.abs(d) + ' ' + r.name + '</span>';
+        });
+        if (extra) h += extra;
+        return h;
+      }
+      function deltaChips(applied){
+        var h = '<ul class="delta-list">';
+        RES.forEach(function(r){
+          var d = applied[r.k] || 0;
+          if (!d) return;
+          h += '<li class="chip ' + (d>0 ? 'plus' : 'minus') + '">' + r.name + ' ' + (d>0 ? '+' : '−') + Math.abs(d) + ' → còn ' + S.res[r.k] + '</li>';
+        });
+        return h + '</ul>';
+      }
+      function ruleText(cycle){
+        var lines=[];
+        if (cycle>=2) lines.push('Đêm lạnh làm trạm tốn thêm Năng lượng vì pin cần sưởi ấm.');
+        if (cycle>=3) lines.push('Gói tiếp tế cho ít tài nguyên hơn vì nguồn hàng từ Trái Đất có hạn.');
+        return lines;
+      }
+      function rewardText(reward){
+        if (reward.id==='stash') return 'Tiếp tế cả trạm: +8 mỗi thanh';
+        if (reward.id==='heal') return 'Sửa thanh thấp nhất: +20';
+        var key=reward.resource;
+        var gain=CONFIG.sysYield[S.systems[key]]-CONFIG.sysYield[S.systems[key]-1];
+        return RESNAME[key]+' mỗi ngày +'+gain+' (hệ thống cấp '+(S.systems[key]+1)+')';
+      }
+      function challengeStars(){
+        return S.cyclesDone>=10 ? 3 : S.cyclesDone>=6 ? 2 : S.cyclesDone>=3 ? 1 : 0;
+      }
+
+      /* ---------- Rendering: phases ---------- */
+      function render(){
+        renderRes(); renderHead();
+        var h = '';
+        if (S.phase === 'intro'){
+          h = '<div class="intro-flex"><div>'
+            + '<h2 class="phase-title">Chào chỉ huy nhí!</h2>'
+            + '<p class="phase-text">Trạm Mặt Trăng có <strong>4 thanh tài nguyên</strong>: Không khí, Nước, Thức ăn và Năng lượng. Chọn Thử thách để đi qua nhiều chu kỳ, hoặc Cổ điển để chơi 5 ngày. Đừng để thanh nào chạm 0! Năng lượng của trạm còn đi theo <strong>nắng và nhiệt độ thật trên Mặt Trăng</strong> (dữ liệu NASA) — nhớ đọc dự báo mỗi ngày nhé.</p>'
+            + '<ol class="howto-mini"><li>Mỗi ngày, chọn 1 trong 3 thẻ quyết định.</li><li>Đôi khi vũ trụ gửi tới một sự kiện bất ngờ — hãy chọn cách ứng phó.</li><li>Đừng để thanh tài nguyên nào chạm 0.</li></ol>'
+            + '<div class="mode-choice"><strong>Thử thách · 80 mỗi thanh</strong><p>Chơi tiếp nhiều chu kỳ 5 ngày, vượt thử thách và chọn phần thưởng.</p><button type="button" class="btn btn-sun" data-action="start" data-mode="challenge">Chơi Thử thách</button></div>'
+            + '<div class="mode-choice"><strong>Cổ điển · 70 mỗi thanh</strong><p>Sống sót qua 5 ngày để hoàn thành nhiệm vụ và nhận sao.</p><button type="button" class="btn btn-teal" data-action="start" data-mode="classic">Chơi Cổ điển</button></div>'
+            + '</div><img src="{{ASSET:1}}" alt="Phi hành gia nhí giơ ngón tay cái khích lệ" /></div>';
+        }
+        else if (S.phase === 'choose'){
+          var nd = LUNAR[S.day - 1];
+          var nx = S.day < 5 ? LUNAR[S.day] : null;
+          h = '<h2 class="phase-title">Ngày ' + S.day + ': hôm nay đội mình làm gì?</h2>'
+            + (S.mode==='challenge' && S.day>=2 ? '<div class="notice-box"><strong>Thử thách ngày 5: '+S.challenge.name+'</strong><p>Chuẩn bị bằng thẻ '+CARDS.find(function(c){return c.id===S.challenge.card;}).title+'.</p></div>' : '')
+            + (S.mode==='challenge' && ruleText(S.cycle).length ? '<div class="rule-box"><strong>Luật khó đang bật</strong>'+ruleText(S.cycle).map(function(t){return '<p>'+t+'</p>';}).join('')+'</div>' : '')
+            + '<div class="nasa-strip"><span class="nasa-head"><span class="nasa-tag">DỮ LIỆU NASA</span> ' + nd.label + '</span>'
+            + '<span>Ngày Mặt Trăng ~' + nd.lunarDay + ' trong chu kỳ 29,5 ngày · Nắng <b>' + nd.sun + '%</b> · Nhiệt độ khoảng <b>' + (nd.temp > 0 ? '+' : '') + nd.temp + '°C</b> (đo bởi tàu LRO của NASA). % là độ nắng.</span>'
+            + '<span class="fxline"><span class="chip ' + (nd.energyFx >= 0 ? 'plus' : 'minus') + '">Cuối ngày: Năng lượng ' + (nd.energyFx >= 0 ? '+' : '−') + Math.abs(nd.energyFx) + ' vì nắng &amp; nhiệt độ</span>'
+            + (nx ? '<span class="chip shield">Ngày mai: nắng ' + nx.sun + '%, ' + (nx.temp > 0 ? '+' : '') + nx.temp + '°C, Năng lượng ' + (nx.energyFx >= 0 ? '+' : '−') + Math.abs(nx.energyFx) + '</span>' : '<span class="chip shield">Ngày mai: đêm Mặt Trăng dài bắt đầu</span>')
+            + '</span></div>'
+            + '<p class="phase-text" style="margin-top:12px">Chạm vào <strong>một thẻ</strong> để chọn. Nhãn xanh là được thêm, nhãn đỏ là bị tốn. Con đổi ý thoải mái trước khi bấm nút chốt nhé.</p>'
+            + '<div class="cards" role="group" aria-label="Ba thẻ quyết định của hôm nay">';
+          S.hand.forEach(function(c, i){
+            h += '<button type="button" class="card' + (S.selected===i ? ' selected' : '') + '" data-action="select" data-i="' + i + '" aria-pressed="' + (S.selected===i) + '">'
+              + '<span class="card-icon" style="' + TINTS[c.tint] + '">' + icon(c.icon) + '</span>'
+              + '<h3>' + c.title + '</h3>'
+              + (S.mode==='challenge' && S.day>=3 && c.id===S.challenge.card ? '<span class="prep-label">Chuẩn bị cho '+S.challenge.name+'</span>' : '')
+              + '<p>' + c.desc + '</p>'
+              + '<span class="fx">' + fxChips(c.fx, c.shield ? '<span class="chip shield">Dựng khiên chắn bão</span>' : '') + '</span>'
+              + '</button>';
+          });
+          h += '</div>';
+          if (S.selected >= 0){
+            var c = S.hand[S.selected];
+            h += '<div class="confirm-bar"><p class="hint">Con đã chọn: <strong style="color:var(--stage-ink)">' + c.title + '</strong>. Đồng ý chứ?</p>'
+              + '<button type="button" class="btn btn-sun" data-action="confirm-card">Chốt quyết định này</button></div>';
+          } else {
+            h += '<div class="confirm-bar"><p class="hint">Chạm vào một thẻ ở trên để xem nút chốt quyết định.</p></div>';
+          }
+          if (S.shield){
+            h += '<p class="phase-text" style="margin-top:12px">Trạm đang có <strong>khiên chắn bức xạ</strong> bảo vệ. Nếu bão Mặt Trời tới, đội mình sẽ an toàn!</p>';
+          }
+        }
+        else if (S.phase === 'cardResult'){
+          var cc = S.lastCard;
+          h = '<div class="result-box"><h3>Xong! ' + cc.title + '</h3>'
+            + '<p>' + cc.desc + '</p>' + deltaChips(S.lastApplied)
+            + (cc.shield ? '<p style="margin-top:10px"><strong>Khiên chắn đã dựng xong.</strong> Trạm được bảo vệ khỏi bão Mặt Trời.</p>' : '')
+            + '</div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-teal" data-action="after-card">Tiếp tục</button></div>';
+        }
+        else if (S.phase === 'event'){
+          var ev = S.lastEvent;
+          h = '<div class="event-box"><span class="event-tag">Sự kiện bất ngờ!</span>'
+            + '<h3>' + ev.title + '</h3><p>' + ev.text + '</p>'
+            + '<div class="event-opts">';
+          ev.options.forEach(function(o, i){
+            var fx = o.fx;
+            var note = '';
+            if (o.shieldFree && S.shield){ fx = {}; note = '<span class="chip shield">Khiên chắn đỡ hết — không tốn gì!</span>'; }
+            h += '<button type="button" class="event-opt" data-action="event-opt" data-i="' + i + '"><b>' + o.label + '</b>'
+              + '<span class="fx">' + fxChips(fx) + note + '</span></button>';
+          });
+          h += '</div></div>';
+        }
+        else if (S.phase === 'eventResult'){
+          h = '<div class="result-box"><h3>' + S.lastEvent.title + '</h3>'
+            + '<p>' + S.lastEventMsg + '</p>' + deltaChips(S.lastEventApplied)
+            + '</div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-teal" data-action="after-event">Đến cuối ngày</button></div>';
+        }
+        else if (S.phase === 'dayEnd'){
+          h = '<div class="result-box"><h3>Hết ngày ' + S.day + ' — cả đội nghỉ ngơi</h3>'
+            + '<p>Trong một ngày, cả đội đã dùng bớt một ít tài nguyên để thở, uống, ăn và chạy máy móc:</p>'
+            + deltaChips(S.lastCons)
+            + (S.lastNasa ? '<p style="margin-top:10px"><strong>Dữ liệu NASA hôm nay:</strong> ' + S.lastNasa.label + ' — nắng ' + S.lastNasa.sun + '%, nhiệt độ khoảng ' + (S.lastNasa.temp > 0 ? '+' : '') + S.lastNasa.temp + '°C. Trong mức thay đổi Năng lượng ở trên đã gồm ' + (S.lastNasa.energyFx >= 0 ? '+' : '−') + Math.abs(S.lastNasa.energyFx) + ' từ nắng &amp; nhiệt độ thật. ' + S.lastNasa.why + '</p>' : '')
+            + (S.mode==='challenge' ? '<p>Hệ thống giúp trạm có thêm tài nguyên mỗi ngày.</p>' : '<p style="margin-top:10px">Ngày mai mức dùng sẽ <strong>nhiều hơn một chút</strong> đấy — hãy để ý thanh nào đang thấp nhất nhé.</p>') + '</div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="next-day">Sang ngày ' + (S.day + 1) + '</button></div>';
+        }
+        else if (S.phase === 'challenge'){
+          h = '<div class="result-box"><h2 class="phase-title">'+S.challenge.name+'</h2><p>Thanh chịu ảnh hưởng: <strong>'+RESNAME[S.challenge.resource]+'</strong>.</p><p>'+(S.prepared?'Con đã chọn đúng thẻ chuẩn bị. Giỏi lắm, thiệt hại giảm đi một nửa!':'Con chưa chọn thẻ chuẩn bị. Lần sau mình sẽ sẵn sàng hơn!')+'</p><p>Thiệt hại: <strong>−'+S.challengeDamage+' '+RESNAME[S.challenge.resource]+'</strong>.</p></div>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="challenge-ok">Tiếp tục</button></div>';
+        }
+        else if (S.phase === 'cycleEnd'){
+          h = '<h2 class="phase-title">Hoàn thành chu kỳ '+S.cycle+'</h2><p class="phase-text">Cả đội đã giữ trạm an toàn! Chọn một phần thưởng cho hành trình tiếp theo.</p>'
+            + '<div class="result-box"><p><strong>Dữ liệu NASA:</strong> '+S.lastNasa.label+' — nắng '+S.lastNasa.sun+'%, nhiệt độ khoảng '+S.lastNasa.temp+'°C. '+S.lastNasa.why+'</p></div>'
+            + '<p class="reward-prompt">Chu kỳ sau: mức dùng tăng '+Math.round(CONFIG.g*100)+'%.</p>'
+            + ((S.cycle+1===2 || S.cycle+1===3) ? '<div class="rule-box"><strong>Luật khó mới: '+(S.cycle+1===2?'Đêm lạnh hơn':'Tiếp tế thưa')+'</strong><p>'+ruleText(S.cycle+1).slice(-1)[0]+'</p></div>' : '')
+            + '<div class="event-opts" role="group" aria-label="Chọn một phần thưởng">'
+            + S.rewards.map(function(r,i){ return '<button type="button" class="event-opt" data-action="pick-reward" data-i="'+i+'" aria-pressed="'+(S.rewardPicked===r.id)+'" '+(S.rewardPicked?'disabled':'')+'><b>'+rewardText(r)+'</b></button>'; }).join('')
+            + '</div><div class="stage-actions"><button type="button" class="btn btn-sun" data-action="next-cycle" '+(S.rewardPicked?'':'disabled')+'>Sang chu kỳ '+(S.cycle+1)+'</button></div>';
+        }
+        else if (S.phase === 'win'){
+          var avg = Math.round((S.res.air + S.res.water + S.res.food + S.res.energy) / 4);
+          var stars = avg >= 50 ? 3 : (avg >= 38 ? 2 : 1);
+          var starMsg = stars === 3 ? 'Chỉ huy xuất sắc! Sau 5 ngày, trạm vẫn còn đầy đủ mọi thứ và cả đội khỏe mạnh.'
+            : stars === 2 ? 'Làm tốt lắm, chỉ huy! Cả đội khỏe mạnh và trạm vận hành ổn định suốt 5 ngày.'
+            : 'Hoàn thành nhiệm vụ! Lần sau, hãy để ý thanh nào sắp hết sớm hơn một chút nhé.';
+          var starH = '';
+          for (var si=0; si<3; si++){ starH += '<svg viewBox="0 0 24 24" class="' + (si < stars ? 'on' : '') + '" aria-hidden="true">' + P.star + '</svg>'; }
+          var facts = S.facts.slice(0, 2);
+          h = '<div class="end-flex"><img src="{{ASSET:0}}" alt="Trạm Mặt Trăng sau 5 ngày, hai phi hành gia nhí vẫy tay chào" />'
+            + '<div><h2 class="phase-title">Sống sót hết 5 ngày!</h2>'
+            + '<div class="stars" role="img" aria-label="Con được ' + stars + ' trên 3 sao">' + starH + '</div>'
+            + '<p class="phase-text">' + starMsg + '</p>'
+            + '<div class="final-bars">'
+            + RES.map(function(r){
+                return '<div class="fb"><span>' + r.name + '</span><span class="track"><span class="fill" style="display:block;width:' + S.res[r.k] + '%;background:var(--' + r.k + ')"></span></span><span>' + S.res[r.k] + '</span></div>';
+              }).join('')
+            + '</div>'
+            + '<ul class="fact-list">'
+            + facts.map(function(f){ return '<li><b>Con đã học được</b>' + f + '</li>'; }).join('')
+            + '<li><b>Dữ liệu NASA</b>Một ngày trên Mặt Trăng dài khoảng 29,5 ngày Trái Đất, và nhiệt độ bề mặt đo bởi tàu LRO của NASA đổi từ khoảng −173°C ban đêm tới +127°C giữa trưa — đó là lý do Năng lượng của trạm lên xuống theo nắng thật trong suốt ván chơi.</li>'
+            + '<li><b>Nhớ nhé</b>Chỉ huy giỏi không chọn thẻ “mạnh nhất”, mà nhìn cả 4 thanh tài nguyên cùng một lúc.</li>'
+            + '</ul>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="play-again">Chơi ván mới</button></div>'
+            + '</div></div>';
+        }
+        else if (S.phase === 'lose'){
+          h = '<div class="end-flex"><img src="{{ASSET:1}}" alt="Phi hành gia nhí vẫn mỉm cười khích lệ" />'
+            + '<div><h2 class="phase-title">Thanh ' + RESNAME[S.loseRes] + ' đã cạn!</h2>'
+            + '<p class="phase-text">Đừng lo — <strong>cả đội đã về Trái Đất an toàn</strong> bằng tàu dự phòng, không ai bị sao cả. Chỉ huy giỏi là người biết nhìn lại và thử lại!</p>'
+            + (S.mode==='challenge' ? '<p class="phase-text">Con giữ trạm qua '+S.cyclesDone+' chu kỳ và '+S.day+' ngày.</p><p class="record-note">Kỷ lục cũ: '+bestBeforeRun+' chu kỳ · Kỷ lục '+(bestRecord>bestBeforeRun?'mới':'hiện tại')+': '+bestRecord+' chu kỳ.</p><p class="record-note" role="img" aria-label="Con được '+challengeStars()+' trên 3 sao">Sao: '+(challengeStars()?'★'.repeat(challengeStars()):'0')+'</p><p class="record-note">★ từ 3 chu kỳ, ★★ từ 6, ★★★ từ 10.</p>' : '')
+            + '<ul class="fact-list"><li><b>Mẹo cho ván sau</b>' + LOSE_TIP[S.loseRes] + ' Và nhớ: thanh nào thấp nhất thì ưu tiên chăm sóc thanh đó trước.</li></ul>'
+            + '<div class="stage-actions"><button type="button" class="btn btn-sun" data-action="play-again">'+(S.mode==='challenge'?'Chơi lại (mất phần thưởng đã chọn)':'Chơi ván mới')+'</button>'
+            + (S.mode==='challenge' ? '<button type="button" class="small-action" data-action="clear-record">Xóa kỷ lục trên máy này</button>' : '')+'</div>'
+            + '</div></div>';
+        }
+        stage.innerHTML = h;
+      }
+
+      /* ---------- Flow ---------- */
+      function lock(){ S.lock = true; setTimeout(function(){ S.lock = false; }, 600); }
+      var bestRecord=0;
+      try { bestRecord=Math.max(0,Math.floor(Number(localStorage.getItem('tmtn.v2.best'))||0)); } catch (_) {}
+      var bestBeforeRun=bestRecord;
+      function startGame(mode){ bestBeforeRun=bestRecord; Engine.step(S,{type:'start',mode:mode||S.mode}); render(); }
+
+      stage.addEventListener('click', function(e){
+        var btn = e.target.closest('[data-action]');
+        if (!btn || S.lock) return;
+        var action = btn.getAttribute('data-action');
+        if (action==='clear-record'){
+          bestRecord=0; bestBeforeRun=0;
+          try { localStorage.removeItem('tmtn.v2.best'); } catch (_) {}
+          render(); return;
+        }
+        if (action==='start' || action==='play-again') bestBeforeRun=bestRecord;
+        if (action !== 'select' && action !== 'pick-reward') lock();
+        Engine.step(S,{type:action,i:Number(btn.getAttribute('data-i')),mode:btn.getAttribute('data-mode')||S.mode});
+        if (S.cyclesDone>bestRecord){
+          bestRecord=S.cyclesDone;
+          try { localStorage.setItem('tmtn.v2.best',String(bestRecord)); } catch (_) {}
+        }
+        render();
+      });
+
+      /* ---------- Guide modal ---------- */
+      var guideModal = document.getElementById('guideModal');
+      var lastGuideFocus = null;
+      function openGuide(){
+        lastGuideFocus = document.activeElement;
+        guideModal.hidden = false;
+        guideModal.classList.add('open');
+        document.body.classList.add('modal-open');
+        var closeBtn = guideModal.querySelector('[data-close-guide]');
+        if (closeBtn) closeBtn.focus();
+      }
+      function closeGuide(){
+        guideModal.classList.remove('open');
+        guideModal.hidden = true;
+        document.body.classList.remove('modal-open');
+        if (lastGuideFocus && lastGuideFocus.focus) lastGuideFocus.focus();
+      }
+      document.querySelectorAll('[data-open-guide]').forEach(function(b){
+        b.addEventListener('click', openGuide);
+      });
+      guideModal.querySelectorAll('[data-close-guide]').forEach(function(b){
+        b.addEventListener('click', closeGuide);
+      });
+      guideModal.addEventListener('click', function(e){ if (e.target === guideModal) closeGuide(); });
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && guideModal.classList.contains('open')) closeGuide();
+      });
+
+      var restartTimer = null;
+      restartBtn.addEventListener('click', function(){
+        if (restartBtn.classList.contains('confirm')){
+          clearTimeout(restartTimer);
+          restartBtn.classList.remove('confirm');
+          restartBtn.textContent = 'Chơi lại từ đầu';
+          startGame();
+        } else {
+          restartBtn.classList.add('confirm');
+          restartBtn.textContent = 'Chắc chắn chơi lại?';
+          restartTimer = setTimeout(function(){
+            restartBtn.classList.remove('confirm');
+            restartBtn.textContent = 'Chơi lại từ đầu';
+          }, 3000);
+        }
+      });
+
+      render();
+    })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Lưới trạm</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width:1024px;height:768px;box-sizing:border-box;background:#101d42;color:#f2f6ff;font-family:'Be Vietnam Pro',system-ui,sans-serif;padding:28px 40px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
+
+<div style="display:flex;align-items:center;gap:12px">
+<h1 style="margin:0;font-family:'Baloo 2',sans-serif;font-size:34px;line-height:1.1;font-weight:800">Trạm của con</h1>
+<span style="background:#31498f;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700">Chu kỳ 4 · lưới 3×3</span>
+<div style="flex-grow:1"></div>
+<span style="background:#0e9594;color:#fff;border-radius:999px;padding:4px 14px;font-size:13px;font-weight:700">v1.2 · còn 1 hành động xây hôm nay</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;flex-grow:1;min-height:0">
+
+<div style="background:#182a5e;border:1px solid #31498f;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;flex-grow:1">
+
+<div style="background:#233a7a;border:2px solid #3d9d54;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:700;font-size:15px">Nhà kính</span><span style="font-size:13px;color:#b9c8ee">Cấp 1</span><span style="margin-top:auto;font-size:13px;font-weight:700;color:#7ee2a0">Thức ăn +5</span></div>
+<div style="background:#233a7a;border:2px solid #3f7de0;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:700;font-size:15px">Máy tái chế nước</span><span style="font-size:13px;color:#b9c8ee">Cấp 2</span><span style="margin-top:auto;font-size:13px;font-weight:700;color:#7ee2a0">Nước +8</span></div>
+<button style="background:transparent;border:2px dashed #5b73b8;border-radius:14px;color:#b9c8ee;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px">+ Ô trống</button>
+
+<div style="background:#233a7a;border:2px solid #e8a100;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:700;font-size:15px">Tấm pin Mặt Trời</span><span style="font-size:13px;color:#b9c8ee">Cấp 1</span><span style="margin-top:auto;font-size:13px;font-weight:700;color:#7ee2a0">Năng lượng +5</span></div>
+<div style="background:#233a7a;border:3px solid #f5a800;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:700;font-size:15px">Máy lọc khí</span><span style="font-size:13px;color:#b9c8ee">Cấp 1 · đang chọn</span><span style="margin-top:auto;font-size:13px;font-weight:700;color:#7ee2a0">Không khí +5</span></div>
+<button style="background:transparent;border:2px dashed #5b73b8;border-radius:14px;color:#b9c8ee;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px">+ Ô trống</button>
+
+<button style="background:transparent;border:2px dashed #5b73b8;border-radius:14px;color:#b9c8ee;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px">+ Ô trống</button>
+<button style="background:transparent;border:2px dashed #5b73b8;border-radius:14px;color:#b9c8ee;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px">+ Ô trống</button>
+<div style="background:#3a1a22;border:2px solid #d63a54;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:700;font-size:15px">Khiên chắn</span><span style="font-size:13px;color:#ffc2cc">Đang hỏng</span><span style="margin-top:auto;font-size:13px;font-weight:700;color:#ffc2cc">Cần sửa</span></div>
+
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:#b9c8ee">
+<span style="background:#0b1636;border-radius:8px;padding:3px 10px;color:#7ee2a0;font-weight:700">Kề nhau: Nhà kính + Máy tái chế nước = Thức ăn +1</span>
+<span>Tối đa 3 cặp kề nhau có hiệu lực.</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="background:#182a5e;border:1px solid #31498f;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'Baloo 2',sans-serif;font-size:24px;font-weight:700">Máy lọc khí · cấp 1</div>
+<div style="font-size:15px;color:#d6e0f7;line-height:1.5">Lọc không khí cho cả đội. Cần điện để chạy.</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<span style="border-radius:8px;padding:4px 10px;font-size:14px;font-weight:700;background:#0b1636;color:#7ee2a0">Không khí +5/ngày</span>
+<span style="border-radius:8px;padding:4px 10px;font-size:14px;font-weight:700;background:#0b1636;color:#ff9aa9">Năng lượng −2/ngày</span>
+</div>
+<div style="border-top:1px solid #31498f;padding-top:10px;display:flex;flex-direction:column;gap:6px">
+<div style="font-weight:700;font-size:14px">Nâng lên cấp 2</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<span style="border-radius:8px;padding:4px 10px;font-size:14px;font-weight:700;background:#0b1636;color:#7ee2a0">Không khí +8/ngày</span>
+<span style="border-radius:8px;padding:4px 10px;font-size:14px;font-weight:700;background:#0b1636;color:#ff9aa9">Năng lượng −3/ngày</span>
+<span style="border-radius:8px;padding:4px 10px;font-size:14px;font-weight:700;background:#0b1636;color:#ff9aa9">Tốn 6 năng lượng một lần</span>
+</div>
+</div>
+<span style="text-align:center;background:#f5a800;color:#2a1c00;border-radius:12px;padding:12px 0;font-size:16px;font-weight:700">Nâng cấp (dùng hành động xây hôm nay)</span>
+</div>
+<div style="background:#182a5e;border:1px solid #31498f;border-radius:16px;padding:16px 20px;display:flex;flex-direction:column;gap:6px">
+<div style="font-weight:700;font-size:15px">Mỗi ngày, trạm làm gì?</div>
+<div style="font-size:14px;color:#d6e0f7;line-height:1.6">Thu nhập 4 module: +5, +8, +5, +5. Hao phí duy trì và tiêu thụ đội 3 người được trừ lúc cuối ngày. Khiên chắn hỏng nên không cho hiệu ứng.</div>
+</div>
+<div style="background:#0b1636;border-radius:14px;padding:12px 16px;font-size:13px;color:#b9c8ee;line-height:1.5">Mockup v1.2. Mở lưới ở chu kỳ 2 (thay dòng nâng cấp hệ thống của v1.1) và chỉ 1 hành động xây hoặc nâng cấp mỗi ngày.</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1024,"height":768}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
