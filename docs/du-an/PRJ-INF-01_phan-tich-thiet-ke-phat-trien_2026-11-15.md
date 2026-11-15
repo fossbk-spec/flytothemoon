@@ -3,7 +3,7 @@
 | Hạng mục | Nội dung |
 |---|---|
 | Mã tài liệu | PRJ-INF-01 |
-| Phiên bản | **v0.4** (bản cũ cùng ngày: `archive/PRJ-INF-01_2026-11-15_v0.1.md`, `..._v0.2.md`; v0.3 không lưu riêng, khác v0.4 chỉ ở mục 12.5 và ba đoạn nêu trong lịch sử) |
+| Phiên bản | **v0.5** (bản cũ cùng ngày: `archive/PRJ-INF-01_2026-11-15_v0.4.md`, `archive/PRJ-INF-01_2026-11-15_v0.1.md`, `..._v0.2.md`; v0.3 không lưu riêng, khác v0.4 chỉ ở mục 12.5 và ba đoạn nêu trong lịch sử) |
 | Ngày | 15/11/2026 |
 | Tác giả | Nhóm phát triển Trạm Mặt Trăng Nhí |
 | Trạng thái | Draft — chờ chủ sản phẩm chốt 5 quyết định ở mục 11 và rà soát lần 2 |
@@ -16,6 +16,7 @@
 | Phiên bản | Ngày | Thay đổi |
 |---|---|---|
 | v0.1 | 15/11/2026 | Bản đề xuất đầu tiên |
+| v0.5 | 15/11/2026 | Thêm D-08 (giá trị tài nguyên khởi điểm theo chế độ) và ghi chú ở 5.4; tham chiếu PRJ-INF-04 |
 | v0.4 | 15/11/2026 | Sửa theo RV-03 (12.5): làm rõ chuẩn bị ngày 5 và thứ tự ưu tiên thẻ; điều kiện kho "hồi sức"; quy tắc sao khi dở chu kỳ |
 | v0.3 | 15/11/2026 | Sửa theo RV-02 (xem 12.4): tách hao phí module `M` khỏi luật `U`; đặc tả chuẩn bị thử thách và thứ tự ngày 5; hạn chế phần thưởng theo bản; thẻ mới; luật khẩn cấp ngày 5; hết luật hợp lệ; bảng khác biệt mô hình nháp |
 | v0.2 | 15/11/2026 | Sửa theo RV-01 (xem bảng 12.1): xác định thứ tự tính cuối ngày, sửa công thức tiêu thụ, giới hạn thử thách, luật Khám phá, chính sách vô hạn, tiêu chí nghiệm thu đo được; thêm mô hình cân bằng nháp `tools/proto_balance.py`; thêm yêu cầu có mã FR/NFR |
@@ -195,7 +196,7 @@ Hai ô kề cạnh theo bảng sau cho +1 vào tài nguyên nêu (tối đa 3 c�
 | Cuối ngày 5 (cộng dồn) | 70 − 5 = 65 | 70 − 20 = 50 | 70 − 15 = 55 | 70 − 25 + 4 = 49 |
 | Năng lượng từng ngày (−5 hao phí/tiêu thụ, cộng nắng; không chạm 0/100 nên clamp không đổi kết quả) | — | — | — | 61 → 60 → 61 → 59 → **49** |
 
-Kết luận: nếu bỏ phí cả 5 ngày, chu kỳ 1 vẫn không thua (Thanh thấp nhất là Năng lượng/Nước khoảng 49–50) → đủ an toàn để làm quen; từ chu kỳ 2 hao phí tăng theo `g(n)`, module mới, luật khó. **Cần xác nhận lại bằng engine thật khi có** (mô hình nháp ở mục 9.2 chưa gồm hao phí duy trì chi tiết).
+Kết luận: nếu bỏ phí cả 5 ngày, chu kỳ 1 vẫn không thua (Thanh thấp nhất là Năng lượng/Nước khoảng 49–50) → đủ an toàn để làm quen; từ chu kỳ 2 hao phí tăng theo `g(n)`, module mới, luật khó. **Giá trị khởi điểm trong ví dụ là 70 (chế độ Cổ điển/MVP). Khuyến nghị D-08: Thử thách 80, Khám phá 90; khi đó mọi giá trị trong bảng cộng 10 vì chưa chạm trần 100.** **Cần xác nhận lại bằng engine thật khi có** (mô hình nháp ở mục 9.2 chưa gồm hao phí duy trì chi tiết).
 
 ### 5.5 Luật khó (cộng dồn)
 
@@ -476,6 +477,7 @@ R1 độ phức tạp quá cao cho 6–7 tuổi; R2 độ khó vô hạn thành 
 | D-04 | Giữ 1 file HTML; xóa bản trùng? | Giữ `index.html` |
 | D-05 | Kỷ lục chỉ `localStorage`, không xuất/nhập? | Chỉ `localStorage` |
 | D-06 | Nhúng font để chạy hoàn toàn offline? | Có, nếu kích thước cho phép |
+| D-08 | Giá trị tài nguyên khởi điểm | Thử thách 80, Khám phá 90, Cổ điển 70 (không dùng 100); xem PRJ-INF-04 mục 2 |
 
 ## 12. Phụ lục
 

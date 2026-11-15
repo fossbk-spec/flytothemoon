@@ -1,0 +1,21 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-15T12:30:00Z" },
+  "title": "Sứ mệnh vô hạn — Mockup review",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1280, "h": 2100, "title": "Tổng hợp & phương án xây game", "expand": "fill" },
+    "Day.dc.html": { "x": 1360, "y": 0, "w": 1024, "h": 768, "title": "S-04 Ngày chơi (tương tác)", "is_interactive": true },
+    "Challenge.dc.html": { "x": 2464, "y": 0, "w": 1024, "h": 768, "title": "S-11 Báo thử thách (ngày 4)" },
+    "Reward.dc.html": { "x": 3568, "y": 0, "w": 1024, "h": 768, "title": "S-10 Chọn phần thưởng" },
+    "End.dc.html": { "x": 1360, "y": 848, "w": 1024, "h": 768, "title": "S-09 Kết thúc ván" },
+    "Grid.dc.html": { "x": 2464, "y": 848, "w": 1024, "h": 768, "title": "S-13 Lưới trạm (v1.2)" }
+  },
+  "order": ["Main.dc.html", "Day.dc.html", "Challenge.dc.html", "Reward.dc.html", "End.dc.html", "Grid.dc.html"],
+  "notes": {
+    "t1": { "x": 1360, "y": -260, "text": "Màn hình mockup: v1.1 (4 màn đầu) và v1.2 (lưới)", "kind": "title1", "maxW": 3232 },
+    "n1": { "x": 3568, "y": 848, "w": 360, "fill": "orange", "text": "Mockup chỉ để review luồng và bố cục, số liệu là giá trị khởi điểm (PRJ-INF-01 v0.4). Màn Ngày chơi bấm được: chọn một thẻ để xem hiệu ứng dự kiến." }
+  },
+  "designSystems": []
+}
