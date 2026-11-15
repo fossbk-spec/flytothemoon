@@ -1,0 +1,33 @@
+1. [HIGH] **RV-01 #1: chưa sửa triệt để.** Mục 5.4 giờ xác định tiêu thụ cố định theo ngày trong chu kỳ và ví dụ dùng 6/7/8/5, nhưng không định nghĩa làm tròn từng ngày hay làm rõ cách giải quyết phần “+1/ngày” của MVP ngoài việc nói đã thay bằng hệ số `g(n)`. Ví dụ chu kỳ 1 cộng dồn số nguyên nên phần làm tròn không ảnh hưởng ở đây; quy tắc vẫn thiếu cho các giá trị phân số ở chu kỳ sau.
+
+2. [HIGH] **RV-01 #2: ví dụ sửa đúng một phần, kết luận không đúng với thứ tự xử lý.** Bảng 5.4 tính thu nhập ròng và cộng dồn đúng khi bỏ qua thẻ/sự kiện. Nhưng theo 5.2, `LUNAR` áp dụng cuối ngày sau khi clamp tài nguyên: năng lượng ngày 1 xuống 65 rồi trừ 4 còn 61; ngày 2 lên 65; ngày 3 lên 71; ngày 4 lên 74; ngày 5 xuống 64. Vì thế ví dụ kết thúc với năng lượng 64, không phải 49. Các thanh khác lần lượt là không khí 65, nước 50, thức ăn 55. Thêm nữa, câu “thanh thấp nhất là Năng lượng/Nước khoảng 49–50” không còn đúng ngay cả theo số cộng dồn trong bảng: năng lượng 49, nước 50, nhưng đó là kết quả tính `LUNAR` sai thứ tự.
+
+3. [HIGH] **RV-01 #3: chưa xử lý nhất quán.** Hao phí bảo trì được đưa vào `U`, nhưng 5.2 cũng mô tả `U` là tổng hiệu ứng luật khó, còn 5.5 nói luật dùng `rule_drain`. Thiếu công thức phân biệt hao phí module với tác động luật, và thiếu làm rõ hệ số nâng cấp tác động ra sao đến hao phí. Câu “đã gộp vào U” không giải quyết các điểm này.
+
+4. [MED] **RV-01 #4–5: có quy tắc mới, nhưng chưa chứng minh cân bằng.** Mục 5.5/5.6 giới hạn số luật và áp lực tăng tối đa; sau luật #12 áp dụng `g(n)` đến trần 0,18, đồng thời từ chu kỳ 12 có hai thử thách liên tiếp. Đây là hướng trả lời vấn đề “vô hạn”, nhưng chưa quy định rõ luật nào được chọn khi danh sách hết luật hợp lệ; cũng chưa có kết quả mô phỏng đủ để xác nhận run không tất yếu kết thúc quá sớm hoặc kéo dài vô hạn.
+
+5. [MED] **RV-01 #6: một phần đã sửa.** Khám phá nay đặt thanh về 25, làm hỏng module, tiếp tục ngày sau; module hỏng không tạo thu nhập và không tốn bảo trì. Tuy nhiên chưa rõ nếu lần khẩn cấp thứ ba xảy ra ở ngày 5 thì chu kỳ kết thúc/lặp lại theo trạng thái nào, và lựa chọn module hỏng có bảo đảm hợp lệ ngoài điều kiện “không phải Hệ thống nền” hay không.
+
+6. [HIGH] **RV-01 #7–8: chưa khắc phục được bằng mô tả hiện tại.** “Chuẩn bị khả thi” chỉ yêu cầu có thẻ chuẩn bị trong tay ngày 3/4; không chứng minh thẻ có thể rút/đánh trước khi thử thách hoặc còn đủ tài nguyên để trả giá. Kiểm tra sống sót không nêu thuật toán/thứ tự kiểm tra. Bảng 5.7 còn có các hiệu ứng chưa định lượng đủ: “P” tác động lên hai thanh nhưng không chỉ rõ thanh nào; các vật phẩm chuẩn bị mới chỉ được nhắc là phải thêm vào bộ thẻ.
+
+7. [MED] **RV-01 #9–10: còn thiếu đặc tả cho phạm vi v1.1.** Mục 5.3 nói v1.1 chỉ có bốn hệ thống nâng cấp, nhưng phần thưởng 5.8 có thể cho module mới và điều kiện “còn ô và đã mở khóa”; lưới lại chỉ bắt đầu ở v1.2. Vì thế phần thưởng module mới ở v1.1 không thể đạt điều kiện được mô tả. Khái niệm phi hành gia/chuyên gia cũng xuất hiện trong phần thưởng trước khi có trong v1.3.
+
+8. [MED] **RV-01 #11: vẫn chưa có cơ sở cho tuyên bố cân bằng phần thưởng.** Mục 5.8 nói không có phần thưởng luôn tốt nhất nhưng không đưa chính sách lựa chọn hay số liệu so sánh; 5.9 gắn sao với số chu kỳ nhưng không có quy tắc xử lý nếu kết thúc giữa chu kỳ ngoài kỷ lục phụ.
+
+9. [MED] **RV-01 #12: chưa giải quyết.** PRJ-INF-02 ghi rõ thời điểm 15/11/2026 sau hạn Space Apps 14–15/11, nhưng vẫn gọi MVP là “bản dự thi”; PRJ-INF-01 vẫn để các quyết định phát hành chờ PO. Lịch S0–S3 và ước lượng không chỉ ra ngày công cụ thể/đầu mối đủ để chứng minh khả thi.
+
+10. [MED] **RV-01 #13–15, #17: mới sửa một phần.** PRJ-INF-01 thêm tiêu chí đo được và yêu cầu FR/NFR, nhưng quyết định D-01–D-06 vẫn chờ; mục 9.2 vẫn mô tả mô hình sơ bộ chứ không nêu chính sách mô phỏng tái lập đầy đủ. Mục 9.5 có thể cụ thể hóa riêng tư, nhưng không xác nhận được bản phát hành thực tế không gọi mạng.
+
+11. [HIGH] **Ví dụ số mục 5.4 tự mâu thuẫn.** Tổng biến thiên mỗi ngày là không khí −1, nước −4, thức ăn −3, năng lượng trước `LUNAR` −5. Cộng `LUNAR` đúng thứ tự cho kết quả cuối 65/50/55/64; bảng ghi 65/50/55/49 vì cộng tổng `LUNAR` +4 vào năng lượng mà không áp dụng clamp ngày. Do quy tắc 5.2 clamp sau từng ngày, không thể cộng dồn các hiệu ứng ngày trước khi clamp.
+
+12. [HIGH] **Mâu thuẫn backlog/ước lượng.** PRJ-INF-02 có 29 mục; theo thang đã ghi S=1, M=2–3, L=4–6 ngày và phân loại 7 S, 14 M, 8 L, tổng là 67–105 ngày công, không phải 40–48. Con số 40–48 cũng không khớp phép cộng ghi trong tài liệu: `7 + 14×~2,5 + 12×5` vừa dùng 12 L dù backlog có 8 L, vừa ra khoảng 102.5 ngày.
+
+13. [MED] **IDs/phạm vi giữa hai tài liệu chưa đồng bộ.** INF-019 yêu cầu “≥7 thẻ mới” và 7 thử thách, trong khi PRJ-INF-01 chỉ nêu vật phẩm mới rải rác và không lập danh mục xác nhận đủ số lượng. INF-029 là quyết định D-04 nhưng phụ thuộc D-04; INF-027 phụ thuộc D-06 dù cả hai là quyết định đang chờ. PRJ-INF-02 nói S0 cập nhật SRS/SDD/UX theo CR-01, nhưng PRJ-INF-01 không có CR-01 trong sổ quyết định.
+
+14. [HIGH] **Các quy tắc 5.2–5.8 còn trạng thái không đạt được hoặc mơ hồ.** Ngày 5 mô tả thử thách nhưng không nói thứ tự so với sự kiện; 5.2 nói mỗi ngày chọn một thẻ, còn 5.7 nói phải có thẻ chuẩn bị trong hand ngày 3–4 nhưng không chỉ ra thao tác chơi thẻ. Thẻ “Lau pin”, “Sửa ống”, “Chăm sóc” và module “Kho dự trữ” được viện dẫn trước khi có đặc tả vận hành/điều kiện lưới tương ứng. Phần thưởng “module mới” không đạt điều kiện ở v1.1 như mục 5.3/5.8 đang viết.
+
+15. [HIGH] **`proto_balance.py` không mô phỏng mô hình đã tài liệu hóa.** Mã bỏ qua thứ tự 5.2, làm tròn và clamp theo ngày có trong tài liệu; dùng thẻ +13/−6, luật sự kiện ngẫu nhiên, xác suất chuẩn bị, nâng cấp tốn 6 năng lượng và thưởng +20—các chi tiết không được đồng nhất với quy tắc 5.2–5.8. Script còn có hệ thống khởi đầu cấp 0 nhưng dùng `lvl_mult[0]=1` nên thu nhập đúng mức cấp 1; đây là cách mã hóa riêng, không khớp trực tiếp mô hình tài liệu. Grid, crew và luật tăng theo chu kỳ cũng khác phạm vi v1.1 đã nói “chưa có lưới”.
+
+16. [HIGH] **Claim mục 9.2 không được hỗ trợ bởi script như hiện có.** Tài liệu tuyên bố mục tiêu bot khó sống qua 3 chu kỳ với xác suất ≥0,95 và tỷ lệ sống đến chu kỳ 10 trong khoảng 0,60–0,80; script in `P(>=3/6/10)` nhưng không nêu kết quả chạy, tiêu chí “bot khó”/“ngẫu nhiên” không khớp chính sách trong tài liệu, và hai bot chỉ so sánh sống sót chứ không kiểm tra đầy đủ tiêu chí chiến lược. Vì vậy không thể xác nhận các claim cân bằng từ mã nguồn được cung cấp.
+
+**VERDICT: FAIL**

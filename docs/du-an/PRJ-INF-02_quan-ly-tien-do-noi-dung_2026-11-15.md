@@ -1,0 +1,360 @@
+# PRJ-INF-02 — Quản lý tiến độ và nội dung dự án "Sứ mệnh vô hạn"
+
+| Hạng mục | Nội dung |
+|---|---|
+| Mã tài liệu | PRJ-INF-02 |
+| Phiên bản | **v0.3** (bản cũ cùng ngày: `archive/PRJ-INF-02_2026-11-15_v0.1.md`) |
+| Ngày | 15/11/2026 |
+| Tác giả | Nhóm phát triển Trạm Mặt Trăng Nhí |
+| Trạng thái | Draft — các mốc ngày là mục tiêu, điều chỉnh sau Sprint 0 |
+| Tài liệu gốc | PRJ-INF-01 v0.4 (yêu cầu, thiết kế, phát triển); RV-01, RV-02, RV-03 (rà soát) |
+| Quy ước tên file | `<MÃ>_<slug>_<YYYY-MM-DD>.md`; phiên bản ghi trong file; bản cũ chuyển vào `archive/` kèm hậu tố `_vX.Y` |
+
+## Lịch sử phiên bản
+
+| Phiên bản | Ngày | Thay đổi |
+|---|---|---|
+| v0.1 | 15/11/2026 | Bản đầu: vai trò, lịch, backlog, quản lý nội dung, rủi ro, kiểm soát thay đổi |
+| v0.3 | 15/11/2026 | Sửa theo RV-03: tài liệu gốc PRJ-INF-01 v0.4; INF-001 gồm D-07; lịch A thêm tuần đệm phát hành; kịch bản B tính lại ~1/3/2027 |
+| v0.2 | 15/11/2026 | Sửa theo RV-02: ước lượng backlog tính lại (≈ 73 ngày công, không phải 40–48); lịch dựng theo năng lực (kịch bản C=10/C=5); số thẻ mới thống nhất (≥ 3); danh mục CR-01…CR-03; bỏ chữ "bản dự thi"; thêm D-07 năng lực |
+
+---
+
+## 1. Mục tiêu quản lý
+
+1. Giao được từng bản (v1.1 → v3.0) đúng cổng nghiệm thu của PRJ-INF-01 mục 9.4, không tràn phạm vi.
+2. Mọi nội dung (thẻ, sự kiện, luật, thử thách, module, văn bản giải thích) có nguồn, có người duyệt, truy vết được.
+3. Mọi thay đổi luật chơi đi qua kiểm soát thay đổi: sửa tài liệu chủ quản trước, mã sau.
+4. Báo cáo tiến độ ngắn, đo được, mỗi tuần một lần.
+
+## 2. Vai trò và trách nhiệm
+
+| Vai trò | Người đảm nhiệm | Trách nhiệm chính |
+|---|---|---|
+| Chủ sản phẩm (PO) | Hoàng Quang Huy | Chốt phạm vi, ưu tiên, quyết định D-xx, duyệt phát hành |
+| Phụ trách kỹ thuật | Do PO chỉ định | Kiến trúc, `engine`, CI, kích thước, quyền riêng tư |
+| Lập trình viên | Do PO chỉ định | Cài đặt theo PRJ-INF-01, test, PR nhỏ |
+| Rà soát kỹ thuật | Người khác lập trình viên | Review PR theo checklist mục 5.3, PASS/FAIL |
+| Biên tập nội dung/khoa học | Do PO chỉ định | Viết và duyệt khoa học, nguồn NASA, mức đọc lớp 1–2 |
+| Cố vấn giáo viên | ≥ 2 giáo viên tiểu học | Duyệt ngôn ngữ, thời lượng, tham gia pilot |
+| Người quan sát pilot | Do PO chỉ định | Ghi phiếu quan sát, không can thiệp |
+
+RACI rút gọn:
+
+| Hoạt động | PO | Kỹ thuật | Lập trình | Rà soát | Nội dung | GV |
+|---|---|---|---|---|---|---|
+| Chốt phạm vi bản | A/R | C | C | I | C | I |
+| Sửa tài liệu chủ quản (SRS/SDD/UX) | A | R | C | C | C | I |
+| Cài đặt tính năng | I | A | R | C | I | I |
+| Duyệt PR | I | A | I | R | I | I |
+| Nội dung mới (thẻ/sự kiện…) | A | I | C | I | R | C |
+| Cân bằng/mô phỏng | I | A | R | C | I | I |
+| Pilot học sinh | A | I | I | I | C | R |
+| Phát hành | A/R | R | C | C | C | I |
+
+(R = thực hiện, A = chịu trách nhiệm cuối, C = tham vấn, I = được thông báo.) Một người có thể giữ nhiều vai trò, nhưng **người rà soát PR không được là tác giả PR**.
+
+## 3. Phương pháp và nhịp làm việc
+
+- Sprint 1 tuần (thứ Hai → Chủ nhật). Ngày giao ước: **thứ Hai** lập kế hoạch sprint (30 phút), **thứ Sáu** đánh giá nhanh và cập nhật báo cáo tuần.
+- Công việc theo dõi bằng GitHub Issues + Milestone (mỗi bản một milestone) + Project board 5 cột: `Backlog → Ready → In progress → In review → Done`.
+- Nhãn: `epic:engine|content|ui|test|docs|pilot|release`, `prio:P0–P2`, `size:S|M|L`, `type:feature|bug|content|change-request`, `blocked`.
+- **Định nghĩa Ready:** có mã yêu cầu (FR/NFR), tiêu chí chấp nhận, ước lượng, không bị chặn, thiết kế ở tài liệu chủ quản đã duyệt.
+- **Định nghĩa Done:** mã đã review PASS; test xanh (CI); mô phỏng không xấu đi (nếu ảnh hưởng cân bằng); tài liệu chủ quản và changelog đã cập nhật; nội dung mới đã qua workflow mục 6; kích thước ≤ ngân sách.
+
+## 4. Lộ trình và mốc
+
+Hôm nay 15/11/2026, sau hạn Space Apps (14–15/11); MVP đã nộp. "Sứ mệnh vô hạn" là chuỗi bản sau dự thi. Lịch phụ thuộc **năng lực C = số ngày công thực tế mỗi tuần** (quyết định D-07). Ngày dưới đây là **mục tiêu có điều kiện**, xét lại ở cuối Sprint 0.
+
+| Kịch bản | C | v1.1 (≈ 73 ngày công) | Ghi chú |
+|---|---|---|---|
+| A. 2 người toàn thời gian | 10 | khoảng 7–8 tuần (S0 ≈ 8,5 ngày công tài liệu; S1–S6 ≈ 64,5 ngày công) + 1 tuần đệm → ~10/1/2027 | Lịch bảng dưới |
+| B. 1 người toàn thời gian | 5 | khoảng 14–15 tuần → ~1/3/2027 (chưa tính nghỉ Tết) | Cắt phạm vi theo "v1.1-lite" dưới |
+| C. 1 người bán thời gian | 2,5 | > 28 tuần | Chỉ khả thi với v1.1-lite |
+
+**v1.1-lite** (cắt ≈ 22 ngày công → ≈ 51 ngày công): bỏ INF-025, 027, 029; luật khó chỉ #1–#2; thử thách 4 loại (bão, đêm dài, thiên thạch, đường ống); thẻ mới tối thiểu CARD-017 và CARD-016; pilot 5 em. Phần cắt chuyển sang v1.2.
+
+| Sprint | Tuần | Mục tiêu | Sản phẩm bàn giao | Cổng |
+|---|---|---|---|---|
+| S0 | 16–22/11 | Chốt D-01…D-07; rà soát PRJ-INF-01 v0.3; sửa SRS/SDD/UX (CR-01…CR-03); dựng CI; tách `engine` khung | Tài liệu chủ quản cập nhật; repo có `src/`, `tests/`, CI xanh | G0: PO duyệt phạm vi |
+| S1–S2 | 23/11–6/12 | Engine v1.1 (chu kỳ, thử thách, thưởng, luật #1–#4, Khám phá, cổ điển) + test + `sim.mjs` (kịch bản A: 20 ngày công) | `engine` đạt test; báo cáo mô phỏng lần 1 | G1: mô phỏng đạt 9.2 sơ bộ (hết S2) |
+| S3–S4 | 7–20/12 | UI v1.1 (S-04, S-09, S-10, S-11), nội dung thẻ/thử thách mới, tiếp cận (kịch bản A: 25 ngày công) | Bản beta `v1.1-rc1` | G2: nội dung `approved` đủ |
+| S5–S6 | 21/12–3/1 | Pilot ≥ 5 em, sửa lỗi, cân bằng lại, kiểm tra 9.5 | `v1.1-rc2` | — |
+| S7 | 4–10/1 | Tuần đệm: khắc phục sót, biên bản, phát hành | **v1.1** (mục tiêu ~10/1/2027, kịch bản A) | G3: cổng v1.1 |
+| S8–S11 | 11/1–7/2 (sau khi v1.1 xong) | v1.2: engine lưới, UI lưới, dự báo 3 ngày, luật #5–#8; pilot 10 em + 2 giáo viên | **v1.2** (mục tiêu cuối 1/2027, kịch bản A) | G6 |
+| — | 8–21/2 | Đệm Tết Nguyên đán (6/2/2027) | — | — |
+| S12–S15 | 22/2–21/3 | v1.3: đội, chuyên gia, kề nhau, luật #9–#12, lưới 4×4, bot trội | **v1.3** (mục tiêu giữa 3/2027, kịch bản A) | G9 |
+| — | từ 15/3 | v2.0 lập kế hoạch sau G9 | — | — |
+
+Tiêu chí chuyển cổng ở PRJ-INF-01 mục 9.4. **Quy tắc trượt lịch:** nếu một sprint trượt > 30% điểm, giảm phạm vi của bản (bỏ luật hoặc module cuối bảng) chứ không kéo dài cổng chất lượng.
+
+## 5. Backlog khởi tạo
+
+Ước lượng bằng *ngày công lý tưởng* (ngày-người) cho 1 người; S ≤ 1 ngày, M = 2–3, L = 4–6. Ưu tiên MoSCoW: M (phải), S (nên), C (có thể).
+
+### 5.1 Bản v1.1 (milestone `v1.1`)
+
+| ID | Tiêu đề | Yêu cầu | Epic | Size | MoSCoW | Phụ thuộc |
+|---|---|---|---|---|---|---|
+| INF-001 | Chốt D-01…D-07, ghi vào sổ quyết định | — | docs | S | M | — |
+| INF-002 | Cập nhật SRS: yêu cầu chu kỳ, thưởng, thử thách, Khám phá, cổ điển | FR-INF-01…06 | docs | M | M | 001 |
+| INF-003 | Cập nhật SDD: thuật toán 5.2/5.4, `CONFIG`, luật khó, thử thách | FR-INF-01…06 | docs | M | M | 001 |
+| INF-004 | Cập nhật UX-04: S-04, S-09, S-10, S-11 | FR-INF-08, 09 | docs | M | M | 001 |
+| INF-005 | Repo: cấu trúc `src/`, `tests/`, `tools/`, `build.mjs` | NFR-INF-08 | engine | M | M | 001 |
+| INF-006 | CI (`node --test` + kích thước + quét mạng) | NFR-INF-02, 03 | test | S | M | 005 |
+| INF-007 | `rng.js` (mulberry32) + state có seed | NFR-INF-06 | engine | S | M | 005 |
+| INF-008 | `config.js` với toàn bộ hằng số | NFR-INF-08 | engine | S | M | 005 |
+| INF-009 | Engine: chu kỳ, ngày, thứ tự xử lý 5.2, clamp | FR-INF-01 | engine | L | M | 007, 008 |
+| INF-010 | Engine: tiêu thụ 5.4 + hệ số `g(n)` | FR-INF-01 | engine | M | M | 009 |
+| INF-011 | Engine: thử thách + báo trước + chuẩn bị khả thi | FR-INF-02 | engine | L | M | 009 |
+| INF-012 | Engine: phần thưởng 1/3 | FR-INF-03 | engine | M | M | 009 |
+| INF-013 | Engine: luật khó #1–#4 | FR-INF-04 | engine | M | M | 009 |
+| INF-014 | Engine: chế độ Khám phá (khẩn cấp) | FR-INF-05 | engine | M | M | 009 |
+| INF-015 | Engine: chế độ cổ điển + hồi quy MVP | FR-INF-06 | engine | M | M | 009 |
+| INF-016 | Lưu/khôi phục, kỷ lục, nút xóa dữ liệu | FR-INF-07, NFR-INF-07 | engine | M | M | 009 |
+| INF-017 | `sim.mjs` + bot (a)(b) + báo cáo | FR-INF-16 | test | M | M | 009 |
+| INF-018 | Thử nghiệm đơn vị: bất biến, xác định, không bế tắc | 9.1 | test | L | M | 011–015 |
+| INF-019 | Nội dung: 3 thẻ mới (CARD-016/017/018), 7 thử thách, 4 luật, văn bản thưởng | FR-INF-15 | content | L | M | workflow §6 |
+| INF-020 | UI: S-04 (chu kỳ/ngày/dự báo/thử thách) | FR-INF-08 | ui | L | M | 009 |
+| INF-021 | UI: S-10 chọn thưởng, S-11 báo thử thách | FR-INF-02,03 | ui | M | M | 020 |
+| INF-022 | UI: S-09 kết thúc/khẩn cấp + gợi ý | FR-INF-09 | ui | M | M | 014 |
+| INF-023 | Tiếp cận: bàn phím, tương phản, vùng chạm | NFR-INF-04 | ui | M | M | 020–022 |
+| INF-024 | Kiểm tra quyền riêng tư (9.5) + biên bản | NFR-INF-03 | test | S | M | 016, 020 |
+| INF-025 | Bot (c)–(f) + báo cáo chiến lược trội | 6.4 | test | M | S | 017 |
+| INF-026 | Pilot vòng 1 (≥ 5 em) + phiếu quan sát | 9.3 | pilot | M | M | 021 |
+| INF-027 | Nhúng font/loại phụ thuộc mạng (D-06) | NFR-INF-03 | ui | S | S | D-06 |
+| INF-028 | Biên bản phát hành v1.1 + changelog | — | release | S | M | 018, 024, 026 |
+| INF-029 | Quyết định D-04: xóa/đồng bộ `Trạm Mặt Trăng Nhí.html` | — | release | S | S | D-04 |
+
+Đếm lại backlog 29 việc: 8 S, 16 M, 5 L. Với S = 1, M = 2–3 (lấy 2,5), L = 4–6 (lấy 5): 8×1 + 16×2,5 + 5×5 = **73 ngày công** (khoảng 60–86). Bản v0.1 ghi 40–48 là **sai**. Bảng kịch bản ở mục 4 dùng 73; v1.1-lite ≈ 51. Nếu không có đủ nguồn lực, cắt theo thứ tự INF-025 → 027 → 029 → luật #3–#4 → thẻ CARD-018.
+
+### 5.2 Các bản sau (epic, chưa chia nhỏ)
+
+| Bản | Epic | Ước lượng |
+|---|---|---|
+| v1.2 | Lưới + module + kề nhau (khung), dự báo 3 ngày, bảng luật, luật #5–#8, S-12/S-13 | 25–35 ngày công |
+| v1.3 | Đội + chuyên gia, thẻ chuyên môn, luật #9–#12, lưới 4×4, bot trội đầy đủ | 20–30 ngày công |
+| v2.0 | Chương Cực Nam/ISRU, checkpoint, nội dung chương | 20–25 ngày công |
+| v2.5–3.0 | Chương Tự túc, Sao Hỏa, chế độ Chuyên gia | 30–40 ngày công |
+
+### 5.3 Checklist review PR (người rà soát)
+
+1. Có mã yêu cầu/Issue; thay đổi luật đã có CR và tài liệu chủ quản cập nhật.
+2. `engine` không dùng DOM, `Math.random`, `Date` trực tiếp.
+3. Mọi hằng số cân bằng nằm trong `CONFIG`.
+4. Test mới cho hành vi mới; CI xanh; kích thước trong ngân sách.
+5. Nội dung mới có `source`, `status` không thấp hơn `science_ok`.
+6. Không thêm yêu cầu mạng, không lưu dữ liệu ngoài khóa `tmtn.v2.*`.
+7. Báo cáo mô phỏng đính kèm khi đổi tham số hoặc luật.
+8. Kết luận ngắn: **PASS / PASS WITH FIXES / FAIL**.
+
+## 6. Quản lý nội dung
+
+### 6.1 Phạm vi nội dung
+
+| Loại | Mã ID | Số lượng v1.1 | v1.3 | Ghi chú |
+|---|---|---|---|---|
+| Thẻ quyết định | `CARD-xxx` | 15 cũ + 3 mới (016–018) | ≥ 30 | Mỗi thẻ có `fact` có nguồn |
+| Sự kiện | `EVT-xxx` | 8 cũ | ≥ 14 | Mỗi sự kiện 2 lựa chọn, có lời giải thích |
+| Thử thách | `CHL-xxx` | 7 | 10 | Luôn kèm thẻ chuẩn bị |
+| Luật khó | `RUL-xxx` | 4 (#1–#4) | 12 | Gắn dữ kiện NASA |
+| Module | `MOD-xxx` | 4 hệ thống | 9 | v1.2 bắt đầu có lưới |
+| Phần thưởng | `RWD-xxx` | 4 loại | 6 | Văn bản trẻ em |
+| Bài học sau ván | `LSN-xxx` | ≥ 12 | ≥ 30 | Hiển thị ở S-09 |
+| Chương (v2.0+) | `CHP-xxx` | — | — | Bộ luật khởi điểm + bối cảnh |
+
+### 6.2 Cấu trúc một mục nội dung
+
+```json
+{
+  "id": "CARD-023",
+  "since": "1.1",
+  "type": "card",
+  "title": "Lau sạch tấm pin",
+  "text": "…",
+  "fx": { "energy": 10, "air": -3 },
+  "fact": "…",
+  "source": ["NASA Science: Moon dust"],
+  "readability": "L1-2",
+  "status": "approved",
+  "owner": "biên tập nội dung",
+  "reviewed": { "science": "2026-11-20", "language": "2026-11-21", "balance": "2026-11-22" }
+}
+```
+
+### 6.3 Quy trình trạng thái nội dung
+
+```
+draft → science_ok → language_ok → balance_ok → approved → shipped → (retired)
+```
+
+| Chuyển | Điều kiện | Người duyệt |
+|---|---|---|
+| draft → science_ok | Mọi dữ kiện có nguồn (mục 6.4); không nói quá điều NASA chưa công bố | Biên tập khoa học |
+| → language_ok | Mức đọc lớp 1–2; câu ≤ 15 từ; không thuật ngữ chưa giải thích; không từ gây sợ | Cố vấn giáo viên |
+| → balance_ok | Không thẻ nào trội; đã chạy sim với nội dung này; hiệu ứng khớp thiết kế | Phụ trách kỹ thuật |
+| → approved | Cả ba bước trên + không trùng ý nội dung đã có | PO |
+| → shipped | Có trong bản đã phát hành | Tự động theo changelog |
+| → retired | Gây lỗi, sai khoa học hoặc phản hồi xấu từ pilot | PO |
+
+Chỉ nội dung `approved` mới vào nhánh phát hành. CI kiểm tra: mọi mục trong `content/` có `id`, `source`, `status ≥ approved` khi gắn nhãn phát hành.
+
+### 6.4 Sổ nguồn dữ kiện (Source Register)
+
+| Mã | Dữ kiện | Nguồn | Ngày truy cập | Dùng ở |
+|---|---|---|---|---|
+| SRC-01 | Ngày Mặt Trăng ~29,5 ngày Trái Đất | NASA Science — Moon facts | 15/11/2026 | RUL-001, `LUNAR` |
+| SRC-02 | +127°C ban ngày, −173°C ban đêm (xích đạo) | LRO Diviner | 15/11/2026 | `LUNAR`, RUL-007 |
+| SRC-03 | Hố tối vĩnh viễn, băng nước (LCROSS ~5,6% khối lượng) | NASA LRO/LCROSS | 15/11/2026 | CARD-005, RUL-009 |
+| SRC-04 | Kế hoạch trạm Mặt Trăng 3 giai đoạn | NASA Moon Base plan (03/2026) | 15/11/2026 | Roadmap |
+| SRC-05 | ISS tái chế > 90% nước | NASA ISS | cần xác nhận lại | CARD-003, RUL-005 |
+| SRC-06 | Bụi Mặt Trăng mịn, sắc, bám mọi thứ | NASA (Apollo/LRO) | cần xác nhận lại | RUL-002, EVT-004 |
+
+Quy tắc: nguồn ghi tên trang + ngày truy cập; số liệu "cần xác nhận lại" không được `science_ok` cho đến khi xác nhận. Nguồn game phổ thông (Slay the Spire, Mini Metro…) chỉ ghi ở tài liệu thiết kế, **không** vào nội dung trò chơi.
+
+### 6.5 Quy tắc viết cho trẻ em
+
+- Mức đọc lớp 1–2: câu ngắn, từ quen thuộc; giải thích thuật ngữ trong cùng câu.
+- Không gây sợ ("thua", "chết", "thảm họa" → "trạm cần giúp", "thử lại nhé").
+- Mỗi thẻ ≤ 25 từ; mỗi sự kiện ≤ 40 từ; mỗi bài học ≤ 2 câu.
+- Hình ảnh/biểu tượng đi kèm; không phụ thuộc màu.
+- Nội dung có số: viết bằng chữ số, đơn vị Việt Nam.
+
+### 6.6 Kiểm soát phiên bản nội dung
+
+- Nội dung thuộc repo; thay đổi nội dung đi qua PR như mã.
+- Bản đã phát hành: sửa lỗi nhỏ → patch (v1.1.1); thêm nội dung → minor; đổi luật → CR (mục 8) và có thể là major.
+- Trước khi sửa một tài liệu nội dung đã phát hành, lưu bản cũ ở `docs/du-an/archive/` với tên `<MÃ>_<YYYY-MM-DD>_vX.Y.md` (cùng quy ước với các sách khác của nhóm).
+
+## 7. Theo dõi tiến độ và báo cáo
+
+### 7.1 Chỉ số
+
+| Chỉ số | Cách đo | Ngưỡng cảnh báo |
+|---|---|---|
+| Tiến độ điểm | Điểm hoàn thành / điểm đã cam kết (S=1, M=3, L=5) | < 70% ở giữa sprint |
+| Vận tốc | Điểm Done/sprint (trung bình 3 sprint) | Giảm > 30% |
+| Chất lượng | Số lỗi mở ưu tiên P0–P1 | > 0 P0 khi phát hành |
+| CI | Tỉ lệ xanh trên nhánh chính | < 95% |
+| Cân bằng | Trung vị chu kỳ bot (b); P(≥ 3); thanh gây thua nhiều nhất | Ngoài 9.2 |
+| Kích thước | KB so với MVP | > +150 KB |
+| Nội dung | % mục `approved` trên mục kế hoạch của bản | < 100% tại G2 |
+| Pilot | Số em; % không cần giúp; % hoàn thành chu kỳ 1 | Ngoài 9.3 |
+
+### 7.2 Báo cáo tuần (mẫu, ≤ 1 trang, lưu `docs/du-an/status/TT_YYYY-MM-DD.md`)
+
+```
+# Báo cáo tuần <ngày>
+Trạng thái: 🟢/🟡/🔴 | Bản: v1.x | Sprint: Sn
+## Đã xong (Issue #…)
+## Đang làm / Dự kiến tuần tới
+## Chỉ số: điểm xong/cam kết; CI; sim; kích thước; nội dung approved/kế hoạch
+## Rủi ro mới / thay đổi mức
+## Quyết định cần từ PO (hạn)
+## Thay đổi (CR) đã nhận/đã duyệt
+```
+
+Quy tắc RAG: 🟢 đúng kế hoạch; 🟡 trễ ≤ 1 sprint hoặc 1 chỉ số vượt ngưỡng; 🔴 trễ > 1 sprint, P0 tồn đọng, hoặc cổng không đạt.
+
+### 7.3 Họp
+
+| Họp | Nhịp | Thời lượng | Nội dung |
+|---|---|---|---|
+| Kế hoạch sprint | Thứ Hai | 30 phút | Chọn việc Ready, cam kết điểm |
+| Đồng bộ nhanh | Khi cần, bằng chữ | — | Chặn/cần quyết định |
+| Đánh giá sprint | Thứ Sáu | 30 phút | Demo, số liệu, cập nhật báo cáo |
+| Cổng (G0–G9) | Cuối bản | 45 phút | Kiểm tra từng điều kiện 9.4, ký biên bản |
+| Hồi cứu | Sau mỗi bản | 30 phút | Giữ/bỏ/đổi |
+
+## 8. Kiểm soát thay đổi
+
+Theo TMTN-GUIDE-07: mỗi thay đổi luật chơi đi qua một CR (Issue gắn `type:change-request`). CR dự kiến ở Sprint 0:
+
+| CR | Nội dung | Tài liệu chủ quản |
+|---|---|---|
+| CR-01 | Thêm yêu cầu chu kỳ vô hạn, thử thách, thưởng, Khám phá, cổ điển (FR-INF-01…09, 15, 16) | SRS |
+| CR-02 | Thứ tự xử lý ngày, công thức tiêu thụ/`M`/`U`, `CONFIG`, thẻ CARD-016…018 | SDD |
+| CR-03 | Màn hình S-04, S-09, S-10, S-11 | UX-04 |
+
+
+```
+CR-NN | Người đề xuất | Ngày
+Mô tả thay đổi | Lý do (dữ liệu: sim, pilot, phản hồi)
+Ảnh hưởng: SRS § | SDD § | UX § | Test § | Nội dung | Lịch (±ngày) | Rủi ro
+Phương án A / B | Khuyến nghị
+Quyết định PO: duyệt / từ chối / hoãn | Ngày | Ghi chú
+```
+
+Quy tắc: (1) CR ảnh hưởng luật phải sửa tài liệu chủ quản **trước** khi viết mã; (2) CR làm lệch lịch > 3 ngày phải kèm đề xuất bù (bỏ gì); (3) sau khi nhận bản beta của sprint, **đóng băng nội dung** 3 ngày trước cổng (chỉ sửa lỗi); (4) mọi CR ghi vào sổ quyết định mục 10.
+
+## 9. Sổ rủi ro
+
+Điểm = Xác suất (1–3) × Ảnh hưởng (1–3). Rà soát mỗi báo cáo tuần.
+
+| ID | Rủi ro | XS | ƯH | Điểm | Chủ rủi ro | Dấu hiệu | Giảm thiểu / Dự phòng |
+|---|---|---|---|---|---|---|---|
+| R1 | Quá phức tạp cho 6–7 tuổi | 2 | 3 | 6 | PO | Pilot: > 20% cần giúp ở chu kỳ 1 | v1.1 không lưới; Khám phá; mẹo biến dần; pilot sớm |
+| R2 | "Tường" độ khó vô hạn | 2 | 3 | 6 | Kỹ thuật | P(sống > 3 chu kỳ) < 0,95 của bot khá | Mô phỏng từng luật; đổi `g`, thêm hồi |
+| R3 | Chiến lược trội | 2 | 2 | 4 | Kỹ thuật | Bot (c)–(f) > 1,5× | Tăng hao phí/điểm yếu module |
+| R4 | Sai nội dung khoa học | 1 | 3 | 3 | Nội dung | Số "cần xác nhận lại" còn tồn | Source Register; không phát hành mục chưa `science_ok` |
+| R5 | Tài liệu lệch mã | 2 | 2 | 4 | Kỹ thuật | PR đổi luật không có CR | Checklist review mục 5.3, CI nhắc |
+| R6 | Tràn phạm vi | 3 | 2 | 6 | PO | Số CR mới > 3/sprint | Quy tắc trượt lịch; đóng băng nội dung |
+| R7 | Mô hình nháp ≠ engine thật | 3 | 2 | 6 | Kỹ thuật | Chênh > 25% trung vị | Thay `proto_balance.py` bằng `sim.mjs` ở S1 |
+| R8 | Thiếu nguồn lực (backlog 73 ngày công, C chưa rõ) | 3 | 3 | 9 | PO | Vận tốc < kế hoạch 2 sprint liên tiếp | v1.1-lite; cắt theo thứ tự mục 5.1; kéo dài lịch; D-07 |
+| R9 | Không đủ học sinh/giáo viên pilot | 2 | 3 | 6 | PO | Chưa có lịch pilot đến S2 | Đặt lịch pilot ở S0; hỏi lớp quen; dự phòng giáo viên thử thay |
+| R10 | Lỗi lưu trữ/riêng tư | 1 | 3 | 3 | Kỹ thuật | Test 9.5 lỗi | CI quét mạng; kiểm tra thủ công mỗi release |
+
+Các rủi ro điểm ≥ 6 xem lại **mỗi tuần**; điểm 9 (R8) cần phương án dự phòng được PO duyệt tại G0.
+
+## 10. Sổ quyết định
+
+| Mã | Ngày | Quyết định | Người quyết | Ghi chú |
+|---|---|---|---|---|
+| D-01 | chờ | Phạm vi bản đầu (v1.1 hay v1.1+v1.2) | PO | Khuyến nghị v1.1 |
+| D-02 | chờ | L2–L6 thành "Chương" | PO | Khuyến nghị Có |
+| D-03 | chờ | Có Khám phá ngay bản đầu | PO | Khuyến nghị Có |
+| D-04 | chờ | Một nguồn HTML; xóa bản trùng | PO | Khuyến nghị giữ `index.html` |
+| D-05 | chờ | Kỷ lục chỉ `localStorage` | PO | Khuyến nghị Có |
+| D-06 | chờ | Nhúng font để chạy offline hoàn toàn | PO | Khuyến nghị Có nếu kích thước cho phép |
+| D-07 | chờ | Năng lực C (ngày công/tuần) và kịch bản A/B/C | PO | Quyết định lịch v1.1; mặc định B + v1.1-lite nếu không xác nhận |
+
+Cập nhật ngay khi có quyết định; mỗi dòng giữ mãi, không xóa.
+
+## 11. Quy trình phát hành
+
+1. Đóng băng nội dung 3 ngày trước cổng.
+2. Chạy toàn bộ test + `sim.mjs` (3 seed) và lưu báo cáo vào `docs/du-an/releases/<bản>/`.
+3. Kiểm tra 9.5 (mạng, lưu trữ) và checklist UX-04.
+4. Pilot đạt 9.3 (theo bản).
+5. Cập nhật `README.md` (phiên bản, dữ liệu NASA), `docs/du-an/CHANGELOG.md`.
+6. PO ký biên bản; gắn thẻ Git `vX.Y.Z`; GitHub Pages tự xuất bản.
+7. Kiểm tra bản trực tuyến: tải trang, chơi 1 chu kỳ, kiểm tra không có lỗi console.
+8. Lưu biên bản pilot, báo cáo sim, quyết định vào `releases/<bản>/`.
+
+Hạ cấp nhanh: giữ thẻ Git bản trước; nếu phát hiện lỗi P0, quay lại bản trước trong vòng 1 giờ rồi sửa.
+
+## 12. Cấu trúc thư mục tài liệu
+
+```text
+docs/du-an/
+  README.md                         mục lục + quy ước
+  PRJ-INF-01_phan-tich-thiet-ke-phat-trien_<ngày>.md
+  PRJ-INF-02_quan-ly-tien-do-noi-dung_<ngày>.md
+  CHANGELOG.md                      (tạo khi phát hành v1.1)
+  archive/                          bản cũ theo ngày + phiên bản
+  reviews/                          RV-xx rà soát độc lập
+  status/                           báo cáo tuần TT_<ngày>.md
+  releases/<bản>/                   báo cáo sim, pilot, biên bản
+  decisions/                        (nếu cần tách khỏi mục 10)
+```
+
+## 13. Việc làm ngay (trong 7 ngày tới)
+
+| # | Việc | Người | Hạn |
+|---|---|---|---|
+| 1 | Chốt D-01…D-07 (mục 10) | PO | 17/11 |
+| 2 | Rà soát lần 4 PRJ-INF-01 v0.4 (người khác tác giả; RV-01…03 đã có) | Rà soát | 19/11 |
+| 3 | Tạo Issue INF-001…INF-029, milestone `v1.1`, Project board | Kỹ thuật | 18/11 |
+| 4 | Liên hệ 2 giáo viên và ≥ 10 học sinh cho pilot (đặt lịch S2) | PO | 22/11 |
+| 5 | Dựng cấu trúc repo và CI (INF-005, 006) | Lập trình | 22/11 |
+| 6 | Bắt đầu xác nhận nguồn SRC-05, SRC-06 | Nội dung | 22/11 |
